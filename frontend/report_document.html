@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FinSight | Financial Reports &amp; Documents</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#2a2d3d",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#1d4ed8",
+                        "surface-variant": "#1e293b",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary-container": "#dbe1ff",
+                        "inverse-surface": "#e2e8f0",
+                        "surface-container-high": "#1e293b",
+                        "primary-container": "#0047ab",
+                        "on-tertiary-fixed": "#002109",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-error-container": "#ffdad6",
+                        "on-surface": "#f1f5f9",
+                        "on-secondary-fixed": "#001551",
+                        "on-background": "#f1f5f9",
+                        "primary-fixed": "#dbe1ff",
+                        "on-secondary-fixed-variant": "#0039b5",
+                        "tertiary-container": "#005321",
+                        "tertiary-fixed-dim": "#4ae176",
+                        "secondary": "#3b82f6",
+                        "on-primary-fixed": "#00174b",
+                        "surface-tint": "#b4c5ff",
+                        "surface": "#0f172a",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#111827",
+                        "primary": "#3b82f6",
+                        "tertiary-fixed": "#6bff8f",
+                        "inverse-on-surface": "#0f172a",
+                        "outline": "#64748b",
+                        "surface-bright": "#1e293b",
+                        "on-tertiary-container": "#c1ffc5",
+                        "surface-container": "#111827",
+                        "secondary-fixed": "#dce1ff",
+                        "surface-container-highest": "#334155",
+                        "error-container": "#93000a",
+                        "background": "#0f172a",
+                        "on-secondary-container": "#ffffff",
+                        "tertiary": "#4ade80",
+                        "surface-container-lowest": "#020617",
+                        "secondary-fixed-dim": "#b7c4ff",
+                        "on-primary": "#002d71",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#690005",
+                        "surface-dim": "#0b0f1a",
+                        "on-tertiary-fixed-variant": "#005321",
+                        "inverse-primary": "#0053db",
+                        "on-surface-variant": "#94a3b8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "2xl": "48px",
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "3xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .midnight-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+
+        .chart-gradient {
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0) 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface flex min-h-screen">
+    <!-- SideNavBar -->
+    <aside
+        class="fixed left-0 top-0 bottom-0 flex flex-col border-r border-outline-variant bg-surface-container-lowest w-[280px] z-50">
+        <div class="p-lg">
+            <h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">FinSight</h1>
+            <p class="text-on-surface-variant font-body-sm text-body-sm">Midnight AI Intelligence</p>
+        </div>
+        <nav class="flex-1 px-sm overflow-y-auto custom-scrollbar">
+            <div class="space-y-1">
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-colors rounded-lg group"
+                    href="#">
+                    <span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+                    <span class="font-body-md">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-colors rounded-lg group"
+                    href="#">
+                    <span class="material-symbols-outlined group-hover:text-primary">payments</span>
+                    <span class="font-body-md">Expenses</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-colors rounded-lg group"
+                    href="#">
+                    <span class="material-symbols-outlined group-hover:text-primary">account_balance_wallet</span>
+                    <span class="font-body-md">Budgets</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-colors rounded-lg group"
+                    href="#">
+                    <span class="material-symbols-outlined group-hover:text-primary">trending_up</span>
+                    <span class="font-body-md">Investments</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-colors rounded-lg group"
+                    href="#">
+                    <span class="material-symbols-outlined group-hover:text-primary">ads_click</span>
+                    <span class="font-body-md">Goals</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-colors rounded-lg group"
+                    href="#">
+                    <span class="material-symbols-outlined group-hover:text-primary">monitoring</span>
+                    <span class="font-body-md">Analytics</span>
+                </a>
+                <!-- Active Item: Reports -->
+                <a class="flex items-center gap-3 bg-primary/10 text-primary font-bold px-4 py-3 rounded-lg border-l-4 border-primary"
+                    href="#">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-body-md">Reports</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-colors rounded-lg group"
+                    href="#">
+                    <span class="material-symbols-outlined group-hover:text-primary">notifications</span>
+                    <span class="font-body-md">Notifications</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-colors rounded-lg group"
+                    href="#">
+                    <span class="material-symbols-outlined group-hover:text-primary">settings</span>
+                    <span class="font-body-md">Settings</span>
+                </a>
+            </div>
+        </nav>
+        <div class="p-lg">
+            <button
+                class="w-full bg-primary-container text-on-primary-container py-3 px-4 rounded-xl font-label-md hover:brightness-110 active:scale-[0.98] transition-all">
+                Upgrade to Elite
+            </button>
+        </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="ml-[280px] flex-1 flex flex-col min-h-screen">
+        <!-- TopNavBar -->
+        <header
+            class="flex justify-between items-center h-16 px-gutter w-full sticky top-0 z-40 bg-surface/80 backdrop-blur-xl border-b border-outline-variant">
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                    <input
+                        class="pl-10 pr-4 py-2 bg-surface-container border border-outline-variant rounded-full text-body-sm focus:ring-1 focus:ring-primary outline-none transition-all w-80 text-on-surface"
+                        placeholder="Search documents, reports, insights..." type="text" />
+                </div>
+            </div>
+            <div class="flex items-center gap-lg">
+                <div class="flex items-center gap-md">
+                    <button
+                        class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">notifications</button>
+                    <button
+                        class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">light_mode</button>
+                    <button
+                        class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">help</button>
+                </div>
+                <div class="flex items-center gap-sm border-l border-outline-variant pl-lg">
+                    <img alt="Alex Thompson" class="w-9 h-9 rounded-full object-cover ring-2 ring-primary/20"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0UAg4UktlGaL0IIKHJEb5JGrMwOB5ilkXrYoPIPphLLFEOoWcp67qLN0hA17sUMm29tvzuwL6DI1sULq_EYrMwXlkve98fuNMnW1dZwxTzcy8dFeHlY1E5wgZ-IWmM56B4OaK9tz9tAko0idb8U_6_BjS6QHWURhTb4UPGDOOrL4aKvbZxbx3rwHtfibW4P8TDOoHrIVw8XKwx3hAJuen7kXDewusKUkhHd4xnhGgkMvDqBlLYea3" />
+                    <div class="hidden lg:block">
+                        <p class="font-label-md text-on-surface leading-none">Alex Thompson</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Elite Member</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Reports Dashboard Content -->
+        <div class="p-xl space-y-xl max-w-[1440px] mx-auto w-full">
+            <!-- Page Header -->
+            <section class="flex flex-col md:flex-row md:items-end justify-between gap-lg">
+                <div>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface">Financial Reports</h2>
+                    <p class="text-on-surface-variant font-body-md">Analyze performance benchmarks and secure document
+                        exports.</p>
+                </div>
+                <div
+                    class="flex flex-wrap items-center gap-sm p-1.5 bg-surface-container-lowest rounded-xl border border-outline-variant">
+                    <div class="px-4 py-2 flex items-center gap-2 border-r border-outline-variant">
+                        <span class="material-symbols-outlined text-primary text-sm">calendar_today</span>
+                        <select
+                            class="bg-transparent border-none text-label-md font-medium text-on-surface focus:ring-0 cursor-pointer">
+                            <option class="bg-surface">Last 30 Days</option>
+                            <option class="bg-surface">Q3 2024</option>
+                            <option class="bg-surface">Year to Date</option>
+                        </select>
+                    </div>
+                    <div class="px-4 py-2 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-sm">filter_alt</span>
+                        <select
+                            class="bg-transparent border-none text-label-md font-medium text-on-surface focus:ring-0 cursor-pointer">
+                            <option class="bg-surface">All Report Types</option>
+                            <option class="bg-surface">Tax Docs</option>
+                            <option class="bg-surface">Portfolios</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+            <!-- Summary Visualization & Quick Stats -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+                <div class="lg:col-span-8 midnight-card p-lg rounded-2xl">
+                    <div class="flex justify-between items-center mb-xl">
+                        <div>
+                            <h3 class="font-title-lg text-title-lg text-on-surface">Income vs. Spending</h3>
+                            <p class="text-on-surface-variant font-body-sm">Year-to-date performance tracker</p>
+                        </div>
+                        <div class="flex gap-md">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                                <span class="font-label-sm text-on-surface-variant">Income</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2.5 h-2.5 rounded-full bg-error"></div>
+                                <span class="font-label-sm text-on-surface-variant">Spending</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mock Chart Area -->
+                    <div class="h-64 w-full flex items-end justify-between gap-4 px-2 relative">
+                        <div class="absolute inset-0 grid grid-rows-4 pointer-events-none opacity-5">
+                            <div class="border-b border-on-surface"></div>
+                            <div class="border-b border-on-surface"></div>
+                            <div class="border-b border-on-surface"></div>
+                            <div class="border-b border-on-surface"></div>
+                        </div>
+                        <!-- Chart Bars -->
+                        <div class="flex-1 flex flex-col justify-end items-center gap-1 group relative">
+                            <div class="w-full bg-primary/20 rounded-t h-[55%] group-hover:bg-primary transition-all">
+                            </div>
+                            <div class="w-full bg-error/20 rounded-t h-[35%] group-hover:bg-error transition-all"></div>
+                            <span class="text-[10px] text-on-surface-variant mt-2 font-bold">JAN</span>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end items-center gap-1 group relative">
+                            <div class="w-full bg-primary/20 rounded-t h-[70%] group-hover:bg-primary transition-all">
+                            </div>
+                            <div class="w-full bg-error/20 rounded-t h-[30%] group-hover:bg-error transition-all"></div>
+                            <span class="text-[10px] text-on-surface-variant mt-2 font-bold">FEB</span>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end items-center gap-1 group relative">
+                            <div class="w-full bg-primary/20 rounded-t h-[65%] group-hover:bg-primary transition-all">
+                            </div>
+                            <div class="w-full bg-error/20 rounded-t h-[45%] group-hover:bg-error transition-all"></div>
+                            <span class="text-[10px] text-on-surface-variant mt-2 font-bold">MAR</span>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end items-center gap-1 group relative">
+                            <div class="w-full bg-primary/20 rounded-t h-[80%] group-hover:bg-primary transition-all">
+                            </div>
+                            <div class="w-full bg-error/20 rounded-t h-[40%] group-hover:bg-error transition-all"></div>
+                            <span class="text-[10px] text-on-surface-variant mt-2 font-bold">APR</span>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end items-center gap-1 group relative">
+                            <div class="w-full bg-primary/20 rounded-t h-[90%] group-hover:bg-primary transition-all">
+                            </div>
+                            <div class="w-full bg-error/20 rounded-t h-[25%] group-hover:bg-error transition-all"></div>
+                            <span class="text-[10px] text-on-surface-variant mt-2 font-bold">MAY</span>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end items-center gap-1 group relative">
+                            <div class="w-full bg-primary/20 rounded-t h-[75%] group-hover:bg-primary transition-all">
+                            </div>
+                            <div class="w-full bg-error/20 rounded-t h-[50%] group-hover:bg-error transition-all"></div>
+                            <span class="text-[10px] text-on-surface-variant mt-2 font-bold">JUN</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-4 space-y-lg">
+                    <div class="midnight-card p-lg rounded-2xl flex flex-col justify-between h-[calc(50%-12px)]">
+                        <div>
+                            <p class="text-on-surface-variant font-label-md uppercase tracking-widest text-[10px]">Total
+                                YTD Revenue</p>
+                            <h4 class="text-headline-md font-bold text-on-surface mt-1">$142,850.00</h4>
+                        </div>
+                        <div class="flex items-center gap-2 text-tertiary">
+                            <span class="material-symbols-outlined text-sm">arrow_upward</span>
+                            <span class="font-label-sm">+12.5% vs last year</span>
+                        </div>
+                    </div>
+                    <div
+                        class="midnight-card p-lg rounded-2xl flex flex-col justify-between h-[calc(50%-12px)] border-l-4 border-primary">
+                        <div>
+                            <p class="text-on-surface-variant font-label-md uppercase tracking-widest text-[10px]">Tax
+                                Liability Est.</p>
+                            <h4 class="text-headline-md font-bold text-on-surface mt-1">$31,420.00</h4>
+                        </div>
+                        <button class="text-primary font-label-sm flex items-center gap-1 hover:underline">
+                            Detailed Tax Analysis <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <!-- Generated Reports Gallery -->
+            <section>
+                <div class="flex items-center justify-between mb-lg">
+                    <h3 class="font-title-lg text-title-lg text-on-surface">Recent Generated Reports</h3>
+                    <button class="text-primary font-label-md flex items-center gap-1 hover:brightness-125">
+                        Explore Archive <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+                    <!-- Report 1 -->
+                    <div
+                        class="midnight-card rounded-2xl overflow-hidden group hover:bg-surface-container-high transition-all">
+                        <div class="h-44 bg-surface-container-low p-md relative overflow-hidden">
+                            <img alt="Q3 Income Tax Summary"
+                                class="w-full h-full object-cover rounded-lg opacity-80 group-hover:scale-105 transition-transform duration-700"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmErXY2rDUGs05b0rYHqpUTaryTWF2muQyKNYsDbPzIJNHXUeTvqo_YGLzG6woo8v3Vng2Hl4UKOP6nnnIY9_kINsmtHfV1gr9OJO9ZYTbsly2J8JNlZN5QtIxqRXWgwFCHvfK85hfrZbidVzkUheUsON7rGhd9E8vk7SX77W8ARoIYr-0Mo3-1K63Gu_Q5SrsqbbwDmxCKoehDz4AwpcATbQBNeqIJ07BMPAGcpSdhWRcefm1Yb_Y" />
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded border border-primary/30 uppercase">Tax</span>
+                            </div>
+                        </div>
+                        <div class="p-lg space-y-md">
+                            <div>
+                                <h5 class="font-title-lg text-on-surface text-[16px]">Q3 Income Tax Summary</h5>
+                                <p class="text-on-surface-variant text-body-sm">Oct 12, 2024</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-surface-container text-on-surface rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+                                    <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                                    <span class="text-[12px] font-medium">PDF</span>
+                                </button>
+                                <button
+                                    class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-surface-container text-on-surface rounded-lg hover:bg-tertiary hover:text-black transition-all">
+                                    <span class="material-symbols-outlined text-sm">table_chart</span>
+                                    <span class="text-[12px] font-medium">Excel</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Report 2 -->
+                    <div
+                        class="midnight-card rounded-2xl overflow-hidden group hover:bg-surface-container-high transition-all">
+                        <div class="h-44 bg-surface-container-low p-md relative overflow-hidden">
+                            <img alt="Portfolio Growth Report"
+                                class="w-full h-full object-cover rounded-lg opacity-80 group-hover:scale-105 transition-transform duration-700"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcZz2bHx6HKcKcmlDoMto0CFbb3cRMbtJXQRyTjWFijrbTjJ-gZLWvesNrBOUua6IXsPdeZSSXEiWs0ekLJd526ZczpLQs8ips1mHV7-jQEtQEBd5D_mYwxv8IUwMMV53_DeZDzqsWkopLNotXoDydLjTeVMIzmiViOo-VHutM53y1t8X_-fUbrAHQyaHlXxTRjAI-bNzScbuXqkqAdIZiOsg1jCi_M61jJdBhxUMg20YrWffeZsmH" />
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="bg-tertiary/20 text-tertiary text-[10px] font-bold px-2 py-0.5 rounded border border-tertiary/30 uppercase">Investment</span>
+                            </div>
+                        </div>
+                        <div class="p-lg space-y-md">
+                            <div>
+                                <h5 class="font-title-lg text-on-surface text-[16px]">Portfolio Performance</h5>
+                                <p class="text-on-surface-variant text-body-sm">Oct 05, 2024</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-surface-container text-on-surface rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+                                    <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                                    <span class="text-[12px] font-medium">PDF</span>
+                                </button>
+                                <button
+                                    class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-surface-container text-on-surface rounded-lg hover:bg-tertiary hover:text-black transition-all">
+                                    <span class="material-symbols-outlined text-sm">table_chart</span>
+                                    <span class="text-[12px] font-medium">Excel</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Report 3 -->
+                    <div
+                        class="midnight-card rounded-2xl overflow-hidden group hover:bg-surface-container-high transition-all">
+                        <div class="h-44 bg-surface-container-low p-md relative overflow-hidden">
+                            <img alt="Monthly Spending Audit"
+                                class="w-full h-full object-cover rounded-lg opacity-80 group-hover:scale-105 transition-transform duration-700"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRcvuGtzGcG0LFX3VB6xV2zcfIYbM9SYvi4folEpmjkaUnlYuggDYYSVHyTT-ntdamRGeXtS2Nopj3qCJFi_YvEIr6hxpDCFbDvY24XNRiX_vyQVUAMPMW8XmmPv86hQbHdDb4Q34hL1tMUZp62CkHKUOI_6KQXsYxwcoWRMZ2H03z3cTUuaqz_AhrGSETnE9GfIPQBoUGq1KF9gPsBDHkGVTOaArdE2pz3wEcDJRmLjS5U_HuS1AX" />
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="bg-secondary/20 text-secondary text-[10px] font-bold px-2 py-0.5 rounded border border-secondary/30 uppercase">Expense</span>
+                            </div>
+                        </div>
+                        <div class="p-lg space-y-md">
+                            <div>
+                                <h5 class="font-title-lg text-on-surface text-[16px]">Monthly Spending Audit</h5>
+                                <p class="text-on-surface-variant text-body-sm">Sep 30, 2024</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-surface-container text-on-surface rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+                                    <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                                    <span class="text-[12px] font-medium">PDF</span>
+                                </button>
+                                <button
+                                    class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-surface-container text-on-surface rounded-lg hover:bg-tertiary hover:text-black transition-all">
+                                    <span class="material-symbols-outlined text-sm">table_chart</span>
+                                    <span class="text-[12px] font-medium">Excel</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- CTA Card -->
+                    <div
+                        class="border-2 border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center p-lg hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group">
+                        <div
+                            class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-all">
+                            <span class="material-symbols-outlined text-2xl">add</span>
+                        </div>
+                        <h5 class="font-title-lg text-on-surface mt-4">Generate Report</h5>
+                        <p class="text-on-surface-variant text-body-sm text-center mt-1">Configure custom parameters</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Scheduled Reports & AI -->
+            <section class="grid grid-cols-1 xl:grid-cols-12 gap-lg">
+                <!-- Scheduled Reports -->
+                <div class="xl:col-span-8 midnight-card rounded-2xl overflow-hidden flex flex-col">
+                    <div class="p-lg border-b border-outline-variant flex items-center justify-between">
+                        <h3 class="font-title-lg text-title-lg text-on-surface">Scheduled automations</h3>
+                        <div class="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full">
+                            <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                            <span class="text-primary font-label-sm uppercase tracking-tighter">3 Active Active</span>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead
+                                class="bg-surface-container-low text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">
+                                <tr>
+                                    <th class="px-lg py-4">Report Name</th>
+                                    <th class="px-lg py-4">Frequency</th>
+                                    <th class="px-lg py-4">Next Delivery</th>
+                                    <th class="px-lg py-4">Recipients</th>
+                                    <th class="px-lg py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant text-body-sm text-on-surface">
+                                <tr class="hover:bg-surface-container-high transition-colors">
+                                    <td class="px-lg py-4 font-medium">Weekly Expense Audit</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">Every Monday</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">Nov 04, 2024</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">Admin, Finance</td>
+                                    <td class="px-lg py-4 text-right">
+                                        <button
+                                            class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">edit_note</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container-high transition-colors">
+                                    <td class="px-lg py-4 font-medium">Monthly Portfolio Stats</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">1st of Month</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">Dec 01, 2024</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">Investor</td>
+                                    <td class="px-lg py-4 text-right">
+                                        <button
+                                            class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">edit_note</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container-high transition-colors">
+                                    <td class="px-lg py-4 font-medium">Quarterly Tax Forecast</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">Quarterly</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">Jan 15, 2025</td>
+                                    <td class="px-lg py-4 text-on-surface-variant">Accounting</td>
+                                    <td class="px-lg py-4 text-right">
+                                        <button
+                                            class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">edit_note</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- AI Insights -->
+                <div class="xl:col-span-4 midnight-card rounded-2xl p-lg flex flex-col">
+                    <div class="flex items-center gap-3 mb-md">
+                        <span class="material-symbols-outlined text-primary"
+                            style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                        <h3 class="font-title-lg text-title-lg text-on-surface">AI Financial Insights</h3>
+                    </div>
+                    <p class="text-on-surface-variant font-body-sm mb-lg">Machine learning analysis of your document
+                        activity has identified optimization opportunities.</p>
+                    <div class="space-y-md flex-1">
+                        <div
+                            class="p-lg rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-all cursor-default">
+                            <div class="flex items-center justify-between mb-1">
+                                <h6 class="font-label-md text-primary">Tax Saving Alpha</h6>
+                                <span class="text-[10px] text-primary/60 font-bold">HIGH PRIORITY</span>
+                            </div>
+                            <p class="text-body-sm text-on-surface">Re-categorizing $4,200 in legacy software
+                                subscriptions as R&amp;D could yield a 4% tax reduction.</p>
+                        </div>
+                        <div
+                            class="p-lg rounded-xl bg-tertiary/5 border border-tertiary/20 hover:bg-tertiary/10 transition-all cursor-default">
+                            <div class="flex items-center justify-between mb-1">
+                                <h6 class="font-label-md text-tertiary">Portfolio Anomaly</h6>
+                                <span class="text-[10px] text-tertiary/60 font-bold">TRENDING</span>
+                            </div>
+                            <p class="text-body-sm text-on-surface">Recurring expense growth (12%) is outpacing your
+                                projected dividend yield this quarter.</p>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-lg w-full py-3 bg-primary text-on-primary rounded-xl font-label-md hover:brightness-110 shadow-lg shadow-primary/20 transition-all">
+                        Generate Optimization Roadmap
+                    </button>
+                </div>
+            </section>
+        </div>
+        <!-- Footer -->
+        <footer class="mt-auto border-t border-outline-variant bg-surface-container-lowest py-xl px-gutter">
+            <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-lg">
+                <div class="flex flex-col items-center md:items-start gap-1">
+                    <span class="font-title-lg font-bold text-on-surface tracking-tighter">FinSight</span>
+                    <p class="font-body-sm text-on-surface-variant opacity-60">© 2024 FinSight AI. Encrypted Financial
+                        Intelligence.</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-x-xl gap-y-2">
+                    <a class="text-on-surface-variant font-label-sm hover:text-primary transition-all" href="#">Privacy
+                        Protocol</a>
+                    <a class="text-on-surface-variant font-label-sm hover:text-primary transition-all" href="#">Terms of
+                        Access</a>
+                    <a class="text-on-surface-variant font-label-sm hover:text-primary transition-all" href="#">Security
+                        Core</a>
+                    <a class="text-on-surface-variant font-label-sm hover:text-primary transition-all" href="#">Dev
+                        Docs</a>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script>
+        // Micro-interactions
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if (el.getAttribute('href') === '#') e.preventDefault();
+            });
+        });
+
+        // Simple animation for bars on load
+        window.addEventListener('load', () => {
+            const bars = document.querySelectorAll('.group.relative > div');
+            bars.forEach((bar, index) => {
+                const height = bar.style.height;
+                bar.style.height = '0';
+                setTimeout(() => {
+                    bar.style.height = height;
+                    bar.style.transition = 'height 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                }, index * 100);
+            });
+        });
+    </script>
+    <script src="/auth-guard.js"></script>
+</body>
+
+</html>

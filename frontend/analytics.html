@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FinSight | Advanced Financial Analytics</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#8b5cf6", // Violet
+                        "on-primary": "#ffffff",
+                        "primary-container": "#4c1d95",
+                        "on-primary-container": "#ede9fe",
+                        "secondary": "#10b981", // Emerald
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#10b981", // Emerald (mapping for success/growth)
+                        "error": "#f43f5e", // Rose
+                        "background": "#060e20",
+                        "surface": "#0b1326",
+                        "surface-variant": "#1e293b",
+                        "on-surface": "#f1f5f9",
+                        "on-surface-variant": "#94a3b8",
+                        "outline": "#475569",
+                        "outline-variant": "#334155",
+                        "surface-container-lowest": "#060e20",
+                        "surface-container-low": "#131b2e",
+                        "surface-container": "#1e293b",
+                        "surface-container-high": "#31394d",
+                        "surface-container-highest": "#475569"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "2xl": "48px",
+                        "md": "16px",
+                        "3xl": "64px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .chart-gradient-area {
+            fill: url(#chartGradient);
+            fill-opacity: 0.2;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface">
+    <!-- Sidebar Shell -->
+    <aside
+        class="fixed left-0 top-0 bottom-0 flex flex-col border-r border-outline-variant bg-surface w-[280px] h-screen z-[60] shadow-xl">
+        <div class="p-gutter">
+            <h1 class="font-headline-md text-headline-md font-bold text-primary">FinSight</h1>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">AI Financial Intelligence</p>
+        </div>
+        <nav class="flex-1 px-4 overflow-y-auto">
+            <div class="space-y-1">
+                <!-- Dashboard Active -->
+                <a class="flex items-center gap-3 bg-primary/10 text-primary font-bold border-l-4 border-primary px-4 py-3 transition-all"
+                    href="#">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="font-body-md text-body-md">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface px-4 py-3 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">payments</span>
+                    <span class="font-body-md text-body-md">Expenses</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface px-4 py-3 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">account_balance_wallet</span>
+                    <span class="font-body-md text-body-md">Budgets</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface px-4 py-3 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">trending_up</span>
+                    <span class="font-body-md text-body-md">Investments</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface px-4 py-3 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">ads_click</span>
+                    <span class="font-body-md text-body-md">Goals</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface px-4 py-3 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">monitoring</span>
+                    <span class="font-body-md text-body-md">Analytics</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface px-4 py-3 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-body-md text-body-md">Reports</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface px-4 py-3 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="font-body-md text-body-md">Notifications</span>
+                </a>
+                <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface px-4 py-3 transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="font-body-md text-body-md">Settings</span>
+                </a>
+            </div>
+        </nav>
+        <div class="p-gutter">
+            <button
+                class="w-full py-3 px-4 bg-primary text-on-primary font-bold rounded-xl active:scale-[0.98] transition-transform shadow-lg shadow-primary/20">
+                Upgrade to Pro
+            </button>
+        </div>
+    </aside>
+    <!-- Top Navigation -->
+    <header
+        class="flex justify-between items-center h-16 px-gutter bg-surface/80 backdrop-blur-xl sticky top-0 z-50 ml-[280px] border-b border-outline-variant w-[calc(100%-280px)]">
+        <div class="flex items-center flex-1 max-w-xl">
+            <div class="relative w-full">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                <input
+                    class="w-full bg-surface-container-low border-outline-variant border rounded-full pl-10 pr-4 py-2 text-label-md text-on-surface placeholder-on-surface-variant focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none"
+                    placeholder="Search analytics, stocks, or reports..." type="text" />
+            </div>
+        </div>
+        <div class="flex items-center gap-md">
+            <button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">help</span>
+            </button>
+            <div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+                <img alt="User Profile" class="w-full h-full object-cover"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOKHWnlMKZN4KqKgLLtpSOO-EjucrRHg43EtZNpx_3waV53FXLoXTqroDV7DB_i9fi58PhwxtLL8gqtpz478jCHKAq6d3VH2_CC_2hpWMFOJtU0qWGf_KYYRtcXscyEGHoBiAEttLoZ8qhqy6J79P_Ax2cAybVBDudd6nm2h1Wbk6Ga2QQBCZB2xIgVzFXkmfXX3IUZ2b0OTS6dLbU8-ZHLSVXav7Kvwefm70_OcCdviNHpBpaBVvN" />
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main class="ml-[280px] p-xl space-y-xl">
+        <!-- Net Worth Trend Area Chart Section -->
+        <section class="glass-card p-lg rounded-2xl">
+            <div class="flex justify-between items-end mb-lg">
+                <div>
+                    <h2 class="font-title-lg text-title-lg text-on-surface">Net Worth Intelligence</h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Asset valuation trend over the last 12
+                        months</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-display text-primary">$1,284,592.40</p>
+                    <p class="text-secondary font-label-md flex items-center justify-end gap-1">
+                        <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                        +14.2% YoY
+                    </p>
+                </div>
+            </div>
+            <div class="h-80 w-full relative">
+                <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 300">
+                    <defs>
+                        <lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.4"></stop>
+                            <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"></stop>
+                        </lineargradient>
+                    </defs>
+                    <!-- Grid Lines -->
+                    <line stroke="#1e293b" stroke-width="1" x1="0" x2="1000" y1="50" y2="50"></line>
+                    <line stroke="#1e293b" stroke-width="1" x1="0" x2="1000" y1="150" y2="150"></line>
+                    <line stroke="#1e293b" stroke-width="1" x1="0" x2="1000" y1="250" y2="250"></line>
+                    <!-- Area Path -->
+                    <path class="chart-gradient-area"
+                        d="M0,250 C100,240 200,260 300,200 S400,100 500,120 S600,180 700,140 S800,80 900,100 S1000,50 1000,50 V300 H0 Z">
+                    </path>
+                    <!-- Stroke Path -->
+                    <path
+                        d="M0,250 C100,240 200,260 300,200 S400,100 500,120 S600,180 700,140 S800,80 900,100 S1000,50 1000,50"
+                        fill="none" stroke="#8b5cf6" stroke-width="3"></path>
+                    <!-- Interactive Point -->
+                    <circle cx="1000" cy="50" fill="#8b5cf6" r="6"></circle>
+                    <circle cx="1000" cy="50" fill="#8b5cf6" fill-opacity="0.3" r="12"></circle>
+                </svg>
+            </div>
+            <div class="flex justify-between mt-md px-2 text-on-surface-variant font-label-sm">
+                <span>SEP 2023</span>
+                <span>DEC 2023</span>
+                <span>MAR 2024</span>
+                <span>JUN 2024</span>
+                <span>SEP 2024</span>
+            </div>
+        </section>
+        <!-- Bento Grid: Cash Flow and Heatmap -->
+        <div class="grid grid-cols-12 gap-lg">
+            <!-- Cash Flow Analysis (8 Cols) -->
+            <div class="col-span-12 lg:col-span-8 glass-card p-lg rounded-2xl flex flex-col">
+                <div class="flex justify-between mb-lg">
+                    <h3 class="font-title-lg text-title-lg text-on-surface">Cash Flow &amp; Momentum</h3>
+                    <div class="flex gap-4">
+                        <span class="flex items-center gap-1 font-label-sm text-on-surface-variant"><span
+                                class="w-3 h-3 rounded-full bg-primary"></span> Inflow</span>
+                        <span class="flex items-center gap-1 font-label-sm text-on-surface-variant"><span
+                                class="w-3 h-3 rounded-full bg-secondary"></span> Savings</span>
+                        <span class="flex items-center gap-1 font-label-sm text-on-surface-variant"><span
+                                class="w-3 h-3 rounded-full bg-error"></span> Outflow</span>
+                    </div>
+                </div>
+                <div class="flex-1 grid grid-cols-12 gap-4 items-end min-h-[240px] px-2">
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-error/20 rounded-t-lg h-32 relative group overflow-hidden">
+                            <div
+                                class="absolute bottom-0 w-full bg-error h-1/2 transition-all group-hover:brightness-110">
+                            </div>
+                        </div>
+                        <span class="font-label-sm text-on-surface-variant">JAN</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-primary/20 rounded-t-lg h-48 relative group overflow-hidden">
+                            <div
+                                class="absolute bottom-0 w-full bg-primary h-3/4 transition-all group-hover:brightness-110">
+                            </div>
+                        </div>
+                        <span class="font-label-sm text-on-surface-variant">FEB</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-secondary/20 rounded-t-lg h-40 relative group overflow-hidden">
+                            <div
+                                class="absolute bottom-0 w-full bg-secondary h-2/3 transition-all group-hover:brightness-110">
+                            </div>
+                        </div>
+                        <span class="font-label-sm text-on-surface-variant">MAR</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-primary/20 rounded-t-lg h-56 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-primary h-4/5"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">APR</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-error/20 rounded-t-lg h-36 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-error h-1/3"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">MAY</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-primary/20 rounded-t-lg h-64 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-primary h-full"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">JUN</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-secondary/20 rounded-t-lg h-44 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-secondary h-3/4"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">JUL</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-primary/20 rounded-t-lg h-52 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-primary h-2/3"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">AUG</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-error/20 rounded-t-lg h-40 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-error h-1/2"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">SEP</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-primary/20 rounded-t-lg h-60 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-primary h-5/6"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">OCT</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-secondary/20 rounded-t-lg h-48 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-secondary h-4/5"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">NOV</span>
+                    </div>
+                    <div class="col-span-1 flex flex-col items-center gap-2">
+                        <div class="w-full bg-primary/20 rounded-t-lg h-64 relative overflow-hidden">
+                            <div class="absolute bottom-0 w-full bg-primary h-full"></div>
+                        </div><span class="font-label-sm text-on-surface-variant">DEC</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Expense Heatmap (4 Cols) -->
+            <div class="col-span-12 lg:col-span-4 glass-card p-lg rounded-2xl">
+                <h3 class="font-title-lg text-title-lg text-on-surface mb-md">Expense Frequency</h3>
+                <p class="font-body-sm text-body-sm text-on-surface-variant mb-lg">Visual density of daily transactions
+                </p>
+                <div class="grid grid-cols-7 gap-2">
+                    <div class="text-center font-label-sm text-outline">S</div>
+                    <div class="text-center font-label-sm text-outline">M</div>
+                    <div class="text-center font-label-sm text-outline">T</div>
+                    <div class="text-center font-label-sm text-outline">W</div>
+                    <div class="text-center font-label-sm text-outline">T</div>
+                    <div class="text-center font-label-sm text-outline">F</div>
+                    <div class="text-center font-label-sm text-outline">S</div>
+                    <div class="h-8 bg-surface-container rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/40 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/10 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/80 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/20 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/60 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-surface-container rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/90 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/30 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/10 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/50 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/20 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/40 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-surface-container rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/10 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/70 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/30 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/10 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/90 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/50 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/20 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/10 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/60 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-surface-container rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/40 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/80 rounded-sm heatmap-cell transition-transform"></div>
+                    <div class="h-8 bg-primary/20 rounded-sm heatmap-cell transition-transform"></div>
+                </div>
+                <div class="mt-lg flex items-center justify-between font-label-sm text-on-surface-variant">
+                    <span>Less</span>
+                    <div class="flex gap-1">
+                        <div class="w-3 h-3 bg-surface-container rounded-xs"></div>
+                        <div class="w-3 h-3 bg-primary/30 rounded-xs"></div>
+                        <div class="w-3 h-3 bg-primary/60 rounded-xs"></div>
+                        <div class="w-3 h-3 bg-primary rounded-xs"></div>
+                    </div>
+                    <span>More</span>
+                </div>
+            </div>
+        </div>
+        <!-- Detail Layout: Category Analysis & AI Recommendations -->
+        <div class="flex flex-col xl:flex-row gap-lg">
+            <!-- Category Analysis (Left/Main) -->
+            <div class="flex-1 glass-card p-lg rounded-2xl overflow-hidden">
+                <h3 class="font-title-lg text-title-lg text-on-surface mb-lg">Category Allocation Deep-Dive</h3>
+                <table class="w-full border-separate border-spacing-y-3">
+                    <thead class="text-left">
+                        <tr>
+                            <th class="font-label-sm text-on-surface-variant px-4 pb-2">CATEGORY</th>
+                            <th class="font-label-sm text-on-surface-variant px-4 pb-2">CURRENT</th>
+                            <th class="font-label-sm text-on-surface-variant px-4 pb-2">ALLOCATION</th>
+                            <th class="font-label-sm text-on-surface-variant px-4 pb-2">YTD TREND</th>
+                        </tr>
+                    </thead>
+                    <tbody class="space-y-4">
+                        <tr class="hover:bg-surface-container transition-colors rounded-xl group cursor-pointer">
+                            <td class="px-4 py-4 rounded-l-xl">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                                        <span class="material-symbols-outlined">home</span>
+                                    </div>
+                                    <span class="font-body-md font-semibold">Real Estate &amp; Housing</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 font-data-mono">$452,000</td>
+                            <td class="px-4 py-4">
+                                <div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+                                    <div class="bg-primary h-full w-[35%]"></div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 text-secondary font-bold rounded-r-xl">+2.4%</td>
+                        </tr>
+                        <tr class="hover:bg-surface-container transition-colors rounded-xl group cursor-pointer">
+                            <td class="px-4 py-4 rounded-l-xl">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
+                                        <span class="material-symbols-outlined">show_chart</span>
+                                    </div>
+                                    <span class="font-body-md font-semibold">Equities &amp; ETFs</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 font-data-mono">$618,300</td>
+                            <td class="px-4 py-4">
+                                <div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+                                    <div class="bg-secondary h-full w-[48%]"></div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 text-secondary font-bold rounded-r-xl">+12.8%</td>
+                        </tr>
+                        <tr class="hover:bg-surface-container transition-colors rounded-xl group cursor-pointer">
+                            <td class="px-4 py-4 rounded-l-xl">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                                        <span class="material-symbols-outlined">account_balance</span>
+                                    </div>
+                                    <span class="font-body-md font-semibold">Cash &amp; Equivalents</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 font-data-mono">$124,292</td>
+                            <td class="px-4 py-4">
+                                <div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+                                    <div class="bg-outline h-full w-[10%]"></div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 text-on-surface-variant font-bold rounded-r-xl">0.0%</td>
+                        </tr>
+                        <tr class="hover:bg-surface-container transition-colors rounded-xl group cursor-pointer">
+                            <td class="px-4 py-4 rounded-l-xl">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-error/20 flex items-center justify-center text-error">
+                                        <span class="material-symbols-outlined">currency_bitcoin</span>
+                                    </div>
+                                    <span class="font-body-md font-semibold">Crypto &amp; Alts</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 font-data-mono">$90,000</td>
+                            <td class="px-4 py-4">
+                                <div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+                                    <div class="bg-error h-full w-[7%]"></div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 text-error font-bold rounded-r-xl">-4.1%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- AI Recommendations Side Panel -->
+            <div class="w-full xl:w-[360px] flex flex-col gap-lg">
+                <div
+                    class="bg-primary text-on-primary p-lg rounded-2xl shadow-xl relative overflow-hidden glass-card !bg-primary/90 border-primary/20">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-md">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                            <h4 class="font-title-lg text-title-lg">AI Optimization</h4>
+                        </div>
+                        <p class="font-body-sm mb-lg opacity-90">Our intelligence engine suggests 3 immediate actions to
+                            improve your yield by 1.2%.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white/10 border border-white/20 rounded-xl p-4">
+                                <p class="font-label-sm uppercase mb-1 font-bold">Rebalance Portfolio</p>
+                                <p class="font-body-sm mb-2 opacity-80">Sell $12,400 in Tech Sector (overweight) and
+                                    move to Health Care ETFs.</p>
+                                <button
+                                    class="text-label-md font-bold underline hover:no-underline transition-all">Review
+                                    Trade</button>
+                            </div>
+                            <div class="bg-white/10 border border-white/20 rounded-xl p-4">
+                                <p class="font-label-sm uppercase mb-1 font-bold">Savings Boost</p>
+                                <p class="font-body-sm mb-2 opacity-80">Sweep $2,500 from Checking into 5.1% APY Cash
+                                    Reserve account.</p>
+                                <button
+                                    class="text-label-md font-bold underline hover:no-underline transition-all">Enable
+                                    Auto-Sweep</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-lg rounded-2xl">
+                    <h4 class="font-title-lg text-title-lg mb-md text-on-surface">Market Pulse</h4>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center pb-3 border-b border-outline-variant">
+                            <div>
+                                <p class="font-body-md font-bold">S&amp;P 500</p>
+                                <p class="font-label-sm text-on-surface-variant">Broad Market</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-data-mono">5,432.12</p>
+                                <p class="text-secondary font-bold text-label-sm">+1.24%</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-outline-variant">
+                            <div>
+                                <p class="font-body-md font-bold">UST 10Y</p>
+                                <p class="font-label-sm text-on-surface-variant">Treasury Yield</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-data-mono">4.12%</p>
+                                <p class="text-error font-bold text-label-sm">+0.05%</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-body-md font-bold">BTC/USD</p>
+                                <p class="font-label-sm text-on-surface-variant">Digital Asset</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-data-mono">$64,212.0</p>
+                                <p class="text-secondary font-bold text-label-sm">+0.82%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="ml-[280px] bg-surface border-t border-outline-variant">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center py-xl px-gutter max-w-container-max mx-auto w-full">
+            <div class="mb-4 md:mb-0">
+                <p class="font-title-lg text-title-lg font-black text-on-surface">FinSight AI</p>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Premium Financial Intelligence.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-lg">
+                <a class="text-on-surface-variant hover:text-primary transition-all font-body-sm text-body-sm"
+                    href="#">Privacy Policy</a>
+                <a class="text-on-surface-variant hover:text-primary transition-all font-body-sm text-body-sm"
+                    href="#">Terms of Service</a>
+                <a class="text-on-surface-variant hover:text-primary transition-all font-body-sm text-body-sm"
+                    href="#">Security</a>
+                <a class="text-on-surface-variant hover:text-primary transition-all font-body-sm text-body-sm"
+                    href="#">API Documentation</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Micro-interactions
+        document.querySelectorAll('.heatmap-cell').forEach(cell => {
+            cell.addEventListener('mouseenter', function () {
+                this.style.filter = 'brightness(1.5) contrast(1.1)';
+            });
+            cell.addEventListener('mouseleave', function () {
+                this.style.filter = 'none';
+            });
+        });
+
+        // Simple smooth bar reveal
+        window.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.rounded-t-lg');
+            bars.forEach((bar, i) => {
+                const inner = bar.querySelector('div');
+                if (inner) {
+                    const finalHeight = inner.style.height || '50%'; // default if not set
+                    inner.style.height = '0%';
+                    setTimeout(() => {
+                        inner.style.transition = 'height 1s cubic-bezier(0.16, 1, 0.3, 1)';
+                        inner.style.height = finalHeight;
+                    }, 200 + (i * 50));
+                }
+            });
+        });
+    </script>
+    <script src="/auth-guard.js"></script>
+</body>
+
+</html>

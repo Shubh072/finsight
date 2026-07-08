@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Notifications Center | FinSight AI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#323544",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#2541a5",
+                        "surface-variant": "#434655",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary-container": "#dbe1ff",
+                        "inverse-surface": "#e2e2e6",
+                        "surface-container-high": "#292a2f",
+                        "primary-container": "#003ea8",
+                        "on-tertiary-fixed": "#002109",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-error-container": "#ffdad6",
+                        "on-surface": "#e2e2e6",
+                        "on-secondary-fixed": "#001551",
+                        "on-background": "#e2e2e6",
+                        "primary-fixed": "#dbe1ff",
+                        "on-secondary-fixed-variant": "#0039b5",
+                        "tertiary-container": "#005321",
+                        "tertiary-fixed-dim": "#4ae176",
+                        "secondary": "#b7c4ff",
+                        "on-primary-fixed": "#00174b",
+                        "surface-tint": "#b4c5ff",
+                        "surface": "#1a1b1f",
+                        "on-tertiary": "#003915",
+                        "surface-container-low": "#1c1c21",
+                        "primary": "#b4c5ff",
+                        "tertiary-fixed": "#6bff8f",
+                        "inverse-on-surface": "#2f3033",
+                        "outline": "#8d909f",
+                        "surface-bright": "#3a393e",
+                        "on-tertiary-container": "#c1ffc5",
+                        "surface-container": "#202125",
+                        "secondary-fixed": "#dce1ff",
+                        "surface-container-highest": "#34353a",
+                        "error-container": "#93000a",
+                        "background": "#1a1b1f",
+                        "on-secondary-container": "#dbe1ff",
+                        "tertiary": "#4ae176",
+                        "surface-container-lowest": "#0f0f13",
+                        "secondary-fixed-dim": "#b7c4ff",
+                        "on-primary": "#002d84",
+                        "on-secondary": "#1d2d77",
+                        "on-error": "#690005",
+                        "surface-dim": "#111318",
+                        "on-tertiary-fixed-variant": "#005321",
+                        "inverse-primary": "#0053db",
+                        "on-surface-variant": "#c3c6d7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "2xl": "48px",
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "3xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #323544;
+            border-radius: 10px;
+        }
+
+        .obsidian-glass {
+            backdrop-filter: blur(12px);
+            background: rgba(26, 27, 31, 0.7);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface font-body-md overflow-hidden h-screen flex">
+    <!-- SIDE NAV BAR -->
+    <aside
+        class="fixed left-0 top-0 bottom-0 flex flex-col border-r border-outline-variant bg-surface-container-lowest w-[280px] z-50">
+        <div class="p-lg flex flex-col gap-xs">
+            <h1 class="font-headline-md text-headline-md font-bold text-primary">FinSight</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant">AI Financial Intelligence</p>
+        </div>
+        <nav class="flex-1 flex flex-col gap-1 py-md overflow-y-auto custom-scrollbar">
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low px-4 py-3 transition-colors active:scale-[0.98]"
+                href="#">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low px-4 py-3 transition-colors active:scale-[0.98]"
+                href="#">
+                <span class="material-symbols-outlined">payments</span>
+                <span>Expenses</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low px-4 py-3 transition-colors active:scale-[0.98]"
+                href="#">
+                <span class="material-symbols-outlined">account_balance_wallet</span>
+                <span>Budgets</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low px-4 py-3 transition-colors active:scale-[0.98]"
+                href="#">
+                <span class="material-symbols-outlined">trending_up</span>
+                <span>Investments</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low px-4 py-3 transition-colors active:scale-[0.98]"
+                href="#">
+                <span class="material-symbols-outlined">ads_click</span>
+                <span>Goals</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low px-4 py-3 transition-colors active:scale-[0.98]"
+                href="#">
+                <span class="material-symbols-outlined">monitoring</span>
+                <span>Analytics</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low px-4 py-3 transition-colors active:scale-[0.98]"
+                href="#">
+                <span class="material-symbols-outlined">description</span>
+                <span>Reports</span>
+            </a>
+            <a class="flex items-center gap-3 bg-primary-container text-on-primary-container font-bold border-l-4 border-primary px-4 py-3 active:scale-[0.98] transition-transform"
+                href="#">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+                <span>Notifications</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-low px-4 py-3 transition-colors active:scale-[0.98]"
+                href="#">
+                <span class="material-symbols-outlined">settings</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+        <div class="p-lg mt-auto">
+            <button
+                class="w-full bg-primary text-on-primary py-md rounded-xl font-bold hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-primary/20">
+                Upgrade to Pro
+            </button>
+        </div>
+    </aside>
+    <!-- MAIN CONTENT AREA -->
+    <main class="ml-[280px] flex-1 flex flex-col h-screen overflow-hidden bg-surface">
+        <!-- TOP NAV BAR -->
+        <header
+            class="flex justify-between items-center h-16 px-gutter w-full sticky top-0 z-50 obsidian-glass border-b border-outline-variant shadow-lg">
+            <div class="flex items-center gap-md">
+                <div class="relative w-96">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                    <input
+                        class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full focus:ring-2 focus:ring-primary/20 text-body-sm text-on-surface"
+                        placeholder="Search insights..." type="text" />
+                </div>
+            </div>
+            <div class="flex items-center gap-lg">
+                <div class="flex items-center gap-md">
+                    <button class="text-on-surface-variant hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">notifications</span>
+                    </button>
+                    <button class="text-primary transition-colors">
+                        <span class="material-symbols-outlined"
+                            style="font-variation-settings: 'FILL' 1;">dark_mode</span>
+                    </button>
+                    <button class="text-on-surface-variant hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined">help</span>
+                    </button>
+                </div>
+                <div class="h-8 w-px bg-outline-variant"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-label-md font-bold leading-none">Alexander Pierce</p>
+                        <p class="text-xs text-on-surface-variant">Premium Member</p>
+                    </div>
+                    <img class="h-10 w-10 rounded-full border-2 border-primary-container object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwq5rJrfWvX_Lv0YR7_CNoAxRWawAuyR9o41YVxMu8Y_edV9qSIlRZq413vooXUqPNYqmIPWO29aqCohxTSv3Uy25FwPdDO0ydA28HZMge_84pGdp8r2aJ4O5owueZuLoMbxaq_iYi_MheVdqnjOAO1mqWGMo0h2crWk-juzYzgV3UVYpBsjoIa9CR57MkBC-iSM25VNiVnv3YC5hkVgQdWc7DjizeEkh3dqHrP40pY5nVOwwYn4Gf" />
+                </div>
+            </div>
+        </header>
+        <!-- CONTENT CANVAS -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-xl">
+            <div class="max-w-[1000px] mx-auto">
+                <!-- HEADER SECTION -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xl">
+                    <div>
+                        <h2 class="font-headline-lg text-headline-lg text-on-surface">Notifications Center</h2>
+                        <p class="text-on-surface-variant font-body-md mt-sm">Manage your financial updates and
+                            AI-driven intelligence alerts.</p>
+                    </div>
+                    <div class="flex items-center gap-sm">
+                        <button
+                            class="flex items-center gap-2 px-md py-2 bg-surface-container-high text-on-surface rounded-lg hover:bg-surface-container-highest transition-colors font-label-md">
+                            <span class="material-symbols-outlined text-[20px]">done_all</span>
+                            Mark all as read
+                        </button>
+                        <button
+                            class="flex items-center gap-2 px-md py-2 bg-primary text-on-primary rounded-lg hover:opacity-90 transition-all shadow-md font-label-md">
+                            <span class="material-symbols-outlined text-[20px]">settings</span>
+                            Preferences
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+                    <!-- LEFT COLUMN: FEED & FILTERS -->
+                    <div class="lg:col-span-8 flex flex-col gap-lg">
+                        <!-- FILTER CHIPS -->
+                        <div class="flex flex-wrap gap-sm">
+                            <button
+                                class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-md transition-all">All</button>
+                            <button
+                                class="px-4 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-all font-label-md">Budget
+                                Alerts</button>
+                            <button
+                                class="px-4 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-all font-label-md">Goals</button>
+                            <button
+                                class="px-4 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-all font-label-md">Investments</button>
+                            <button
+                                class="px-4 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-all font-label-md">System</button>
+                        </div>
+                        <!-- CHRONOLOGICAL FEED -->
+                        <div class="flex flex-col gap-md">
+                            <h3 class="text-label-sm uppercase tracking-wider text-outline font-bold mt-sm px-1">Today
+                            </h3>
+                            <!-- BUDGET ALERT -->
+                            <div
+                                class="group relative flex gap-lg p-lg bg-surface-container-low border border-outline-variant rounded-xl shadow-lg transition-all hover:bg-surface-container cursor-pointer overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 rounded-full bg-error-container text-error flex items-center justify-center">
+                                    <span class="material-symbols-outlined"
+                                        style="font-variation-settings: 'FILL' 1;">warning</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-title-lg text-on-surface leading-tight">Budget Exceeded: Dining
+                                            Out</h4>
+                                        <span class="text-label-sm text-outline">2h ago</span>
+                                    </div>
+                                    <p class="text-body-sm text-on-surface-variant mt-xs">You've reached 105% of your
+                                        $400 monthly limit for 'Dining Out'. Consider adjusting your upcoming spending.
+                                    </p>
+                                    <div class="mt-md flex gap-sm">
+                                        <button
+                                            class="px-md py-1.5 bg-error text-on-error rounded-lg text-label-sm font-bold hover:opacity-90">Manage
+                                            Budget</button>
+                                        <button
+                                            class="px-md py-1.5 border border-outline-variant text-on-surface-variant rounded-lg text-label-sm hover:bg-surface-container-highest transition-colors">Dismiss</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- GOAL ACHIEVEMENT -->
+                            <div
+                                class="group relative flex gap-lg p-lg bg-surface-container-low border border-outline-variant rounded-xl shadow-lg transition-all hover:bg-surface-container cursor-pointer overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary"></div>
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 rounded-full bg-tertiary-container text-tertiary flex items-center justify-center">
+                                    <span class="material-symbols-outlined"
+                                        style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-title-lg text-on-surface leading-tight">Goal Reached: Summer
+                                            Holiday</h4>
+                                        <span class="text-label-sm text-outline">5h ago</span>
+                                    </div>
+                                    <p class="text-body-sm text-on-surface-variant mt-xs">Incredible! You've saved
+                                        $2,500 for your Greece trip. This goal is now 100% complete.</p>
+                                    <div class="mt-md flex gap-sm">
+                                        <button
+                                            class="px-md py-1.5 bg-tertiary text-on-tertiary rounded-lg text-label-sm font-bold hover:opacity-90">View
+                                            Goal</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 class="text-label-sm uppercase tracking-wider text-outline font-bold mt-lg px-1">
+                                Yesterday</h3>
+                            <!-- INVESTMENT UPDATE -->
+                            <div
+                                class="group relative flex gap-lg p-lg bg-surface-container-low border border-outline-variant rounded-xl shadow-lg transition-all hover:bg-surface-container cursor-pointer overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 rounded-full bg-primary-container text-primary flex items-center justify-center">
+                                    <span class="material-symbols-outlined"
+                                        style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-title-lg text-on-surface leading-tight">Portfolio Rebalance
+                                            Suggestion</h4>
+                                        <span class="text-label-sm text-outline">Yesterday</span>
+                                    </div>
+                                    <p class="text-body-sm text-on-surface-variant mt-xs">Your tech exposure has grown
+                                        to 45%. FinSight AI suggests rebalancing into index funds to mitigate risk.</p>
+                                    <div class="mt-md flex gap-sm">
+                                        <button
+                                            class="px-md py-1.5 bg-primary text-on-primary rounded-lg text-label-sm font-bold hover:opacity-90">Execute
+                                            AI Plan</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SYSTEM NOTIFICATION -->
+                            <div
+                                class="group relative flex gap-lg p-lg bg-surface-container-low border border-outline-variant rounded-xl shadow-lg transition-all hover:bg-surface-container cursor-pointer overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-outline"></div>
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center">
+                                    <span class="material-symbols-outlined"
+                                        style="font-variation-settings: 'FILL' 1;">security</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-title-lg text-on-surface leading-tight">Security Check: New
+                                            Login</h4>
+                                        <span class="text-label-sm text-outline">Yesterday</span>
+                                    </div>
+                                    <p class="text-body-sm text-on-surface-variant mt-xs">A new login was detected from
+                                        Safari on Mac OS in London, UK. If this wasn't you, secure your account.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- RIGHT COLUMN: AI SUMMARY & INSIGHTS -->
+                    <div class="lg:col-span-4 flex flex-col gap-lg">
+                        <!-- AI ACTIVITY DIGEST CARD -->
+                        <div
+                            class="p-lg bg-primary-container text-on-primary-container rounded-2xl relative overflow-hidden shadow-2xl border border-primary/20">
+                            <div class="absolute top-0 right-0 p-3 opacity-20">
+                                <span class="material-symbols-outlined text-[120px]">auto_awesome</span>
+                            </div>
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-sm mb-md">
+                                    <span class="material-symbols-outlined"
+                                        style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                                    <h3 class="font-title-lg uppercase tracking-tight font-black">AI Activity Digest
+                                    </h3>
+                                </div>
+                                <p class="text-body-md leading-relaxed opacity-90">
+                                    Over the last 24 hours, your financial health remains <span
+                                        class="font-bold">Excellent</span>.
+                                    Significant progress was made on your <span
+                                        class="underline underline-offset-4 decoration-2">Summer Holiday</span> goal.
+                                    Caution: One budget category is over-limit, and a potential portfolio rebalance
+                                    opportunity was identified.
+                                </p>
+                                <button
+                                    class="mt-lg w-full py-md bg-primary text-on-primary hover:opacity-90 rounded-xl font-bold transition-all shadow-lg">
+                                    Generate Full Report
+                                </button>
+                            </div>
+                        </div>
+                        <!-- CATEGORY TOGGLES -->
+                        <div class="p-lg bg-surface-container border border-outline-variant rounded-2xl shadow-lg">
+                            <h3 class="font-title-lg text-on-surface mb-md">Alert Categories</h3>
+                            <div class="flex flex-col gap-md">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-error">account_balance_wallet</span>
+                                        <span class="text-body-sm font-medium">Budget Alerts</span>
+                                    </div>
+                                    <div class="w-10 h-5 bg-primary rounded-full relative cursor-pointer toggle-switch"
+                                        data-state="on">
+                                        <div
+                                            class="absolute right-1 top-1 w-3 h-3 bg-on-primary rounded-full transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-tertiary">emoji_events</span>
+                                        <span class="text-body-sm font-medium">Goal Updates</span>
+                                    </div>
+                                    <div class="w-10 h-5 bg-primary rounded-full relative cursor-pointer toggle-switch"
+                                        data-state="on">
+                                        <div
+                                            class="absolute right-1 top-1 w-3 h-3 bg-on-primary rounded-full transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-primary">trending_up</span>
+                                        <span class="text-body-sm font-medium">Investments</span>
+                                    </div>
+                                    <div class="w-10 h-5 bg-primary rounded-full relative cursor-pointer toggle-switch"
+                                        data-state="on">
+                                        <div
+                                            class="absolute right-1 top-1 w-3 h-3 bg-on-primary rounded-full transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-outline">notifications_active</span>
+                                        <span class="text-body-sm font-medium">System News</span>
+                                    </div>
+                                    <div class="w-10 h-5 bg-surface-container-highest rounded-full relative cursor-pointer toggle-switch"
+                                        data-state="off">
+                                        <div
+                                            class="absolute left-1 top-1 w-3 h-3 bg-outline rounded-full transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="mt-lg text-primary font-bold text-label-md hover:underline">Manage All
+                                Notifications</button>
+                        </div>
+                        <!-- STATS CARD -->
+                        <div class="p-lg bg-surface-container-low border border-outline-variant rounded-2xl">
+                            <div class="flex items-center justify-between mb-md">
+                                <h3 class="text-label-sm font-bold uppercase text-outline">Activity Stats</h3>
+                                <span class="material-symbols-outlined text-outline text-[18px]">info</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-md">
+                                <div class="p-md bg-surface-container rounded-xl border border-outline-variant">
+                                    <p class="text-xs text-on-surface-variant">Unread</p>
+                                    <p class="text-headline-md font-bold text-primary">12</p>
+                                </div>
+                                <div class="p-md bg-surface-container rounded-xl border border-outline-variant">
+                                    <p class="text-xs text-on-surface-variant">Archived</p>
+                                    <p class="text-headline-md font-bold">48</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FOOTER -->
+                <footer
+                    class="mt-3xl pt-2xl pb-xl border-t border-outline-variant w-full flex flex-col md:flex-row justify-between items-center gap-lg">
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 FinSight AI. Obsidian Edition.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-lg">
+                        <a class="text-body-sm text-on-surface-variant hover:text-primary transition-all"
+                            href="#">Privacy</a>
+                        <a class="text-body-sm text-on-surface-variant hover:text-primary transition-all"
+                            href="#">Terms</a>
+                        <a class="text-body-sm text-on-surface-variant hover:text-primary transition-all"
+                            href="#">Support</a>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Toggle logic for the obsidian switches
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                const dot = this.querySelector('div');
+                const state = this.getAttribute('data-state');
+
+                if (state === 'on') {
+                    this.setAttribute('data-state', 'off');
+                    this.classList.remove('bg-primary');
+                    this.classList.add('bg-surface-container-highest');
+                    dot.style.left = '4px';
+                    dot.style.right = 'auto';
+                    dot.classList.remove('bg-on-primary');
+                    dot.classList.add('bg-outline');
+                } else {
+                    this.setAttribute('data-state', 'on');
+                    this.classList.add('bg-primary');
+                    this.classList.remove('bg-surface-container-highest');
+                    dot.style.right = '4px';
+                    dot.style.left = 'auto';
+                    dot.classList.add('bg-on-primary');
+                    dot.classList.remove('bg-outline');
+                }
+            });
+        });
+
+        // Simple dismissal interaction
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes('Dismiss')) {
+                btn.addEventListener('click', function (e) {
+                    const card = this.closest('.group');
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => card.remove(), 200);
+                });
+            }
+        });
+    </script>
+    <script src="/auth-guard.js"></script>
+</body>
+
+</html>

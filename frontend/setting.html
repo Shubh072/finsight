@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FinSight | User Profile &amp; Settings</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#323945",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#2563eb",
+                        "surface-variant": "#43474e",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary-container": "#dbe1ff",
+                        "inverse-surface": "#e2e2e6",
+                        "surface-container-high": "#282a2f",
+                        "primary-container": "#0043aa",
+                        "on-tertiary-fixed": "#002109",
+                        "on-primary-fixed-variant": "#0043aa",
+                        "on-error-container": "#ffdad6",
+                        "on-surface": "#e2e2e6",
+                        "on-secondary-fixed": "#001551",
+                        "on-background": "#e2e2e6",
+                        "primary-fixed": "#dbe1ff",
+                        "on-secondary-fixed-variant": "#0039b5",
+                        "tertiary-container": "#005321",
+                        "tertiary-fixed-dim": "#4ae176",
+                        "secondary": "#b4c5ff",
+                        "on-primary-fixed": "#00174b",
+                        "surface-tint": "#b4c5ff",
+                        "surface": "#1a1c1e",
+                        "on-tertiary": "#003914",
+                        "surface-container-low": "#1a1c1e",
+                        "primary": "#b4c5ff",
+                        "tertiary-fixed": "#6bff8f",
+                        "inverse-on-surface": "#2f3033",
+                        "outline": "#8d9199",
+                        "surface-bright": "#38393c",
+                        "on-tertiary-container": "#c1ffc5",
+                        "surface-container": "#1e1f22",
+                        "secondary-fixed": "#dce1ff",
+                        "surface-container-highest": "#333538",
+                        "error-container": "#93000a",
+                        "background": "#0b0e14",
+                        "on-secondary-container": "#ffffff",
+                        "tertiary": "#4ae176",
+                        "surface-container-lowest": "#0d0f12",
+                        "secondary-fixed-dim": "#b7c4ff",
+                        "on-primary": "#002d7d",
+                        "on-secondary": "#002d7d",
+                        "on-error": "#690005",
+                        "surface-dim": "#111315",
+                        "on-tertiary-fixed-variant": "#005321",
+                        "inverse-primary": "#0053db",
+                        "on-surface-variant": "#c3c6cf"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "2xl": "48px",
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "3xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .midnight-card {
+            background: rgba(30, 31, 34, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #b4c5ff;
+        }
+
+        .toggle-checkbox:checked+.toggle-label::after {
+            transform: translateX(100%);
+            background-color: #002d7d;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .nav-item-active {
+            background: linear-gradient(90deg, rgba(180, 197, 255, 0.15) 0%, rgba(180, 197, 255, 0) 100%);
+            border-left: 3px solid #b4c5ff;
+            color: #b4c5ff;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            background-color: #0d0f12 !important;
+            border-color: #323945 !important;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #b4c5ff !important;
+            ring-color: #b4c5ff !important;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface">
+    <!-- SideNavBar (Midnight Obsidian style) -->
+    <aside
+        class="fixed left-0 top-0 bottom-0 flex flex-col border-r border-outline-variant bg-surface-container-lowest w-[280px] z-50 shadow-2xl">
+        <div class="px-lg py-xl">
+            <h1 class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined text-3xl">insights</span>
+                FinSight
+            </h1>
+            <p class="text-on-surface-variant font-body-sm mt-1 opacity-70">AI Financial Intelligence</p>
+        </div>
+        <nav class="flex-1 px-sm space-y-1 overflow-y-auto">
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-all rounded-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> Dashboard
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-all rounded-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="payments">payments</span> Expenses
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-all rounded-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+                Budgets
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-all rounded-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="trending_up">trending_up</span> Investments
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-all rounded-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="ads_click">ads_click</span> Goals
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-all rounded-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="monitoring">monitoring</span> Analytics
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-all rounded-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="description">description</span> Reports
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 transition-all rounded-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="notifications">notifications</span> Notifications
+            </a>
+            <!-- Active Tab -->
+            <a class="flex items-center gap-3 nav-item-active px-4 py-3 transition-all rounded-r-lg font-body-md"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="settings">settings</span> Settings
+            </a>
+        </nav>
+        <div class="p-lg">
+            <button
+                class="w-full py-3 px-4 bg-primary text-on-primary rounded-xl font-label-md hover:brightness-110 transition-all active:scale-[0.98] shadow-lg shadow-primary/20">
+                Upgrade to Pro
+            </button>
+        </div>
+    </aside>
+    <!-- TopNavBar -->
+    <header
+        class="flex justify-between items-center h-16 px-gutter sticky top-0 z-40 ml-[280px] w-[calc(100%-280px)] bg-background/80 backdrop-blur-xl border-b border-outline-variant">
+        <div class="flex items-center gap-4 flex-1">
+            <div class="relative w-full max-w-md">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                <input
+                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-full py-2 pl-10 pr-4 text-body-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/50"
+                    placeholder="Search settings or tools..." type="text" />
+            </div>
+        </div>
+        <div class="flex items-center gap-lg">
+            <div class="flex gap-4">
+                <button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors"
+                    data-icon="notifications">notifications</button>
+                <button class="material-symbols-outlined text-primary transition-colors"
+                    data-icon="light_mode">light_mode</button>
+                <button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors"
+                    data-icon="help">help</button>
+            </div>
+            <div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+                <div class="text-right">
+                    <p class="font-label-md text-on-surface font-bold">Alexander Vance</p>
+                    <p class="text-[10px] uppercase tracking-wider text-primary font-bold">Pro Member</p>
+                </div>
+                <div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden">
+                    <img alt="User Profile" class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNON21c-bgXbo5CDf40OjqnMAfI973oJXo4WMUjCXMBt6YvK3pQ2Y5s6Tz4N3VPTYx_5kRXJ5HNQHLtJXV41Bf4JDvT-pQCl12SYWIJCCYTeyndoYgn-WoqUogk4nvANpkmQ2GrV_HRrUYiEGPhL1tnr0AMSUN8iPYz84idtyKdYBrNlDaBYxIP4erJ7gLAcJ7aPZQC8-JG9FJao--SX3PAV1dpk3OltneIacQJjGEy_I8VYjm3agJ" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Canvas -->
+    <main class="ml-[280px] p-xl min-h-[calc(100vh-64px)]">
+        <header class="mb-lg">
+            <h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Settings</h2>
+            <p class="font-body-md text-on-surface-variant opacity-80">Manage your account configurations, security, and
+                integration preferences.</p>
+        </header>
+        <div class="grid grid-cols-12 gap-lg">
+            <!-- Left Navigation Sidebar -->
+            <div class="col-span-12 lg:col-span-3 space-y-4">
+                <nav class="flex flex-col gap-2">
+                    <button
+                        class="tab-btn flex items-center justify-between px-md py-4 rounded-xl bg-surface-container-highest text-primary font-bold border border-primary/20 transition-all duration-200"
+                        id="btn-profile" onclick="switchTab('profile')">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined" data-icon="person">person</span>
+                            <span class="font-label-md">Profile Details</span>
+                        </div>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                    </button>
+                    <button
+                        class="tab-btn flex items-center justify-between px-md py-4 rounded-xl hover:bg-surface-container-high border border-transparent text-on-surface-variant transition-all duration-200"
+                        id="btn-security" onclick="switchTab('security')">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined" data-icon="security">security</span>
+                            <span class="font-label-md">Account Security</span>
+                        </div>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                    </button>
+                    <button
+                        class="tab-btn flex items-center justify-between px-md py-4 rounded-xl hover:bg-surface-container-high border border-transparent text-on-surface-variant transition-all duration-200"
+                        id="btn-financial" onclick="switchTab('financial')">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+                            <span class="font-label-md">Financial Preferences</span>
+                        </div>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                    </button>
+                    <button
+                        class="tab-btn flex items-center justify-between px-md py-4 rounded-xl hover:bg-surface-container-high border border-transparent text-on-surface-variant transition-all duration-200"
+                        id="btn-api" onclick="switchTab('api')">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined" data-icon="api">api</span>
+                            <span class="font-label-md">API Integrations</span>
+                        </div>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                    </button>
+                </nav>
+                <!-- AI Assistant Panel -->
+                <div
+                    class="p-lg rounded-2xl bg-gradient-to-br from-primary-container/40 to-surface-container border border-primary/20 relative overflow-hidden group">
+                    <div
+                        class="absolute -right-8 -top-8 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:scale-150 transition-transform">
+                    </div>
+                    <div class="relative z-10">
+                        <div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-primary"
+                                data-icon="auto_awesome">auto_awesome</span>
+                        </div>
+                        <p class="font-title-lg text-title-lg mb-2 text-on-primary-container">Need Help?</p>
+                        <p class="font-body-sm text-on-surface-variant opacity-80 mb-4">Our AI assistant is ready to
+                            help you optimize your settings.</p>
+                        <button
+                            class="w-full py-2.5 bg-primary text-on-primary font-label-md rounded-lg shadow-lg shadow-primary/20 hover:brightness-110 transition-all">Chat
+                            with AI</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Content Area -->
+            <div class="col-span-12 lg:col-span-9">
+                <!-- Profile Details Tab -->
+                <div class="tab-content active space-y-lg animate-in fade-in slide-in-from-bottom-4 duration-500"
+                    id="tab-profile">
+                    <div class="midnight-card rounded-2xl p-xl shadow-2xl">
+                        <h3 class="font-title-lg text-title-lg mb-lg">Public Profile</h3>
+                        <div
+                            class="flex flex-col md:flex-row items-start md:items-center gap-lg mb-xl pb-xl border-b border-outline-variant">
+                            <div class="relative">
+                                <div
+                                    class="w-28 h-28 rounded-2xl overflow-hidden shadow-2xl border-2 border-primary/20">
+                                    <img alt="Alexander Vance Portrait" class="w-full h-full object-cover"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqon6SvkYb_57ujOP-TlGfLuKsfZXE1vRzn3zcoOJJxN8LL8UiiHoSoqPgdaGRmD5bkwhk7rJbvw0eVLwAWnwXBbj5P3OBsuPYWLjkqJFSgvqc5IWtII2Tcz31bLQwSYqM9HgnQn-IQjzB74WwiMM4jdq94QANuYTsbtk_VaB_BTX9M2Lvjy8dA3TcUNlk45B2qimHxF1h1h8oUk_uMwowkHwmlk8wel1yYoi_SWZ3gwbuJRfq50kc" />
+                                </div>
+                                <button
+                                    class="absolute -bottom-2 -right-2 bg-primary text-on-primary p-2.5 rounded-xl shadow-lg hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+                                </button>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center gap-3 mb-2">
+                                    <h4 class="font-headline-md text-on-surface">Alexander Vance</h4>
+                                    <div class="flex gap-2">
+                                        <span
+                                            class="bg-primary/20 text-primary border border-primary/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-xs">verified</span> Verified
+                                            Account
+                                        </span>
+                                        <span
+                                            class="bg-tertiary-container/50 text-tertiary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Pro
+                                            Tier</span>
+                                    </div>
+                                </div>
+                                <p class="text-on-surface-variant font-body-md mb-4">Lead Financial Analyst at Global
+                                    Wealth Inc.</p>
+                                <div class="flex gap-4">
+                                    <div class="text-center">
+                                        <p
+                                            class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter opacity-60">
+                                            Status</p>
+                                        <p class="text-body-sm font-bold text-tertiary">Active</p>
+                                    </div>
+                                    <div class="text-center border-l border-outline-variant pl-4">
+                                        <p
+                                            class="text-xs text-on-surface-variant font-bold uppercase tracking-tighter opacity-60">
+                                            Joined</p>
+                                        <p class="text-body-sm font-bold">Jan 2023</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+                            <div class="space-y-2">
+                                <label class="font-label-md text-on-surface-variant px-1">Full Name</label>
+                                <input
+                                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-3.5 px-4 text-on-surface focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                                    type="text" value="Alexander Vance" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-md text-on-surface-variant px-1">Occupation</label>
+                                <input
+                                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-3.5 px-4 text-on-surface focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                                    type="text" value="Lead Financial Analyst" />
+                            </div>
+                            <div class="col-span-full space-y-2">
+                                <label class="font-label-md text-on-surface-variant px-1">Income Sources</label>
+                                <div
+                                    class="flex flex-wrap gap-2 p-3.5 bg-surface-container-lowest border border-outline-variant rounded-xl min-h-[60px]">
+                                    <span
+                                        class="flex items-center gap-2 bg-surface-container-high px-4 py-1.5 rounded-lg border border-outline-variant text-body-sm text-on-surface">
+                                        Salary <button
+                                            class="material-symbols-outlined text-sm hover:text-error transition-colors"
+                                            data-icon="close">close</button>
+                                    </span>
+                                    <span
+                                        class="flex items-center gap-2 bg-surface-container-high px-4 py-1.5 rounded-lg border border-outline-variant text-body-sm text-on-surface">
+                                        Stock Dividends <button
+                                            class="material-symbols-outlined text-sm hover:text-error transition-colors"
+                                            data-icon="close">close</button>
+                                    </span>
+                                    <span
+                                        class="flex items-center gap-2 bg-surface-container-high px-4 py-1.5 rounded-lg border border-outline-variant text-body-sm text-on-surface">
+                                        Real Estate <button
+                                            class="material-symbols-outlined text-sm hover:text-error transition-colors"
+                                            data-icon="close">close</button>
+                                    </span>
+                                    <button
+                                        class="text-primary font-label-md px-4 py-1.5 hover:bg-surface-container-high rounded-lg transition-colors flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm">add</span> Add Source
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-md mt-xl">
+                            <button
+                                class="px-lg py-3 border border-outline-variant text-on-surface rounded-xl font-label-md hover:bg-surface-container-high transition-all">Cancel</button>
+                            <button
+                                class="px-lg py-3 bg-primary text-on-primary rounded-xl font-label-md hover:brightness-110 transition-all shadow-lg shadow-primary/10">Save
+                                Changes</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Security Tab -->
+                <div class="tab-content space-y-lg" id="tab-security">
+                    <div class="midnight-card rounded-2xl p-xl shadow-2xl">
+                        <h3 class="font-title-lg text-title-lg mb-lg">Account Security</h3>
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center justify-between p-lg rounded-2xl border border-outline-variant bg-surface-container-lowest/50">
+                                <div class="flex gap-4 items-center">
+                                    <div
+                                        class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+                                        <span class="material-symbols-outlined" data-icon="vibration">vibration</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-title-lg text-on-surface">Two-Factor Authentication</p>
+                                        <p class="font-body-sm text-on-surface-variant opacity-70">Secure your account
+                                            with an extra layer of protection.</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input checked="" class="sr-only toggle-checkbox" type="checkbox" />
+                                    <div
+                                        class="toggle-label w-12 h-6 bg-outline-variant/30 rounded-full transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-surface-variant after:rounded-full after:h-5 after:w-5 after:transition-all">
+                                    </div>
+                                </label>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-lg rounded-2xl border border-outline-variant hover:bg-surface-container-lowest/30 transition-colors">
+                                <div class="flex gap-4 items-center">
+                                    <div
+                                        class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                                        <span class="material-symbols-outlined" data-icon="lock">lock</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-title-lg text-on-surface">Password</p>
+                                        <p class="font-body-sm text-on-surface-variant opacity-70">Last changed 3 months
+                                            ago.</p>
+                                    </div>
+                                </div>
+                                <button
+                                    class="px-lg py-2 border border-outline-variant text-on-surface rounded-xl font-label-md hover:bg-surface-container-high transition-all">Update</button>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-lg rounded-2xl border border-outline-variant hover:bg-surface-container-lowest/30 transition-colors">
+                                <div class="flex gap-4 items-center">
+                                    <div
+                                        class="w-12 h-12 rounded-xl bg-error-container/20 flex items-center justify-center text-error">
+                                        <span class="material-symbols-outlined" data-icon="logout">logout</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-title-lg text-on-surface">Active Sessions</p>
+                                        <p class="font-body-sm text-on-surface-variant opacity-70">Currently logged in
+                                            on 3 devices.</p>
+                                    </div>
+                                </div>
+                                <button
+                                    class="px-lg py-2 text-error font-label-md hover:bg-error-container/30 rounded-xl transition-all border border-error/20">Sign
+                                    Out All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Financial Tab -->
+                <div class="tab-content space-y-lg" id="tab-financial">
+                    <div class="midnight-card rounded-2xl p-xl shadow-2xl">
+                        <h3 class="font-title-lg text-title-lg mb-lg text-on-surface">Financial Preferences</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+                            <div class="space-y-2">
+                                <label class="font-label-md text-on-surface-variant px-1">Reporting Currency</label>
+                                <select
+                                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-3.5 px-4 text-on-surface focus:ring-2 focus:ring-primary/50 outline-none transition-all appearance-none cursor-pointer">
+                                    <option>USD - United States Dollar ($)</option>
+                                    <option>EUR - Euro (€)</option>
+                                    <option>GBP - British Pound (£)</option>
+                                    <option>JPY - Japanese Yen (¥)</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-md text-on-surface-variant px-1">Dashboard Language</label>
+                                <select
+                                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-3.5 px-4 text-on-surface focus:ring-2 focus:ring-primary/50 outline-none transition-all appearance-none cursor-pointer">
+                                    <option>English (US)</option>
+                                    <option>French (FR)</option>
+                                    <option>Spanish (ES)</option>
+                                    <option>German (DE)</option>
+                                </select>
+                            </div>
+                            <div class="col-span-full pt-4">
+                                <p class="font-label-md text-on-surface-variant mb-3 px-1">Tax Residency</p>
+                                <div
+                                    class="flex items-center gap-4 p-5 bg-surface-container-lowest border border-outline-variant rounded-2xl group hover:border-primary/50 transition-colors">
+                                    <div
+                                        class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined" data-icon="public">public</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-body-md font-bold text-on-surface">United States</p>
+                                        <p class="text-xs text-on-surface-variant opacity-70">Primary reporting entity
+                                            for IRS compliance.</p>
+                                    </div>
+                                    <button class="text-primary font-label-md hover:underline">Change Location</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- API Tab -->
+                <div class="tab-content space-y-lg" id="tab-api">
+                    <div class="midnight-card rounded-2xl p-xl shadow-2xl">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-lg">
+                            <div>
+                                <h3 class="font-title-lg text-title-lg text-on-surface">API Integrations</h3>
+                                <p class="font-body-sm text-on-surface-variant opacity-70">Connect your financial tools
+                                    and data streams.</p>
+                            </div>
+                            <button
+                                class="px-6 py-2.5 bg-primary text-on-primary rounded-xl font-label-md flex items-center gap-2 shadow-lg shadow-primary/10 hover:brightness-110 transition-all">
+                                <span class="material-symbols-outlined text-sm" data-icon="add">add</span> Generate Key
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <div
+                                class="p-lg rounded-2xl border border-outline-variant bg-surface-container-lowest/40 flex items-center justify-between group hover:border-primary/30 transition-all">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 bg-primary-container/20 rounded-full flex items-center justify-center text-primary">
+                                        <span class="material-symbols-outlined" data-icon="webhook">webhook</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-body-md font-bold text-on-surface">Production_Main_Key</p>
+                                        <p class="text-[12px] font-mono text-on-surface-variant opacity-60">
+                                            fs_live_********************a92b</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button
+                                        class="p-2.5 hover:bg-surface-container rounded-lg text-on-surface-variant transition-colors"><span
+                                            class="material-symbols-outlined text-lg"
+                                            data-icon="content_copy">content_copy</span></button>
+                                    <button
+                                        class="p-2.5 hover:bg-error-container/30 text-error rounded-lg transition-colors"><span
+                                            class="material-symbols-outlined text-lg"
+                                            data-icon="delete">delete</span></button>
+                                </div>
+                            </div>
+                            <div
+                                class="p-12 border-2 border-outline-variant rounded-2xl border-dashed flex flex-col items-center justify-center text-center space-y-4 opacity-50 bg-surface-container-lowest/20">
+                                <span class="material-symbols-outlined text-4xl text-on-surface-variant"
+                                    data-icon="terminal">terminal</span>
+                                <div class="max-w-xs">
+                                    <p class="font-label-md text-on-surface mb-1">No test keys generated yet.</p>
+                                    <p class="text-xs text-on-surface-variant">Create a sandbox environment to test your
+                                        API integrations before going live.</p>
+                                </div>
+                                <button class="text-primary font-label-md hover:brightness-125">Create sandbox</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-surface-container-lowest border-t border-outline-variant ml-[280px]">
+        <div
+            class="max-w-container-max mx-auto px-gutter py-xl flex flex-col md:flex-row justify-between items-center gap-lg">
+            <div class="text-center md:text-left">
+                <p class="font-title-lg text-title-lg font-black text-primary">FinSight</p>
+                <p class="text-on-surface-variant font-body-sm mt-1 opacity-60">© 2024 FinSight AI. Premium Financial
+                    Intelligence.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-xl">
+                <a class="text-on-surface-variant hover:text-primary transition-all font-body-sm" href="#">Privacy
+                    Policy</a>
+                <a class="text-on-surface-variant hover:text-primary transition-all font-body-sm" href="#">Terms of
+                    Service</a>
+                <a class="text-on-surface-variant hover:text-primary transition-all font-body-sm" href="#">Security</a>
+                <a class="text-on-surface-variant hover:text-primary transition-all font-body-sm" href="#">API Docs</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Reset all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-surface-container-highest', 'text-primary', 'font-bold', 'border-primary/20');
+                btn.classList.add('hover:bg-surface-container-high', 'text-on-surface-variant', 'border-transparent');
+            });
+
+            // Show selected content with animation
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            activeTab.classList.add('active');
+
+            // Highlight selected button
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.remove('hover:bg-surface-container-high', 'text-on-surface-variant', 'border-transparent');
+            activeBtn.classList.add('bg-surface-container-highest', 'text-primary', 'font-bold', 'border-primary/20');
+        }
+
+        // Initialize micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.97)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = '';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = '';
+            });
+        });
+    </script>
+    <script src="/auth-guard.js"></script>
+</body>
+
+</html>

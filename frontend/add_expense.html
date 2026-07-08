@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>FinSight - Add Expense</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#8B5CF6",
+            "on-primary": "#ffffff",
+            background: "#060e20",
+            surface: "#0b1326",
+            "surface-variant": "#131b2e",
+            "on-surface": "#f8f9ff",
+            "on-surface-variant": "#94a3b8",
+            outline: "#334155",
+            "outline-variant": "#1e293b",
+            error: "#ef4444",
+            tertiary: "#10b981",
+            "surface-container-low": "#131b2e",
+            "surface-container": "#1e293b",
+            "surface-container-high": "#334155",
+            "surface-container-highest": "#475569",
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px",
+          },
+          spacing: {
+            xl: "32px",
+            gutter: "24px",
+            "2xl": "48px",
+            lg: "24px",
+            "container-max": "1280px",
+            base: "4px",
+            xs: "4px",
+            sm: "8px",
+            md: "16px",
+            "3xl": "64px",
+          },
+          fontFamily: {
+            body: ["Inter"],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    .glass-card {
+      background: rgba(19, 27, 46, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .soft-shadow {
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    }
+
+    .hover-lift {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-2px);
+      background: rgba(19, 27, 46, 0.8);
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #060e20;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body class="bg-background text-on-surface font-body selection:bg-primary/30 selection:text-white">
+  <!-- Simple responsive layout (sidebar omitted for milestone) -->
+  <div class="min-h-screen flex flex-col">
+    <header class="sticky top-0 z-50 h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant flex items-center px-gutter justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary">payments</span>
+        <span class="font-bold text-primary">FinSight</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a class="px-4 py-2 border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" href="/expense.html">Back</a>
+      </div>
+    </header>
+
+    <main class="flex-1 p-xl max-w-4xl mx-auto w-full">
+      <div class="glass-card rounded-2xl p-xl soft-shadow">
+        <h1 class="text-2xl font-bold text-on-surface">Add Expense</h1>
+        <form id="add-expense-form" method="post" enctype="multipart/form-data" onsubmit="return false;">
+
+        <p class="text-on-surface-variant mt-2">Save a new transaction with receipt upload + duplicate warning.</p>
+
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2">
+            <label class="text-sm font-bold text-on-surface-variant">Expense Title *</label>
+            <input name="title" type="text" required minlength="3" placeholder="e.g., Pizza at Luigi's" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div>
+            <label class="text-sm font-bold text-on-surface-variant">Category *</label>
+            <select name="category" required class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40">
+              <option value="Food">Food</option>
+              <option value="Travel">Travel</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Bills">Bills</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+              <option value="Investment">Investment</option>
+              <option value="EMI">EMI</option>
+              <option value="Insurance">Insurance</option>
+              <option value="Fuel">Fuel</option>
+              <option value="Salary">Salary</option>
+              <option value="Gift">Gift</option>
+              <option value="Rent">Rent</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-sm font-bold text-on-surface-variant">Amount *</label>
+            <input name="amount" type="number" required min="0.01" step="0.01" placeholder="e.g., 45.20" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div>
+            <label class="text-sm font-bold text-on-surface-variant">Expense Date *</label>
+            <input name="expense_date" type="date" required max="9999-12-31" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div>
+            <label class="text-sm font-bold text-on-surface-variant">Payment Method *</label>
+            <select name="payment_method" required class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40">
+              <option value="Cash">Cash</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="UPI">UPI</option>
+              <option value="Net Banking">Net Banking</option>
+              <option value="Wallet">Wallet</option>
+              <option value="Cheque">Cheque</option>
+              <option value="Crypto">Crypto</option>
+            </select>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="text-sm font-bold text-on-surface-variant">Account Used</label>
+            <input name="account_id" type="number" placeholder="Optional (custom accounts later)" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div>
+            <label class="text-sm font-bold text-on-surface-variant">Merchant Name</label>
+            <input name="merchant_name" type="text" placeholder="e.g., Uber" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div>
+            <label class="text-sm font-bold text-on-surface-variant">Currency</label>
+            <input name="currency" type="text" placeholder="e.g., USD" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div>
+            <label class="text-sm font-bold text-on-surface-variant">Priority (1-5)</label>
+            <input name="priority" type="number" min="1" max="5" placeholder="Optional" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div>
+            <label class="text-sm font-bold text-on-surface-variant">Recurring</label>
+            <select name="recurring" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="text-sm font-bold text-on-surface-variant">Location (optional)</label>
+            <input name="location" type="text" placeholder="e.g., Bengaluru" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="text-sm font-bold text-on-surface-variant">Description (supports markdown later)</label>
+            <textarea name="description" rows="4" maxlength="1000" placeholder="Add notes..." class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40"></textarea>
+            <div class="text-xs text-on-surface-variant mt-1">Max 1000 characters.</div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="text-sm font-bold text-on-surface-variant">Tags (comma-separated)</label>
+            <input name="tags" type="text" placeholder="e.g., work, food" class="mt-2 w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40" />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="text-sm font-bold text-on-surface-variant">Receipt Upload (optional)</label>
+            <input name="receipt" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" class="mt-2 w-full text-on-surface-variant" />
+            <img id="receipt-preview" class="hidden mt-4 rounded-xl border border-outline-variant max-h-64" alt="Receipt preview" />
+          </div>
+        </div>
+
+        <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div class="text-sm text-on-surface-variant" id="submit-status"></div>
+          <button type="submit" class="px-6 py-3 bg-primary text-on-primary font-bold rounded-xl hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined align-middle">add_circle</span>
+            <span class="ml-2">Save Expense</span>
+          </button>
+        </div>
+      </div>
+
+      <form class="hidden"></form>
+      <script>
+        // Simple smart category suggestion (frontend): only for title keywords; server also supports.
+        (function () {
+          const titleEl = document.querySelector('input[name="title"]');
+          const categoryEl = document.querySelector('select[name="category"]');
+          if (!titleEl || !categoryEl) return;
+
+          function applySuggestion() {
+            const t = (titleEl.value || '').toLowerCase();
+            const map = [
+              ['pizza', 'Food'],
+              ['burger', 'Food'],
+              ['restaurant', 'Food'],
+              ['uber', 'Travel'],
+              ['ola', 'Travel'],
+              ['bus', 'Travel'],
+            ];
+            for (const [needle, cat] of map) {
+              if (t.includes(needle)) {
+                categoryEl.value = cat;
+                break;
+              }
+            }
+          }
+
+          titleEl.addEventListener('input', applySuggestion);
+          applySuggestion();
+        })();
+      </script>
+    </main>
+  </div>
+
+  <script src="/auth-guard.js"></script>
+  <script src="/add_expense.js"></script>
+
+</body>
+
+
+</html>
+
