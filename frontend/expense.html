@@ -127,6 +127,26 @@
         .active-border {
             border-left: 4px solid #8B5CF6;
         }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animate-bounce-in {
+            animation: bounce-in 0.5s ease-out;
+        }
+
+        @keyframes slide-up {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .animate-slide-up {
+            animation: slide-up 0.3s ease-out;
+        }
     </style>
 </head>
 
@@ -261,7 +281,7 @@
                 </div>
                 <button
                     class="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary font-title-lg text-title-lg rounded-xl hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20"
-                    onclick="toggleDetail()">
+                    onclick="openExpenseDrawer()">
                     <span class="material-symbols-outlined">add_circle</span>
                     Add Expense
                 </button>
@@ -752,8 +772,116 @@
                 row.style.background = 'transparent';
             });
         });
+
+        // Expense Drawer Integration
+        let expenseDrawer = null;
+
+        function openExpenseDrawer() {
+            if (!expenseDrawer) {
+                expenseDrawer = new ExpenseDrawer({
+                    onSave: function() {
+                        refreshDashboard();
+                    },
+                    onClose: function() {}
+                });
+            }
+            expenseDrawer.open();
+        }
+
+        async function refreshDashboard() {
+            try {
+                // Refresh dashboard stats
+                const stats = await expenseAPI.getDashboardStats();
+                if (stats.data) {
+                    const d = stats.data;
+                    const totalCard = document.querySelector('.glass-card .font-display');
+                    if (totalCard) totalCard.textContent = '
+</body>
+
+</html>
+ + parseFloat(d.total_amount || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                }
+
+                // Refresh expense table
+                const expensesRes = await expenseAPI.getExpenses({ page: 1, per_page: 4 });
+                if (expensesRes.data && expensesRes.data.expenses) {
+                    refreshExpenseTable(expensesRes.data.expenses);
+                }
+
+                toast.success('Dashboard refreshed');
+            } catch (err) {
+                console.error('Refresh error:', err);
+            }
+        }
+
+        function refreshExpenseTable(expenses) {
+            const tbody = document.querySelector('tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = expenses.map(exp => {
+                const iconMap = {
+                    'Food': 'restaurant',
+                    'Travel': 'local_taxi',
+                    'Shopping': 'shopping_bag',
+                    'Entertainment': 'theaters',
+                    'Healthcare': 'local_hospital',
+                    'Bills': 'receipt_long',
+                    'Fuel': 'local_gas_station',
+                    'Others': 'payments'
+                };
+                const icon = iconMap[exp.category] || 'payments';
+                const statusColor = exp.status === 'active' ? 'tertiary' : 'primary';
+                const statusText = exp.status === 'active' ? 'Completed' : 'Pending';
+
+                return `
+                    <tr class="group hover:bg-primary/5 transition-colors cursor-pointer" onclick="showExpenseDetail('${exp.title}', '${exp.amount}', '${exp.category}')">
+                        <td class="px-gutter py-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                                    <span class="material-symbols-outlined text-primary">${icon}</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-on-surface group-hover:text-primary transition-colors">${exp.title}</p>
+                                    <p class="text-xs text-on-surface-variant">ID: TXN-${String(exp.id).padStart(6, '0')}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-gutter py-5 font-body-sm text-on-surface-variant">${exp.expense_date}</td>
+                        <td class="px-gutter py-5">
+                            <span class="px-3 py-1 bg-surface-container-high/50 text-on-surface text-[10px] font-bold rounded-full uppercase tracking-wider border border-outline-variant">${exp.category}</span>
+                        </td>
+                        <td class="px-gutter py-5 font-data-mono text-data-mono font-bold text-on-surface">${exp.amount}</td>
+                        <td class="px-gutter py-5">
+                            <div class="flex items-center gap-2 text-${statusColor} font-bold text-[10px] uppercase tracking-widest">
+                                <span class="w-2 h-2 rounded-full bg-${statusColor}"></span>
+                                ${statusText}
+                            </div>
+                        </td>
+                        <td class="px-gutter py-5 text-right">
+                            <button class="opacity-0 group-hover:opacity-100 p-2 hover:bg-primary/10 rounded-lg transition-all text-on-surface-variant hover:text-primary">
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Re-attach hover listeners
+            tbody.querySelectorAll('tr').forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.style.background = 'rgba(139, 92, 246, 0.08)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.style.background = 'transparent';
+                });
+            });
+        }
     </script>
     <script src="/auth-guard.js"></script>
+    <script src="/components/toast.js"></script>
+    <script src="/components/expenseAPI.js"></script>
+    <script src="/components/ReceiptUploader.js"></script>
+    <script src="/components/ExpenseDrawer.js"></script>
 </body>
 
 </html>

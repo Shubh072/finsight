@@ -1,6 +1,7 @@
 from database.db import db
 from sqlalchemy.sql import func
 
+
 class User(db.Model):
     __tablename__ = "users"
 
@@ -19,13 +20,13 @@ class User(db.Model):
     profile_photo = db.Column(db.String(500))
 
     role = db.Column(
-        db.Enum("user", "admin", "support"),
+        db.String(20),
         default="user",
         nullable=False
     )
 
     account_status = db.Column(
-        db.Enum("active", "inactive", "suspended", "deleted"),
+        db.String(20),
         default="active",
         nullable=False
     )
@@ -34,15 +35,15 @@ class User(db.Model):
 
     failed_login_attempts = db.Column(db.Integer, default=0)
 
-    last_login = db.Column(db.DateTime)
+    last_login = db.Column(db.DateTime(timezone=True))
 
     created_at = db.Column(
-        db.DateTime,
+        db.DateTime(timezone=True),
         server_default=func.now()
     )
 
     updated_at = db.Column(
-        db.DateTime,
+        db.DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
     )

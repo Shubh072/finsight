@@ -255,7 +255,8 @@
             </div>
             <div class="flex gap-md">
                 <button
-                    class="flex items-center gap-2 bg-surface-container border border-outline-variant text-on-surface font-semibold py-2.5 px-5 rounded-lg hover:bg-surface-container-high transition-all active:scale-95">
+                    class="flex items-center gap-2 bg-surface-container border border-outline-variant text-on-surface font-semibold py-2.5 px-5 rounded-lg hover:bg-surface-container-high transition-all active:scale-95"
+                    onclick="openExpenseDrawer()">
                     <span class="material-symbols-outlined text-[20px]">add</span>
                     Add Expense
                 </button>
@@ -620,6 +621,22 @@
         });
     </script>
     <script src="/auth-guard.js"></script>
+    <script src="/components/toast.js"></script>
+    <script src="/components/expenseAPI.js"></script>
+    <script src="/components/ReceiptUploader.js"></script>
+    <script src="/components/ExpenseDrawer.js"></script>
+    <script>
+        let expenseDrawer = null;
+        function openExpenseDrawer() {
+            if (!expenseDrawer) {
+                expenseDrawer = new ExpenseDrawer({
+                    onSave: function() { window.location.reload(); },
+                    onClose: function() {}
+                });
+            }
+            expenseDrawer.open();
+        }
+    </script>
 </body>
 
 </html>

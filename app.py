@@ -1,4 +1,4 @@
-from flask import Flask, redirect, jsonify
+from flask import Flask, redirect, jsonify, send_from_directory
 import config
 from database.db import db
 from models.user import User
@@ -18,6 +18,10 @@ logger = logging.getLogger(__name__)
 # Create Flask app
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 app.config.from_object(config)
+
+# Set Supabase config
+app.config['SUPABASE_URL'] = config.SUPABASE_URL
+app.config['SUPABASE_ANON_KEY'] = config.SUPABASE_ANON_KEY
 
 # Set JWT configuration
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY or 'your-secret-key-change-in-production'
@@ -44,6 +48,12 @@ def health_check():
         "status": "healthy",
         "message": "FinSight API is running"
     }), 200
+
+@app.route("/uploads/<path:filename>")
+def serve_upload(filename):
+    """Serve uploaded receipt files."""
+    upload_dir = os.path.join(app.root_path, "uploads")
+    return send_from_directory(upload_dir, filename)
 
 # Register blueprints
 app.register_blueprint(auth_bp, url_prefix="/api/auth")
@@ -96,28 +106,13 @@ def expired_token_callback(jwt_header, jwt_payload):
     return error_response("Token has expired"), 401
 
 
-# Initialize database and run app
+# Run the Flask app
 if __name__ == "__main__":
-    with app.app_context():
-        try:
-            # Import all models to register them with SQLAlchemy
-            from models.user import User
-            from models.expense import Expense, ExpenseCategory, Account
-            
-            # Create all tables
-            db.create_all()
-            logger.info("Database tables created successfully")
-            
-        except Exception as e:
-            logger.error(f"Error initializing database: {e}")
-            raise
-
-    # Run the Flask app
     logger.info("Starting FinSight API server...")
     app.run(
         host='0.0.0.0',
         port=5000,
         debug=True,
-        use_reloader=True,
+        use_reloader=False,
         use_debugger=True
     )
