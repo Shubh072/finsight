@@ -32,8 +32,8 @@ def register_user(data):
     username = data.get("username", "").strip()
     email = data.get("email", "").strip().lower()
     phone = data.get("phone", "").strip()
-    password = data.get("password", "")
-    confirm_password = data.get("confirm_password", "")
+    password = data.get("password", "").strip()
+    confirm_password = data.get("confirm_password", "").strip()
 
     if not all([full_name, username, email, phone, password, confirm_password]):
         return {"success": False, "message": "All fields are required."}, 400
@@ -42,12 +42,27 @@ def register_user(data):
         return {"success": False, "message": "Invalid email address."}, 400
 
     if not validate_phone(phone):
+<<<<<<< HEAD
         return {"success": False, "message": "Phone number must contain exactly 10 digits."}, 400
+=======
+        return {
+            "success": False,
+            "message": "Phone number must contain at least 8 digits."
+        }, 400
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
 
     if not validate_password(password):
         return {
             "success": False,
+<<<<<<< HEAD
             "message": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+=======
+            "message": (
+                "Password must contain at least "
+                "8 characters, one uppercase letter, "
+                "one lowercase letter, and one number."
+            )
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
         }, 400
 
     if password != confirm_password:
@@ -71,6 +86,27 @@ def register_user(data):
 
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
 
+<<<<<<< HEAD
+=======
+    # ----------------------------------
+    # Create User Object
+    # ----------------------------------
+    new_user = User(
+        full_name=full_name,
+        username=username,
+        email=email,
+        phone=phone,
+        password_hash=password_hash,
+        role="user",
+        account_status="active",
+        email_verified=True,  # Auto-verify for easier testing
+        failed_login_attempts=0,
+    )
+
+    # ----------------------------------
+    # Save User
+    # ----------------------------------
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
     try:
         sb.insert("users", {
             "full_name": full_name,
@@ -84,6 +120,7 @@ def register_user(data):
             "failed_login_attempts": 0,
         })
 
+<<<<<<< HEAD
         token = generate_verification_token(email)
         try:
             send_verification_email(email, token)
@@ -91,9 +128,55 @@ def register_user(data):
             pass
 
         return {"success": True, "message": "Registration successful. Please verify your email."}, 201
+=======
+        db.session.add(new_user)
+        db.session.commit()
+
+        # Try to send verification email, but don't fail registration if it fails
+        try:
+            token = generate_verification_token(email)
+            send_verification_email(email, token)
+        except Exception as e:
+            print(f"Warning: Could not send verification email: {e}")
+            # Continue with registration even if email fails
+
+        # Auto-login the user after registration
+        access_token = create_access_token(
+            identity=new_user.user_id,
+            additional_claims={
+                "email": new_user.email,
+                "role": new_user.role
+            }
+        )
+
+        return {
+            "success": True,
+            "message": "Registration successful!",
+            "access_token": access_token,
+            "user": {
+                "user_id": new_user.user_id,
+                "full_name": new_user.full_name,
+                "email": new_user.email,
+                "role": new_user.role
+            }
+        }, 201
+
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
     except Exception as e:
         return {"success": False, "message": "Registration failed.", "error": str(e)}, 500
 
+<<<<<<< HEAD
+=======
+        db.session.rollback()
+        import traceback
+        traceback.print_exc()
+
+        return {
+            "success": False,
+            "message": "Registration failed.",
+            "error": str(e)
+        }, 500
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
 
 def verify_email(token):
     email = verify_verification_token(token)
@@ -121,7 +204,7 @@ def verify_email(token):
 
 def login_user(data):
     email = data.get("email", "").strip().lower()
-    password = data.get("password", "")
+    password = data.get("password", "").strip()
 
     if not email or not password:
         return {"success": False, "message": "Email and password are required."}, 400
@@ -137,8 +220,14 @@ def login_user(data):
     if user.get("account_status") != "active":
         return {"success": False, "message": "Your account is inactive. Please contact support."}, 403
 
+<<<<<<< HEAD
     if not user.get("email_verified"):
         return {"success": False, "message": "Please verify your email before logging in."}, 403
+=======
+    # Allow login without email verification for testing
+    if not user.email_verified:
+        print("Warning: User logging in without verified email.")
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
 
     if not bcrypt.check_password_hash(user.get("password_hash", ""), password):
         return {"success": False, "message": "Invalid email or password."}, 401
@@ -181,6 +270,7 @@ def forgot_password(data):
         user = None
 
     if user:
+<<<<<<< HEAD
         token = generate_reset_token(email)
         try:
             send_reset_email(email, token)
@@ -194,6 +284,24 @@ def reset_password(token, data):
     password = data.get("password", "")
     confirm_password = data.get("confirm_password", "")
 
+=======
+        try:
+            token = generate_reset_token(email)
+            send_reset_email(email, token)
+        except Exception as e:
+            print(f"Warning: Could not send reset email: {e}")
+        
+    return {
+        "success": True,
+        "message": "If an account exists, a password reset link has been sent."
+    }, 200
+
+
+def reset_password(token, data):
+    password = data.get("password", "").strip()
+    confirm_password = data.get("confirm_password", "").strip()
+    
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
     if not password or not confirm_password:
         return {"success": False, "message": "Password fields are required."}, 400
 
@@ -203,7 +311,15 @@ def reset_password(token, data):
     if not validate_password(password):
         return {
             "success": False,
+<<<<<<< HEAD
             "message": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+=======
+            "message": (
+                "Password must contain at least "
+                "8 characters, one uppercase letter, "
+                "one lowercase letter, and one number."
+            )
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
         }, 400
 
     email = verify_reset_token(token)

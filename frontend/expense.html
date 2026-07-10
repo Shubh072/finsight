@@ -281,7 +281,11 @@
                 </div>
                 <button
                     class="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary font-title-lg text-title-lg rounded-xl hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20"
+<<<<<<< HEAD
                     onclick="openExpenseDrawer()">
+=======
+                    data-open-expense-drawer="true">
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
                     <span class="material-symbols-outlined">add_circle</span>
                     Add Expense
                 </button>
@@ -709,6 +713,45 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+    <script>
+        function toggleDetail() {
+            const drawer = document.getElementById('expense-detail-drawer');
+            drawer.classList.toggle('translate-x-full');
+            drawer.classList.toggle('pointer-events-none');
+        }
+
+        function showExpenseDetail(merchant, amount, category) {
+            document.getElementById('detail-merchant').innerText = merchant;
+            document.getElementById('detail-amount').innerText = amount;
+            document.getElementById('detail-category').innerText = category;
+
+            const iconMap = {
+                'Infrastructure': 'cloud',
+                'Travel': 'local_taxi',
+                'Software': 'forum',
+                'Dining': 'lunch_dining'
+            };
+            document.getElementById('detail-icon').innerText = iconMap[category] || 'payments';
+
+            toggleDetail();
+        }
+
+        // Row hover enhancement
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.background = 'rgba(139, 92, 246, 0.08)';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.background = 'transparent';
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/components/expenseDrawer.js"></script>
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
     <script src="/auth-guard.js"></script>
     <script src="/components/toast.js"></script>
     <script src="/components/expenseAPI.js"></script>

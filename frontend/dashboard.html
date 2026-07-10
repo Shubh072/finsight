@@ -256,7 +256,11 @@
             <div class="flex gap-md">
                 <button
                     class="flex items-center gap-2 bg-surface-container border border-outline-variant text-on-surface font-semibold py-2.5 px-5 rounded-lg hover:bg-surface-container-high transition-all active:scale-95"
+<<<<<<< HEAD
                     onclick="openExpenseDrawer()">
+=======
+                    data-open-expense-drawer="true">
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
                     <span class="material-symbols-outlined text-[20px]">add</span>
                     Add Expense
                 </button>
@@ -620,6 +624,8 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/components/expenseDrawer.js"></script>
     <script src="/auth-guard.js"></script>
     <script src="/components/toast.js"></script>
     <script src="/components/expenseAPI.js"></script>

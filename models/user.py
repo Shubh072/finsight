@@ -5,7 +5,7 @@ from sqlalchemy.sql import func
 class User(db.Model):
     __tablename__ = "users"
 
-    user_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     full_name = db.Column(db.String(150), nullable=False)
 
@@ -36,6 +36,10 @@ class User(db.Model):
     failed_login_attempts = db.Column(db.Integer, default=0)
 
     last_login = db.Column(db.DateTime(timezone=True))
+
+    # OAuth fields
+    google_id = db.Column(db.String(100), unique=True, nullable=True)
+    apple_id = db.Column(db.String(100), unique=True, nullable=True)
 
     created_at = db.Column(
         db.DateTime(timezone=True),

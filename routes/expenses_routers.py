@@ -1,6 +1,7 @@
 import os
 import json
 import hashlib
+import re
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 
@@ -95,6 +96,99 @@ def _suggest_category(title, merchant, category=None):
             if needle in text:
                 return cat_name
     return "Others"
+
+
+def _extract_amount(text: str):
+    if not text:
+        return None
+    matches = re.findall(r"(?:₹|Rs|USD|EUR|GBP|JPY)?\s*([0-9][0-9,]*(?:\.\d{1,2})?)", text)
+    for match in matches:
+        cleaned = float(match.replace(",", ""))
+        if cleaned > 0:
+            return cleaned
+    return None
+
+
+def _extract_merchant(text: str):
+    if not text:
+        return None
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    for line in lines[:8]:
+        if re.search(r"\d", line):
+            continue
+        if len(line.split()) <= 4 and len(line) > 3:
+            return line.title()
+    return None
+
+
+@expenses_bp.route("/scan-receipt", methods=["POST"])
+@jwt_required()
+def scan_receipt():
+    user_id = _user_id_from_claims()
+    if not user_id:
+        return error_response("Unauthorized"), 401
+
+    if "receipt" not in request.files:
+        return error_response("Receipt file is required", errors={"receipt": "Receipt file is required"}), 400
+
+    receipt_file = request.files["receipt"]
+    if not receipt_file.filename:
+        return error_response("Receipt file is required", errors={"receipt": "Receipt file is required"}), 400
+
+    receipt_mime = receipt_file.mimetype or ""
+    if receipt_mime not in ALLOWED_RECEIPT_MIMES:
+        return error_response("Unsupported receipt type", errors={"receipt": "Unsupported receipt type"}), 400
+
+    ocr_text = ""
+    confidence = 0.35
+    try:
+        from PIL import Image
+        import pytesseract
+
+        if receipt_file.filename.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+            image = Image.open(receipt_file.stream)
+            ocr_text = pytesseract.image_to_string(image)
+            confidence = 0.82 if ocr_text.strip() else 0.35
+    except Exception:
+        ocr_text = ""
+
+    merchant = _extract_merchant(ocr_text)
+    amount = _extract_amount(ocr_text)
+    category = None
+    if merchant:
+        merchant_lower = merchant.lower()
+        if any(keyword in merchant_lower for keyword in ["uber", "ola", "taxi", "hotel", "flight"]):
+            category = "Travel"
+        elif any(keyword in merchant_lower for keyword in ["pizza", "cafe", "restaurant", "food", "swiggy", "zomato"]):
+            category = "Food"
+        elif any(keyword in merchant_lower for keyword in ["amazon", "flipkart", "shop", "store"]):
+            category = "Shopping"
+        elif any(keyword in merchant_lower for keyword in ["netflix", "spotify", "youtube"]):
+            category = "Entertainment"
+        elif any(keyword in merchant_lower for keyword in ["apollo", "hospital", "clinic", "medical"]):
+            category = "Healthcare"
+        elif any(keyword in merchant_lower for keyword in ["electricity", "water", "internet", "phone"]):
+            category = "Bills"
+        elif any(keyword in merchant_lower for keyword in ["fuel", "petrol", "gas"]):
+            category = "Fuel"
+        else:
+            category = "Others"
+
+    payload = {
+        "merchant_name": merchant,
+        "amount": amount,
+        "expense_date": date.today().isoformat(),
+        "category": category,
+        "tax": None,
+        "items": [],
+        "confidence_score": round(confidence, 2),
+        "currency": "INR",
+        "payment_method": "UPI",
+        "title": merchant or "Receipt Expense",
+        "description": "Auto-filled from receipt scan",
+    }
+
+    return success_response("Receipt scanned successfully", data=payload), 200
 
 
 @expenses_bp.route("/", methods=["POST"])
@@ -626,6 +720,7 @@ def get_chart_data():
         if date_from.isoformat() <= (e.get("expense_date") or "") <= date_to.isoformat()
     ]
 
+<<<<<<< HEAD
     # Category chart
     cat_data = {}
     for e in filtered:
@@ -634,6 +729,20 @@ def get_chart_data():
             cat_data[cat] = {"value": 0, "count": 0}
         cat_data[cat]["value"] += float(e.get("amount", 0))
         cat_data[cat]["count"] += 1
+=======
+    # Monthly expense trend (Bar Chart) - SQLite compatible
+    monthly_data = db.session.query(
+        func.strftime("%Y-%m", Expense.expense_date).label("month"),
+        func.sum(Expense.amount).label("total")
+    ).filter(
+        Expense.user_id == user_id,
+        Expense.is_deleted == False,
+        Expense.expense_date >= date_from,
+        Expense.expense_date <= date_to,
+    ).group_by(func.strftime("%Y-%m", Expense.expense_date)).order_by(
+        func.strftime("%Y-%m", Expense.expense_date)
+    ).all()
+>>>>>>> 3b492c6 (Apply local auth and UI updates)
 
     category_chart = [{"name": k, "value": v["value"], "count": v["count"]} for k, v in cat_data.items()]
 
