@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Income · FinSight</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/design-system.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>.income-row { transition: all 0.2s ease; }.income-row:hover { background: var(--surface-container); }</style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar" role="navigation">
+      <div class="sidebar-header"><div class="sidebar-logo" aria-hidden="true"><span class="material-symbols-outlined">insights</span></div><div><div class="sidebar-logo-text">FinSight</div><div class="sidebar-logo-badge">AI Intelligence</div></div><button class="btn-icon btn-icon-sm sidebar-collapse-btn hide-mobile" data-sidebar-toggle aria-label="Toggle sidebar"><span class="material-symbols-outlined">menu_open</span></button></div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-title">Main</div>
+        <a href="/dashboard.html" class="sidebar-nav-item"><span class="material-symbols-outlined">dashboard</span><span class="sidebar-text">Dashboard</span></a>
+        <a href="/expense.html" class="sidebar-nav-item"><span class="material-symbols-outlined">payments</span><span class="sidebar-text">Expenses</span></a>
+        <a href="/income.html" class="sidebar-nav-item active"><span class="material-symbols-outlined">account_balance</span><span class="sidebar-text">Income</span></a>
+        <a href="/budget.html" class="sidebar-nav-item"><span class="material-symbols-outlined">account_balance_wallet</span><span class="sidebar-text">Budgets</span></a>
+        <a href="/investment.html" class="sidebar-nav-item"><span class="material-symbols-outlined">trending_up</span><span class="sidebar-text">Investments</span></a>
+        <a href="/goal.html" class="sidebar-nav-item"><span class="material-symbols-outlined">flag</span><span class="sidebar-text">Goals</span></a>
+        <div class="sidebar-section-title" style="margin-top:var(--space-4);">Analytics</div>
+        <a href="/analytics.html" class="sidebar-nav-item"><span class="material-symbols-outlined">monitoring</span><span class="sidebar-text">Analytics</span></a>
+        <a href="/report_document.html" class="sidebar-nav-item"><span class="material-symbols-outlined">description</span><span class="sidebar-text">Reports</span><span class="nav-badge">3</span></a>
+        <div class="sidebar-section-title" style="margin-top:var(--space-4);">Account</div>
+        <a href="/notification.html" class="sidebar-nav-item"><span class="material-symbols-outlined">notifications</span><span class="sidebar-text">Notifications</span><span class="nav-dot" style="background:var(--color-error);"></span></a>
+        <a href="/setting.html" class="sidebar-nav-item"><span class="material-symbols-outlined">settings</span><span class="sidebar-text">Settings</span></a>
+      </nav>
+      <div class="sidebar-footer"><div class="sidebar-upgrade-card"><h4>Unlock Premium</h4><p>AI insights, unlimited reports & more</p><button class="btn btn-primary btn-sm btn-full">Upgrade to Pro</button></div></div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-header">
+        <button class="mobile-menu-toggle hide-desktop" data-mobile-menu aria-label="Open menu"><span class="material-symbols-outlined">menu</span></button>
+        <div class="header-search"><span class="material-symbols-outlined search-icon">search</span><input type="text" placeholder="Search income..." id="inc-search" aria-label="Search" onkeyup="loadIncome()" /><span class="search-shortcut hide-mobile">⌘K</span></div>
+        <div class="header-actions">
+          <button class="header-action-btn" data-theme-toggle aria-label="Toggle dark mode"><span class="material-symbols-outlined">light_mode</span></button>
+          <button class="header-action-btn" onclick="window.location.href='/notification.html'" aria-label="Notifications"><span class="material-symbols-outlined">notifications</span><span class="notification-dot"></span></button>
+          <div class="header-avatar dropdown" data-dropdown>
+            <img src="https://ui-avatars.com/api/?name=User&background=7c3aed&color=fff&size=80" alt="Avatar" />
+            <div class="avatar-info hide-mobile"><div class="avatar-name" data-user-name>User</div><div class="avatar-role">MEMBER</div></div>
+            <div class="dropdown-menu" style="display:none;"><div class="dropdown-header">Account</div><a class="dropdown-item" href="/setting.html"><span class="material-symbols-outlined">settings</span>Settings</a><a class="dropdown-item" href="/notification.html"><span class="material-symbols-outlined">notifications</span>Notifications</a><div class="dropdown-divider"></div><button class="dropdown-item" data-logout><span class="material-symbols-outlined">logout</span>Sign Out</button></div>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-content">
+        <div class="page-header">
+          <div class="page-header-left"><h1>Income</h1><p>Track your earnings and income sources.</p></div>
+          <div class="page-header-actions"><button class="btn btn-primary btn-md" onclick="openIncomeDrawer()"><span class="material-symbols-outlined">add</span>Add Income</button></div>
+        </div>
+
+        <div id="income-skeleton">
+          <div class="skeleton-grid mb-6"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div>
+          <div class="skeleton skeleton-card" style="height:300px;"></div>
+        </div>
+
+        <div id="income-content" style="display:none;">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 stagger-children">
+            <div class="card card-secondary"><div class="card-title" style="color:rgba(255,255,255,0.7);">Total Income</div><div class="stat-value text-inverse mt-1" id="inc-total">₹0</div></div>
+            <div class="card card-hover"><div class="card-title">This Month</div><div class="stat-value mt-1" id="inc-month">₹0</div><span class="stat-change positive" id="inc-month-count">0 records</span></div>
+            <div class="card card-hover"><div class="card-title">Average Monthly</div><div class="stat-value mt-1" id="inc-avg">₹0</div></div>
+            <div class="card card-hover"><div class="card-title">Sources</div><div class="stat-value mt-1" id="inc-sources">0</div></div>
+          </div>
+
+          <div class="card p-0 overflow-hidden">
+            <div class="table-container border-none shadow-none">
+              <table class="data-table">
+                <thead><tr><th>Source</th><th>Category</th><th>Date</th><th>Status</th><th class="text-right">Amount</th><th class="text-right" style="width:50px;">Action</th></tr></thead>
+                <tbody id="income-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="income-empty" style="display:none;"></div>
+        <div id="income-error" style="display:none;"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/js/finsight-core.js"></script>
+  <script>
+    function formatCurrency(v) { return Finsight.utils.formatCurrency(v); }
+    function formatDate(d) { return Finsight.utils.formatDate(d); }
+
+    async function loadIncome() {
+      const token = Finsight.utils.getToken();
+      if (!token) return;
+      try {
+        document.getElementById('income-skeleton').style.display = 'block';
+        document.getElementById('income-content').style.display = 'none';
+        document.getElementById('income-empty').style.display = 'none';
+        document.getElementById('income-error').style.display = 'none';
+
+        const search = document.getElementById('inc-search')?.value || '';
+
+        const res = await axios.get('/api/incomes/', { params: { search, sort: 'created_at', order: 'desc', per_page: 50 }, headers: { Authorization: `Bearer ${token}` } });
+        let incomes = res.data?.data?.incomes || [];
+        if (!Array.isArray(incomes) && res.data?.data) incomes = [res.data?.data];
+        if (!Array.isArray(incomes)) incomes = [];
+
+        const total = incomes.reduce((s, i) => s + parseFloat(i.amount || 0), 0);
+        const monthTotal = incomes.filter(i => { const d = new Date(i.income_date || i.date); const m = new Date(); return d.getMonth() === m.getMonth() && d.getFullYear() === m.getFullYear(); }).reduce((s, i) => s + parseFloat(i.amount || 0), 0);
+        const sources = [...new Set(incomes.map(i => i.source || i.category || 'Other'))].length;
+        const avg = incomes.length > 0 ? total / incomes.length : 0;
+
+        document.getElementById('inc-total').textContent = formatCurrency(total);
+        document.getElementById('inc-month').textContent = formatCurrency(monthTotal);
+        document.getElementById('inc-month-count').textContent = `${incomes.filter(i => { const d = new Date(i.income_date || i.date); const m = new Date(); return d.getMonth() === m.getMonth(); }).length} records`;
+        document.getElementById('inc-avg').textContent = formatCurrency(avg);
+        document.getElementById('inc-sources').textContent = sources;
+
+        document.getElementById('income-skeleton').style.display = 'none';
+
+        if (incomes.length === 0) {
+          document.getElementById('income-empty').style.display = 'block';
+          Finsight.emptyState.show('income-empty', { icon: 'account_balance', title: 'No income recorded', message: 'Start tracking your income sources.', action: () => openIncomeDrawer(), actionText: 'Add Income' });
+          return;
+        }
+
+        const tbody = document.getElementById('income-tbody');
+        tbody.innerHTML = incomes.map(i => `
+          <tr class="income-row">
+            <td><div class="flex items-center gap-3"><div class="card-icon secondary" style="width:36px;height:36px;font-size:1rem;"><span class="material-symbols-outlined">account_balance</span></div><div><div class="body-2 font-semibold">${i.source || i.title || 'Income'}</div></div></div></td>
+            <td><span class="badge badge-neutral">${i.category || 'General'}</span></td>
+            <td><span class="body-2 text-muted">${formatDate(i.income_date || i.date)}</span></td>
+            <td><span class="badge badge-secondary">active</span></td>
+            <td class="text-right mono-sm font-bold text-secondary">+${formatCurrency(parseFloat(i.amount || 0))}</td>
+            <td class="text-right"><button class="btn btn-ghost btn-icon-sm" onclick="deleteIncome('${i.id}')"><span class="material-symbols-outlined" style="font-size:18px;">delete</span></button></td>
+          </tr>
+        `).join('');
+        document.getElementById('income-content').style.display = 'block';
+      } catch (err) {
+        console.error('Income load error:', err);
+        document.getElementById('income-skeleton').style.display = 'none';
+        const ec = document.getElementById('income-error');
+        ec.style.display = 'block';
+        Finsight.errorState.show(ec, { message: 'Failed to load income.', onRetry: loadIncome });
+      }
+    }
+
+    function openIncomeDrawer() {
+      const content = `<div class="space-y-4">
+        <div class="input-group"><label class="input-label">Amount <span class="required">*</span></label><div class="input-icon-wrapper"><span class="input-icon-left" style="font-weight:700;">₹</span><input type="number" class="input-field" id="inc-amount" placeholder="50,000" min="1" /></div></div>
+        <div class="input-group"><label class="input-label">Source / Title <span class="required">*</span></label><input type="text" class="input-field" id="inc-source" placeholder="e.g., Salary" /></div>
+        <div class="grid grid-cols-2 gap-3"><div class="input-group"><label class="input-label">Category</label><select class="select-field" id="inc-category"><option>Salary</option><option>Freelance</option><option>Investment</option><option>Business</option><option>Rental</option><option>Gift</option><option>Other</option></select></div><div class="input-group"><label class="input-label">Date</label><input type="date" class="input-field" id="inc-date" value="${new Date().toISOString().split('T')[0]}" /></div></div>
+        <div class="input-group"><label class="input-label">Description</label><input type="text" class="input-field" id="inc-desc" placeholder="Optional description" /></div>
+      </div>`;
+      const footer = `<button class="btn btn-ghost btn-md" onclick="Finsight.drawer.close()">Cancel</button><button class="btn btn-primary btn-md" onclick="saveIncome()">Add Income</button>`;
+      Finsight.drawer.show({ title: 'Add Income', content, footer });
+    }
+
+    async function saveIncome() {
+      const amount = document.getElementById('inc-amount')?.value;
+      const source = document.getElementById('inc-source')?.value;
+      const category = document.getElementById('inc-category')?.value;
+      const date = document.getElementById('inc-date')?.value || new Date().toISOString().split('T')[0];
+      const description = document.getElementById('inc-desc')?.value || '';
+      if (!amount || !source) { Finsight.toast.error('Validation', 'Please fill required fields.'); return; }
+      const token = Finsight.utils.getToken();
+      try {
+        await axios.post('/api/incomes/', { amount: parseFloat(amount), source, title: source, category, income_date: date, description }, { headers: { Authorization: `Bearer ${token}` } });
+        Finsight.toast.success('Added', 'Income recorded successfully.'); Finsight.drawer.close(); loadIncome();
+      } catch (err) { Finsight.toast.apiError(err); }
+    }
+
+    async function deleteIncome(id) {
+      Finsight.modal.confirm({ title: 'Delete Income', message: 'Remove this income record?', type: 'delete', confirmText: 'Delete', danger: true,
+        onConfirm: async () => { const token = Finsight.utils.getToken(); try { await axios.delete(`/api/incomes/${id}`, { headers: { Authorization: `Bearer ${token}` } }); Finsight.toast.success('Deleted', 'Income removed.'); loadIncome(); } catch (err) { Finsight.toast.apiError(err); } }
+      });
+    }
+
+    document.addEventListener('click', (e) => { const d = document.querySelector('[data-dropdown]'); const m = d?.querySelector('.dropdown-menu'); if (d && m) m.style.display = d.contains(e.target) ? (m.style.display === 'none' ? 'block' : 'none') : 'none'; });
+    document.addEventListener('DOMContentLoaded', loadIncome);
+  </script>
+</body>
+</html>

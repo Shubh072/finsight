@@ -1,0 +1,63 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-6 animate-fade-in">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">Analytics</h1>
+            <p class="text-gray-500 mt-1">Deep dive into your financial data</p>
+        </div>
+        <div class="flex gap-3">
+            <select class="input-field w-auto"><option>Last 6 Months</option><option>Last Year</option><option>All Time</option></select>
+            <button class="btn btn-outline btn-md">Export</button>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="card"><p class="text-sm text-gray-500">Financial Health Score</p><p class="text-2xl font-bold text-emerald-500">78/100</p><p class="text-sm text-emerald-500">Good</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Savings Rate</p><p class="text-2xl font-bold">32%</p><p class="text-sm text-emerald-500">↑ 5% vs last month</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Expense Ratio</p><p class="text-2xl font-bold">68%</p><p class="text-sm text-amber-500">Needs attention</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Investment Ratio</p><p class="text-2xl font-bold">45%</p><p class="text-sm text-emerald-500">On track</p></div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+        <div class="card">
+            <h3 class="text-lg font-semibold mb-4">Income vs Expenses</h3>
+            <div class="chart-container" id="incomeExpenseChart"></div>
+        </div>
+        <div class="card">
+            <h3 class="text-lg font-semibold mb-4">Spending Trends</h3>
+            <div class="chart-container" id="trendChart"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 class="text-lg font-semibold mb-4">Category Breakdown</h3>
+        <div class="chart-container" id="categoryBreakdownChart"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('incomeExpenseChart'), {
+    type: 'line',
+    data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+        datasets: [
+            { label: 'Income', data: [5000, 5200, 4800, 5100, 5300, 5000], borderColor: '#10B981', tension: 0.4, fill: false },
+            { label: 'Expenses', data: [3200, 2800, 3500, 3100, 3800, 3400], borderColor: '#EF4444', tension: 0.4, fill: false }
+        ]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+});
+
+new Chart(document.getElementById('trendChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+        datasets: [{ label: 'Spending', data: [3200, 2800, 3500, 3100, 3800, 3400], backgroundColor: '#10B981', borderRadius: 6 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+});
+</script>
+{% endblock %}

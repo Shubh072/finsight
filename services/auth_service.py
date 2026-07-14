@@ -3,6 +3,9 @@ from flask_jwt_extended import create_access_token
 from datetime import datetime
 import json
 
+from database.db import db
+from models.user import User
+
 from utils.validators import (
     validate_email,
     validate_password,
@@ -20,8 +23,6 @@ from utils.email_service import (
     send_verification_email,
     send_reset_email
 )
-from utils import supabase_client as sb
-
 
 def get_me(claims):
     return {"success": False, "message": "Not implemented."}, 501
@@ -42,43 +43,28 @@ def register_user(data):
         return {"success": False, "message": "Invalid email address."}, 400
 
     if not validate_phone(phone):
-<<<<<<< HEAD
-        return {"success": False, "message": "Phone number must contain exactly 10 digits."}, 400
-=======
-        return {
-            "success": False,
-            "message": "Phone number must contain at least 8 digits."
-        }, 400
->>>>>>> 3b492c6 (Apply local auth and UI updates)
+        return {"success": False, "message": "Phone number must contain at least 8 digits."}, 400
 
     if not validate_password(password):
         return {
             "success": False,
-<<<<<<< HEAD
-            "message": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
-=======
-            "message": (
-                "Password must contain at least "
-                "8 characters, one uppercase letter, "
-                "one lowercase letter, and one number."
-            )
->>>>>>> 3b492c6 (Apply local auth and UI updates)
+            "message": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number."
         }, 400
 
     if password != confirm_password:
         return {"success": False, "message": "Passwords do not match."}, 400
 
-    # Check duplicates via Supabase
+    # Check duplicates via SQLAlchemy local database
     try:
-        existing_email = sb.select("users", filters={"email": email}, limit=1)
+        existing_email = User.query.filter_by(email=email).first()
         if existing_email:
             return {"success": False, "message": "Email already exists."}, 409
 
-        existing_username = sb.select("users", filters={"username": username}, limit=1)
+        existing_username = User.query.filter_by(username=username).first()
         if existing_username:
             return {"success": False, "message": "Username already exists."}, 409
 
-        existing_phone = sb.select("users", filters={"phone": phone}, limit=1)
+        existing_phone = User.query.filter_by(phone=phone).first()
         if existing_phone:
             return {"success": False, "message": "Phone number already exists."}, 409
     except Exception as e:
@@ -86,11 +72,7 @@ def register_user(data):
 
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
 
-<<<<<<< HEAD
-=======
-    # ----------------------------------
     # Create User Object
-    # ----------------------------------
     new_user = User(
         full_name=full_name,
         username=username,
@@ -99,36 +81,11 @@ def register_user(data):
         password_hash=password_hash,
         role="user",
         account_status="active",
-        email_verified=True,  # Auto-verify for easier testing
+        email_verified=True,  # Auto-verify for easier testing / development
         failed_login_attempts=0,
     )
 
-    # ----------------------------------
-    # Save User
-    # ----------------------------------
->>>>>>> 3b492c6 (Apply local auth and UI updates)
     try:
-        sb.insert("users", {
-            "full_name": full_name,
-            "username": username,
-            "email": email,
-            "phone": phone,
-            "password_hash": password_hash,
-            "role": "user",
-            "account_status": "active",
-            "email_verified": False,
-            "failed_login_attempts": 0,
-        })
-
-<<<<<<< HEAD
-        token = generate_verification_token(email)
-        try:
-            send_verification_email(email, token)
-        except Exception:
-            pass
-
-        return {"success": True, "message": "Registration successful. Please verify your email."}, 201
-=======
         db.session.add(new_user)
         db.session.commit()
 
@@ -138,11 +95,10 @@ def register_user(data):
             send_verification_email(email, token)
         except Exception as e:
             print(f"Warning: Could not send verification email: {e}")
-            # Continue with registration even if email fails
 
         # Auto-login the user after registration
         access_token = create_access_token(
-            identity=new_user.user_id,
+            identity=str(new_user.user_id),
             additional_claims={
                 "email": new_user.email,
                 "role": new_user.role
@@ -160,23 +116,12 @@ def register_user(data):
                 "role": new_user.role
             }
         }, 201
-
->>>>>>> 3b492c6 (Apply local auth and UI updates)
     except Exception as e:
-        return {"success": False, "message": "Registration failed.", "error": str(e)}, 500
-
-<<<<<<< HEAD
-=======
         db.session.rollback()
         import traceback
         traceback.print_exc()
+        return {"success": False, "message": "Registration failed.", "error": str(e)}, 500
 
-        return {
-            "success": False,
-            "message": "Registration failed.",
-            "error": str(e)
-        }, 500
->>>>>>> 3b492c6 (Apply local auth and UI updates)
 
 def verify_email(token):
     email = verify_verification_token(token)
@@ -184,19 +129,21 @@ def verify_email(token):
         return {"success": False, "message": "Invalid or expired verification link."}, 400
 
     try:
-        user = sb.select("users", filters={"email": email}, single=True)
+        user = User.query.filter_by(email=email).first()
     except Exception:
         user = None
 
     if not user:
         return {"success": False, "message": "User not found."}, 404
 
-    if user.get("email_verified"):
+    if user.email_verified:
         return {"success": True, "message": "Email already verified."}, 200
 
     try:
-        sb.update("users", {"email": email}, {"email_verified": True})
+        user.email_verified = True
+        db.session.commit()
     except Exception as e:
+        db.session.rollback()
         return {"success": False, "message": "Verification failed.", "error": str(e)}, 500
 
     return {"success": True, "message": "Email verified successfully."}, 200
@@ -210,50 +157,46 @@ def login_user(data):
         return {"success": False, "message": "Email and password are required."}, 400
 
     try:
-        user = sb.select("users", filters={"email": email}, single=True)
+        user = User.query.filter_by(email=email).first()
     except Exception:
         user = None
 
     if not user:
         return {"success": False, "message": "Invalid email or password."}, 401
 
-    if user.get("account_status") != "active":
+    if user.account_status != "active":
         return {"success": False, "message": "Your account is inactive. Please contact support."}, 403
 
-<<<<<<< HEAD
-    if not user.get("email_verified"):
-        return {"success": False, "message": "Please verify your email before logging in."}, 403
-=======
     # Allow login without email verification for testing
     if not user.email_verified:
         print("Warning: User logging in without verified email.")
->>>>>>> 3b492c6 (Apply local auth and UI updates)
 
-    if not bcrypt.check_password_hash(user.get("password_hash", ""), password):
+    if not bcrypt.check_password_hash(user.password_hash, password):
         return {"success": False, "message": "Invalid email or password."}, 401
 
     access_token = create_access_token(
-        identity=str(user.get("user_id")),
+        identity=str(user.user_id),
         additional_claims={
-            "email": user.get("email"),
-            "role": user.get("role"),
+            "email": user.email,
+            "role": user.role,
         }
     )
 
     try:
-        sb.update("users", {"email": email}, {"last_login": datetime.utcnow().isoformat()})
+        user.last_login = datetime.utcnow()
+        db.session.commit()
     except Exception:
-        pass
+        db.session.rollback()
 
     return {
         "success": True,
         "message": "Login successful.",
         "access_token": access_token,
         "user": {
-            "user_id": user.get("user_id"),
-            "full_name": user.get("full_name"),
-            "email": user.get("email"),
-            "role": user.get("role"),
+            "user_id": user.user_id,
+            "full_name": user.full_name,
+            "email": user.email,
+            "role": user.role,
         }
     }, 200
 
@@ -265,32 +208,17 @@ def forgot_password(data):
         return {"success": False, "message": "Email is required."}, 400
 
     try:
-        user = sb.select("users", filters={"email": email}, single=True)
+        user = User.query.filter_by(email=email).first()
     except Exception:
         user = None
 
     if user:
-<<<<<<< HEAD
-        token = generate_reset_token(email)
-        try:
-            send_reset_email(email, token)
-        except Exception:
-            pass
-
-    return {"success": True, "message": "If an account exists, a password reset link has been sent."}, 200
-
-
-def reset_password(token, data):
-    password = data.get("password", "")
-    confirm_password = data.get("confirm_password", "")
-
-=======
         try:
             token = generate_reset_token(email)
             send_reset_email(email, token)
         except Exception as e:
             print(f"Warning: Could not send reset email: {e}")
-        
+
     return {
         "success": True,
         "message": "If an account exists, a password reset link has been sent."
@@ -300,8 +228,7 @@ def reset_password(token, data):
 def reset_password(token, data):
     password = data.get("password", "").strip()
     confirm_password = data.get("confirm_password", "").strip()
-    
->>>>>>> 3b492c6 (Apply local auth and UI updates)
+
     if not password or not confirm_password:
         return {"success": False, "message": "Password fields are required."}, 400
 
@@ -311,15 +238,7 @@ def reset_password(token, data):
     if not validate_password(password):
         return {
             "success": False,
-<<<<<<< HEAD
-            "message": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
-=======
-            "message": (
-                "Password must contain at least "
-                "8 characters, one uppercase letter, "
-                "one lowercase letter, and one number."
-            )
->>>>>>> 3b492c6 (Apply local auth and UI updates)
+            "message": "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number."
         }, 400
 
     email = verify_reset_token(token)
@@ -327,7 +246,7 @@ def reset_password(token, data):
         return {"success": False, "message": "Invalid or expired reset link."}, 400
 
     try:
-        user = sb.select("users", filters={"email": email}, single=True)
+        user = User.query.filter_by(email=email).first()
     except Exception:
         user = None
 
@@ -337,8 +256,10 @@ def reset_password(token, data):
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
 
     try:
-        sb.update("users", {"email": email}, {"password_hash": password_hash})
+        user.password_hash = password_hash
+        db.session.commit()
     except Exception as e:
+        db.session.rollback()
         return {"success": False, "message": "Password reset failed.", "error": str(e)}, 500
 
     return {"success": True, "message": "Password reset successfully."}, 200

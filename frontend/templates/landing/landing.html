@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}AI-Powered Personal Finance{% endblock %}
+{% block content %}
+<!-- Header -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <span class="text-xl font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent">FinSight</span>
+            <div class="flex items-center gap-4">
+                <a href="/login" class="btn btn-ghost btn-md">Sign In</a>
+                <a href="/register" class="btn btn-primary btn-md">Get Started</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="pt-32 pb-20 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+        <div class="max-w-3xl mx-auto animate-fade-in">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-6">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                AI-Powered Finance Intelligence
+            </div>
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
+                Your Financial Future,<br>
+                <span class="text-emerald-500">Intelligently Managed</span>
+            </h1>
+            <p class="text-xl text-gray-500 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
+                Track expenses, manage investments, set goals, and get AI-powered insights to make smarter financial decisions.
+            </p>
+            <div class="flex items-center justify-center gap-4">
+                <a href="/register" class="btn btn-primary btn-lg">Start Free Trial</a>
+                <a href="#features" class="btn btn-outline btn-lg">See How It Works</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-4 bg-gray-50 dark:bg-gray-900/50">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Everything You Need to Master Your Finances</h2>
+            <p class="text-lg text-gray-500 max-w-2xl mx-auto">Professional tools and AI-powered features to help you take control of your financial life.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% set features = [
+                ('Brain', 'AI-Powered Insights', 'Get intelligent recommendations and spending analysis powered by advanced AI.'),
+                ('TrendingUp', 'Investment Tracking', 'Track stocks, mutual funds, crypto, and more with real-time portfolio analytics.'),
+                ('PieChart', 'Smart Budgeting', 'Create intelligent budgets that adapt to your spending patterns automatically.'),
+                ('Target', 'Financial Goals', 'Set and track financial goals with milestones, projections, and AI recommendations.'),
+                ('BarChart3', 'Advanced Analytics', 'Deep dive into your finances with professional-grade charts and reports.'),
+                ('Shield', 'Bank-Grade Security', 'Your financial data is encrypted and protected with enterprise-level security.')
+            ] %}
+            {% for icon, title, desc in features %}
+            <div class="p-8 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-shadow">
+                <div class="h-12 w-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500 mb-5">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ title }}</h3>
+                <p class="text-gray-500 dark:text-gray-400">{{ desc }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Ready to Transform Your Finances?</h2>
+        <p class="text-lg text-gray-500 mb-8 max-w-xl mx-auto">Join thousands of users who trust FinSight to manage their financial life.</p>
+        <a href="/register" class="btn btn-primary btn-lg">Get Started Free</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-12 px-4 border-t border-gray-100 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto text-center text-sm text-gray-500">
+        <p>&copy; 2026 FinSight. All rights reserved.</p>
+    </div>
+</footer>
+{% endblock %}

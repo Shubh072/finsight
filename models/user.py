@@ -41,6 +41,10 @@ class User(db.Model):
     google_id = db.Column(db.String(100), unique=True, nullable=True)
     apple_id = db.Column(db.String(100), unique=True, nullable=True)
 
+    # OAuth fields
+    google_id = db.Column(db.String(100), unique=True, nullable=True)
+    apple_id = db.Column(db.String(100), unique=True, nullable=True)
+
     created_at = db.Column(
         db.DateTime(timezone=True),
         server_default=func.now()

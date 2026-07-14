@@ -1,0 +1,91 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Expenses{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-6 animate-fade-in">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">Expenses</h1>
+            <p class="text-gray-500 mt-1">Track and manage all your expenses</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="btn btn-outline btn-md">Export</button>
+            <button class="btn btn-primary btn-md" onclick="openModal('addExpenseModal')">Add Expense</button>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card">
+        <div class="flex flex-wrap gap-3">
+            <input type="text" class="input-field flex-1 min-w-[200px]" placeholder="Search expenses...">
+            <select class="input-field w-auto"><option>All Categories</option><option>Food</option><option>Transport</option><option>Shopping</option></select>
+            <select class="input-field w-auto"><option>All Time</option><option>This Month</option><option>Last Month</option><option>This Year</option></select>
+            <button class="btn btn-secondary btn-md">Search</button>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="card"><p class="text-sm text-gray-500">Total Expenses</p><p class="text-2xl font-bold">$8,450</p><p class="text-sm text-red-500">↑ 8.2% vs last month</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Monthly Average</p><p class="text-2xl font-bold">$2,816</p><p class="text-sm text-gray-500">Last 3 months</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Highest Category</p><p class="text-2xl font-bold">Food</p><p class="text-sm text-gray-500">$2,450 this month</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Transactions</p><p class="text-2xl font-bold">47</p><p class="text-sm text-gray-500">This month</p></div>
+    </div>
+
+    <!-- Expenses Table -->
+    <div class="card p-0">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr><th><input type="checkbox"></th><th>Description</th><th>Category</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    {% for i in range(10) %}
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td class="font-medium">Expense {{ i + 1 }}</td>
+                        <td><span class="badge badge-info">Food</span></td>
+                        <td>Jul {{ 15 - i }}, 2026</td>
+                        <td class="font-semibold text-red-500">-${{ range(10, 500) | random }}</td>
+                        <td><span class="badge badge-success">Completed</span></td>
+                        <td><button class="btn btn-ghost btn-sm">Edit</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="flex items-center justify-between p-4 border-t border-gray-100 dark:border-gray-800">
+            <p class="text-sm text-gray-500">Showing 1-10 of 47</p>
+            <div class="flex gap-1">
+                <button class="btn btn-ghost btn-sm">Previous</button>
+                <button class="btn btn-primary btn-sm">1</button>
+                <button class="btn btn-ghost btn-sm">2</button>
+                <button class="btn btn-ghost btn-sm">3</button>
+                <button class="btn btn-ghost btn-sm">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Expense Modal -->
+<div id="addExpenseModal" class="modal-overlay hidden">
+    <div class="modal-content animate-scale-in">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold">Add Expense</h2>
+            <button onclick="closeModal('addExpenseModal')" class="p-1 rounded-lg hover:bg-gray-100"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <form class="space-y-4">
+            <div class="input-group"><label class="input-label">Amount</label><input type="number" class="input-field" placeholder="0.00" step="0.01"></div>
+            <div class="input-group"><label class="input-label">Description</label><input type="text" class="input-field" placeholder="Enter description"></div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="input-group"><label class="input-label">Category</label><select class="input-field"><option>Food</option><option>Transport</option><option>Shopping</option><option>Bills</option></select></div>
+                <div class="input-group"><label class="input-label">Date</label><input type="date" class="input-field"></div>
+            </div>
+            <div class="input-group"><label class="input-label">Notes</label><textarea class="input-field" rows="3" placeholder="Optional notes"></textarea></div>
+            <div class="flex gap-3 justify-end pt-4">
+                <button type="button" onclick="closeModal('addExpenseModal')" class="btn btn-secondary btn-md">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-md">Add Expense</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

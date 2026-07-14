@@ -2,14 +2,12 @@
 class ExpenseService {
     constructor() {
         this.baseURL = '/api/expenses';
-        this.token = localStorage.getItem('access_token');
     }
 
     // Helper method for API calls
     async apiCall(endpoint, method = 'GET', data = null, isFormData = false) {
         const headers = {
-            'Authorization': `Bearer ${this.token}`,
-        };
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,        };
 
         if (!isFormData) {
             headers['Content-Type'] = 'application/json';

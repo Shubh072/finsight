@@ -1,0 +1,39 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Financial Goals{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-6 animate-fade-in">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">Financial Goals</h1>
+            <p class="text-gray-500 mt-1">Track your financial goals and milestones</p>
+        </div>
+        <button class="btn btn-primary btn-md" onclick="openModal('addGoalModal')">Add Goal</button>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% set goals = [
+            ('Emergency Fund', 'Shield', 10000, 6500, '#EF4444', '65%'),
+            ('Retirement', 'Umbrella', 500000, 125000, '#3B82F6', '25%'),
+            ('Dream Vacation', 'Plane', 15000, 8500, '#06B6D4', '57%'),
+            ('New House', 'Home', 100000, 35000, '#F97316', '35%'),
+            ('Education Fund', 'GraduationCap', 50000, 15000, '#8B5CF6', '30%'),
+            ('New Car', 'Car', 35000, 12000, '#22C55E', '34%')
+        ] %}
+        {% for name, icon, target, current, color, pct in goals %}
+        <div class="card hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between mb-4">
+                <div class="h-12 w-12 rounded-xl flex items-center justify-center" style="background: {{ color }}15; color: {{ color }}">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                </div>
+                <span class="text-sm font-semibold" style="color: {{ color }}">{{ pct }}</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-1">{{ name }}</h3>
+            <p class="text-sm text-gray-500 mb-4">${{ '{:,}'.format(current) }} of ${{ '{:,}'.format(target) }}</p>
+            <div class="progress-bar h-2.5">
+                <div class="progress-fill" style="width: {{ pct.strip('%') }}%; background: {{ color }}"></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

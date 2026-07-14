@@ -1,0 +1,37 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Profile{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-6 animate-fade-in">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">Profile</h1>
+            <p class="text-gray-500 mt-1">Manage your personal information</p>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+        <div class="card text-center">
+            <div class="h-24 w-24 rounded-full bg-emerald-500 flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4">U</div>
+            <h2 class="text-xl font-semibold">User Name</h2>
+            <p class="text-gray-500">user@example.com</p>
+            <button class="btn btn-secondary btn-md mt-4">Change Photo</button>
+        </div>
+        <div class="card lg:col-span-2">
+            <h3 class="text-lg font-semibold mb-6">Personal Information</h3>
+            <form class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="input-group"><label class="input-label">First Name</label><input type="text" class="input-field" value="User"></div>
+                    <div class="input-group"><label class="input-label">Last Name</label><input type="text" class="input-field" value="Name"></div>
+                </div>
+                <div class="input-group"><label class="input-label">Email</label><input type="email" class="input-field" value="user@example.com"></div>
+                <div class="input-group"><label class="input-label">Phone</label><input type="tel" class="input-field" placeholder="+1 (555) 000-0000"></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="input-group"><label class="input-label">Occupation</label><input type="text" class="input-field" placeholder="Software Engineer"></div>
+                    <div class="input-group"><label class="input-label">Risk Profile</label><select class="input-field"><option>Moderate</option><option>Conservative</option><option>Aggressive</option></select></div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-md">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

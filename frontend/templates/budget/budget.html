@@ -1,0 +1,66 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Budget{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-6 animate-fade-in">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">Budget</h1>
+            <p class="text-gray-500 mt-1">Manage your budgets and track spending</p>
+        </div>
+        <button class="btn btn-primary btn-md" onclick="openModal('createBudgetModal')">Create Budget</button>
+    </div>
+
+    <div class="stats-grid">
+        <div class="card"><p class="text-sm text-gray-500">Monthly Budget</p><p class="text-2xl font-bold">$5,000</p><p class="text-sm text-emerald-500">On track</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Spent</p><p class="text-2xl font-bold">$3,450</p><p class="text-sm text-amber-500">69% used</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Remaining</p><p class="text-2xl font-bold">$1,550</p><p class="text-sm text-emerald-500">31% remaining</p></div>
+        <div class="card"><p class="text-sm text-gray-500">Daily Average</p><p class="text-2xl font-bold">$115</p><p class="text-sm text-gray-500">$167 budgeted</p></div>
+    </div>
+
+    <div class="card">
+        <h3 class="text-lg font-semibold mb-4">Budget Progress</h3>
+        <div class="space-y-4">
+            {% set budgets = [
+                ('Food & Dining', 800, 650, 'emerald'),
+                ('Transportation', 400, 320, 'blue'),
+                ('Shopping', 600, 580, 'amber'),
+                ('Bills & Utilities', 1000, 850, 'purple'),
+                ('Entertainment', 300, 280, 'rose'),
+                ('Healthcare', 500, 200, 'teal')
+            ] %}
+            {% for name, total, spent, color in budgets %}
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium">{{ name }}</span>
+                    <span class="text-sm text-gray-500">${{ spent }}/${{ total }}</span>
+                </div>
+                <div class="progress-bar h-2">
+                    <div class="progress-fill {{ color }}" style="width: {{ (spent / total * 100) | int }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div id="createBudgetModal" class="modal-overlay hidden">
+    <div class="modal-content animate-scale-in">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold">Create Budget</h2>
+            <button onclick="closeModal('createBudgetModal')" class="p-1 rounded-lg hover:bg-gray-100"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <form class="space-y-4">
+            <div class="input-group"><label class="input-label">Budget Name</label><input type="text" class="input-field" placeholder="e.g., Monthly Budget"></div>
+            <div class="input-group"><label class="input-label">Amount</label><input type="number" class="input-field" placeholder="0.00"></div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="input-group"><label class="input-label">Category</label><select class="input-field"><option>All Categories</option><option>Food</option><option>Transport</option></select></div>
+                <div class="input-group"><label class="input-label">Period</label><select class="input-field"><option>Monthly</option><option>Weekly</option><option>Yearly</option></select></div>
+            </div>
+            <div class="flex gap-3 justify-end pt-4">
+                <button type="button" onclick="closeModal('createBudgetModal')" class="btn btn-secondary btn-md">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-md">Create Budget</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

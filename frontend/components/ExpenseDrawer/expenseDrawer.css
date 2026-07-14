@@ -1,0 +1,265 @@
+/* ============================================================
+   FinSight Expense Drawer - Premium Animations & Styling
+   Does NOT affect existing dashboard layout.
+   ============================================================ */
+
+/* Drawer Entrance/Exit */
+#expense-drawer {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  overscroll-behavior: contain;
+}
+
+#expense-drawer.open {
+  transform: translateX(0);
+}
+
+#expense-drawer-overlay {
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  will-change: opacity;
+}
+
+#expense-drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+#expense-drawer-overlay:not(.open) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Success Animation */
+@keyframes successPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes successRing {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes checkDraw {
+  0% { stroke-dashoffset: 50; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.success-animation {
+  animation: successPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.success-ring {
+  stroke-dasharray: 100;
+  animation: successRing 0.6s ease-out forwards 0.2s;
+}
+
+.success-check {
+  stroke-dasharray: 50;
+  animation: checkDraw 0.4s ease-out forwards 0.5s;
+}
+
+/* Receipt Scan Animation */
+@keyframes scanLine {
+  0% { top: 0; opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes scanPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(139, 92, 246, 0); }
+}
+
+.scan-active {
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+  animation: scanLine 1.5s ease-in-out infinite;
+  z-index: 5;
+  border-radius: 2px;
+}
+
+.scan-pulse {
+  animation: scanPulse 2s ease-in-out infinite;
+}
+
+/* Loading Skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #1d253a 25%, #283046 50%, #1d253a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Slide Up Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+.animate-slide-up-stagger > * {
+  opacity: 0;
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+.animate-slide-up-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.animate-slide-up-stagger > *:nth-child(2) { animation-delay: 0.1s; }
+.animate-slide-up-stagger > *:nth-child(3) { animation-delay: 0.15s; }
+.animate-slide-up-stagger > *:nth-child(4) { animation-delay: 0.2s; }
+.animate-slide-up-stagger > *:nth-child(5) { animation-delay: 0.25s; }
+.animate-slide-up-stagger > *:nth-child(6) { animation-delay: 0.3s; }
+.animate-slide-up-stagger > *:nth-child(7) { animation-delay: 0.35s; }
+.animate-slide-up-stagger > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* Feather Toast Animation */
+@keyframes toastIn {
+  0% { opacity: 0; transform: translateX(100%) scale(0.9); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes toastOut {
+  0% { opacity: 1; transform: translateX(0) scale(1); }
+  100% { opacity: 0; transform: translateX(100%) scale(0.9); }
+}
+
+.toast-enter {
+  animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast-exit {
+  animation: toastOut 0.3s ease-in forwards;
+}
+
+/* Micro Interactions */
+.priority-btn.active {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.priority-btn[data-priority="1"].active {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.priority-btn[data-priority="3"].active {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+.priority-btn[data-priority="5"].active {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.tag-chip.active {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.freq-btn.active {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+/* Category card active state */
+.category-card.active {
+  border-color: #8b5cf6 !important;
+  background: rgba(139, 92, 246, 0.12) !important;
+  transform: scale(0.95);
+}
+
+.category-card {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.category-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+/* Budget card animation */
+.budget-progress {
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Floating Save Button (visible on mobile scroll) */
+.floating-save-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  z-index: 102;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+}
+
+.floating-save-btn.visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Custom scrollbar for drawer */
+#expense-drawer::-webkit-scrollbar {
+  width: 4px;
+}
+
+#expense-drawer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#expense-drawer::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+
+#expense-drawer::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Dark mode calendar picker */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  #expense-drawer {
+    max-width: 100%;
+  }
+  
+  .floating-save-btn {
+    bottom: 16px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  #expense-drawer {
+    max-width: 100%;
+  }
+}

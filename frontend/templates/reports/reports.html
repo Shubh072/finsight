@@ -1,0 +1,40 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Reports{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-6 animate-fade-in">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">Reports</h1>
+            <p class="text-gray-500 mt-1">Generate and download financial reports</p>
+        </div>
+        <div class="flex gap-3">
+            <button class="btn btn-outline btn-md">PDF</button>
+            <button class="btn btn-outline btn-md">Excel</button>
+            <button class="btn btn-outline btn-md">CSV</button>
+        </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% set reports = [
+            ('Expense Report', 'Detailed breakdown of all expenses', 'Wallet', 'emerald'),
+            ('Budget Report', 'Budget performance and analysis', 'PiggyBank', 'blue'),
+            ('Investment Report', 'Portfolio performance summary', 'TrendingUp', 'purple'),
+            ('Goal Report', 'Progress on financial goals', 'Target', 'amber'),
+            ('Tax Report', 'Tax-related financial summary', 'FileText', 'rose'),
+            ('Financial Report', 'Comprehensive financial overview', 'BarChart3', 'teal')
+        ] %}
+        {% for title, desc, icon, color in reports %}
+        <div class="card hover:shadow-md transition-shadow cursor-pointer">
+            <div class="flex items-start justify-between mb-4">
+                <div class="h-12 w-12 rounded-xl flex items-center justify-center" style="background: var(--{{ color }}-50); color: var(--{{ color }}-500)">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold mb-1">{{ title }}</h3>
+            <p class="text-sm text-gray-500 mb-4">{{ desc }}</p>
+            <button class="btn btn-secondary btn-sm w-full">Generate Report</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

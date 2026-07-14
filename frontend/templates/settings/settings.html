@@ -1,0 +1,63 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Settings{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-6 animate-fade-in">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">Settings</h1>
+            <p class="text-gray-500 mt-1">Customize your experience</p>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-4 gap-6">
+        <div class="card lg:col-span-1">
+            <nav class="space-y-1">
+                {% set settings_tabs = [
+                    ('Appearance', 'Sun'),
+                    ('Notifications', 'Bell'),
+                    ('Security', 'Lock'),
+                    ('Privacy', 'Shield'),
+                    ('Preferences', 'Settings'),
+                    ('API & Integrations', 'Link')
+                ] %}
+                {% for label, icon in settings_tabs %}
+                <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {% if loop.first %}bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100{% endif %}">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                    {{ label }}
+                </button>
+                {% endfor %}
+            </nav>
+        </div>
+        <div class="card lg:col-span-3">
+            <h3 class="text-lg font-semibold mb-6">Appearance</h3>
+            <div class="space-y-6">
+                <div>
+                    <label class="text-sm font-medium block mb-3">Theme</label>
+                    <div class="flex gap-3">
+                        <button onclick="setTheme('light')" class="flex-1 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-emerald-500 transition-colors text-center">
+                            <svg class="h-6 w-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                            <span class="text-sm">Light</span>
+                        </button>
+                        <button onclick="setTheme('dark')" class="flex-1 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-emerald-500 transition-colors text-center">
+                            <svg class="h-6 w-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                            <span class="text-sm">Dark</span>
+                        </button>
+                        <button onclick="setTheme('system')" class="flex-1 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-emerald-500 transition-colors text-center">
+                            <svg class="h-6 w-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span class="text-sm">System</span>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm font-medium block mb-3">Currency</label>
+                    <select class="input-field w-48"><option>USD ($)</option><option>EUR (€)</option><option>GBP (£)</option><option>INR (₹)</option></select>
+                </div>
+                <div>
+                    <label class="text-sm font-medium block mb-3">Language</label>
+                    <select class="input-field w-48"><option>English</option><option>Spanish</option><option>French</option><option>German</option></select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

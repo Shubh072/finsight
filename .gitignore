@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+
+# Environment Variables
+.env
+
+# Flask
+instance/
+
+# Uploads
+uploads/
+
+# VS Code
+.vscode/
+
+# Temporary Files
+tempCodeRunnerFile.py
+
+# Database (optional)
+# If your teammates should create their own local DB, ignore it:
+# finsight.db
+
+# Test / Debug
+tmp_*.py

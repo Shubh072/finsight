@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinSight — AI-Powered Personal Finance & Investment Intelligence</title>
+  <meta name="description"
+    content="Take control of your finances with AI-powered insights, expense tracking, investment analytics and smart budget planning." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/css/design-system.css" />
+  <style>
+    /* ---- Landing-specific styles ---- */
+    .landing-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      padding: 0 var(--space-8);
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s;
+    }
+
+    .landing-nav.scrolled {
+      background: var(--surface-base);
+      border-bottom: 1px solid var(--outline);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--on-surface);
+      text-decoration: none;
+    }
+
+    .nav-logo .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--color-primary-gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--on-surface-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-primary);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px var(--space-8) 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--surface-dim);
+      pointer-events: none;
+    }
+
+    .hero-bg-glow {
+      position: absolute;
+      top: -20%;
+      left: -5%;
+      width: 60%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-bg-glow2 {
+      position: absolute;
+      bottom: -10%;
+      right: -5%;
+      width: 50%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-grid-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(124, 58, 237, 0.1) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--color-primary-bg);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .hero-title .gradient-text {
+      background: var(--color-primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--on-surface-secondary);
+      line-height: 1.6;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+    }
+
+    .hero-stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-stat-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--on-surface);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-stat-label {
+      font-size: 12px;
+      color: var(--on-surface-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-dashboard-preview {
+      background: var(--surface-base);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-2xl);
+      padding: 20px;
+      box-shadow: var(--shadow-2xl);
+      position: relative;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .preview-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .section {
+      padding: 96px var(--space-8);
+    }
+
+    .section-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      background: var(--color-primary-bg);
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--on-surface-secondary);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    .feature-card {
+      background: var(--surface-base);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--color-primary-soft);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .pricing-card {
+      background: var(--surface-base);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-2xl);
+      padding: 36px;
+      transition: all 0.3s;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--color-primary);
+      background: var(--color-primary-gradient-soft);
+      position: relative;
+    }
+
+    .pricing-card.featured::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-primary-gradient);
+      color: white;
+      padding: 3px 16px;
+      border-radius: var(--radius-full);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    .pricing-price {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .pricing-period {
+      font-size: 14px;
+      color: var(--on-surface-muted);
+      font-weight: 500;
+    }
+
+    .testimonial-card {
+      background: var(--surface-base);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--outline);
+    }
+
+    .faq-q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      gap: 16px;
+      transition: color 0.2s;
+    }
+
+    .faq-q:hover {
+      color: var(--color-primary);
+    }
+
+    .faq-a {
+      display: none;
+      padding-bottom: 20px;
+      font-size: 14px;
+      color: var(--on-surface-secondary);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-a {
+      display: block;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-icon {
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .landing-footer {
+      background: var(--surface-base);
+      border-top: 1px solid var(--outline);
+      padding: 64px var(--space-8) 32px;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1023px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .hero-title {
+        font-size: 40px;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hero {
+        padding: 100px 24px 60px;
+      }
+
+      .section {
+        padding: 64px 24px;
+      }
+
+      .hero-title {
+        font-size: 32px;
+      }
+
+      .section-title {
+        font-size: 28px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav class="landing-nav" id="landing-nav">
+    <a href="/landing.html" class="nav-logo">
+      <div class="logo-icon"><span class="material-symbols-outlined" style="font-size:20px;color:white">insights</span>
+      </div>
+      FinSight
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <button onclick="toggleTheme()"
+        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--on-surface-secondary);transition:all 0.2s"
+        onmouseenter="this.style.background='var(--surface-container)'" onmouseleave="this.style.background=''">
+        <span class="material-symbols-outlined" id="nav-theme-icon">light_mode</span>
+      </button>
+      <a href="/login.html" class="btn btn-outline btn-sm">Sign In</a>
+      <a href="/create_account.html" class="btn btn-primary btn-sm">Get Started Free</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-bg-glow"></div>
+      <div class="hero-bg-glow2"></div>
+      <div class="hero-grid-dots"></div>
+    </div>
+    <div class="hero-content">
+      <div class="slide-up">
+        <div class="hero-badge">
+          <span class="material-symbols-outlined" style="font-size:14px">auto_awesome</span>
+          Powered by AI · Free to start
+        </div>
+        <h1 class="hero-title">
+          Your Money,<br />
+          <span class="gradient-text">Intelligently</span><br />
+          Managed.
+        </h1>
+        <p class="hero-subtitle">FinSight brings together expense tracking, budget planning, investment analytics, and
+          AI-powered insights in one beautifully designed platform.</p>
+        <div class="hero-cta">
+          <a href="/create_account.html" class="btn btn-primary btn-xl" style="gap:8px">
+            <span class="material-symbols-outlined">rocket_launch</span>
+            Start for Free
+          </a>
+          <a href="/login.html" class="btn btn-outline btn-xl">Sign In</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat-item">
+            <div class="hero-stat-value">10K+</div>
+            <div class="hero-stat-label">Active Users</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-value">₹500Cr+</div>
+            <div class="hero-stat-label">Tracked</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-value">4.9★</div>
+            <div class="hero-stat-label">User Rating</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual scale-in">
+        <div class="hero-dashboard-preview">
+          <div class="preview-header">
+            <div class="preview-dot" style="background:#ef4444"></div>
+            <div class="preview-dot" style="background:#f59e0b"></div>
+            <div class="preview-dot" style="background:#10b981"></div>
+            <span style="font-size:12px;font-weight:600;color:var(--on-surface-muted);margin-left:8px">FinSight
+              Dashboard</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+            <div style="background:var(--color-primary-gradient);border-radius:var(--radius-lg);padding:14px">
+              <div style="color:rgba(255,255,255,0.7);font-size:10px;font-weight:600">BALANCE</div>
+              <div style="color:white;font-size:18px;font-weight:800;margin-top:2px">₹12.8L</div>
+              <div style="color:rgba(255,255,255,0.7);font-size:10px;margin-top:2px">↑ 2.4%</div>
+            </div>
+            <div style="background:var(--surface-container);border-radius:var(--radius-lg);padding:14px">
+              <div style="color:var(--on-surface-muted);font-size:10px;font-weight:600">INCOME</div>
+              <div style="color:var(--color-secondary);font-size:18px;font-weight:800;margin-top:2px">₹1.85L</div>
+              <div style="color:var(--on-surface-muted);font-size:10px;margin-top:2px">↑ 8.3%</div>
+            </div>
+            <div style="background:var(--surface-container);border-radius:var(--radius-lg);padding:14px">
+              <div style="color:var(--on-surface-muted);font-size:10px;font-weight:600">SAVINGS</div>
+              <div style="color:var(--color-primary);font-size:18px;font-weight:800;margin-top:2px">65.3%</div>
+              <div style="color:var(--on-surface-muted);font-size:10px;margin-top:2px">Target: 70%</div>
+            </div>
+          </div>
+          <div
+            style="background:var(--surface-container);border-radius:var(--radius-lg);padding:14px;margin-bottom:12px">
+            <div style="font-size:11px;font-weight:600;color:var(--on-surface-muted);margin-bottom:8px">MONTHLY SPENDING
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:4px;height:60px">
+              <!-- TEMPLATE_LITERAL_REMOVED ${[40,55,35,70,45,60,80,50,65,75,55,90].map((h,i)=>`<div style="flex:1;background:<!-- TEMPLATE_LITERAL_REMOVED ${i===11?'var(--color-primary)':'var(--color-primary-bg)'};border-radius:3px 3px 0 0;height:<!-- TEMPLATE_LITERAL_REMOVED ${h}%;transition:all 0.3s"></div>` ).join('')} -->
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <!-- TEMPLATE_LITERAL_REMOVED ${[['Amazon.in','Shopping','₹12,499','primary'],['Punjab Grill','Food','₹3,240','warning'],['Netflix','Entertainment','₹649','info']].map(([n,c,a,t])=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--surface-container);border-radius:var(--radius-md)">
+            <div style="width:28px;height:28px;background:var(--color-<!-- TEMPLATE_LITERAL_REMOVED ${t}-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="material-symbols-outlined" style="font-size:14px;color:var(--color-<!-- TEMPLATE_LITERAL_REMOVED ${t})">shopping_cart</span></div>
+            <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600"><!-- TEMPLATE_LITERAL_REMOVED ${n}</div><div style="font-size:10px;color:var(--on-surface-muted)"><!-- TEMPLATE_LITERAL_REMOVED ${c}</div></div>
+            <div style="font-size:12px;font-weight:700"><!-- TEMPLATE_LITERAL_REMOVED ${a}</div>
+          </div>` ).join('')} -->
+          </div>
+        </div>
+        <div
+          style="position:absolute;top:-16px;right:-16px;background:var(--color-secondary);color:white;border-radius:var(--radius-lg);padding:10px 14px;box-shadow:var(--shadow-lg);font-size:12px;font-weight:700">
+          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">auto_awesome</span> AI
+          Insight: Save ₹3,847/mo
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features" style="background:var(--surface-base)">
+    <div class="section-inner">
+      <div style="text-align:center;margin-bottom:64px">
+        <div class="section-badge"><span class="material-symbols-outlined" style="font-size:14px">star</span> Features
+        </div>
+        <h2 class="section-title">Everything you need to<br /><span class="gradient-text">master your finances</span>
+        </h2>
+        <p class="section-subtitle" style="margin:0 auto">From expense tracking to AI-powered investment insights —
+          FinSight covers every aspect of your financial life.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--color-primary-bg)"><span class="material-symbols-outlined"
+              style="color:var(--color-primary)">auto_awesome</span></div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:10px">AI Financial Insights</h3>
+          <p style="font-size:14px;color:var(--on-surface-secondary);line-height:1.6">Get personalized recommendations
+            powered by AI that analyze your spending patterns and suggest actionable improvements.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--color-secondary-bg)"><span class="material-symbols-outlined"
+              style="color:var(--color-secondary)">receipt_long</span></div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:10px">Smart Receipt Scanner</h3>
+          <p style="font-size:14px;color:var(--on-surface-secondary);line-height:1.6">Scan receipts with your camera or
+            upload photos. OCR technology auto-extracts amount, merchant, and category instantly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--color-info-bg)"><span class="material-symbols-outlined"
+              style="color:var(--color-info)">trending_up</span></div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:10px">Investment Portfolio</h3>
+          <p style="font-size:14px;color:var(--on-surface-secondary);line-height:1.6">Track stocks, mutual funds, ETFs,
+            gold, and crypto in one place. Visualize returns, XIRR, CAGR, and risk metrics.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--color-warning-bg)"><span class="material-symbols-outlined"
+              style="color:var(--color-warning)">account_balance</span></div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:10px">Smart Budget Planner</h3>
+          <p style="font-size:14px;color:var(--on-surface-secondary);line-height:1.6">Set budgets by category, get
+            real-time alerts when approaching limits, and compare actuals vs. planned spending.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(244,63,94,0.1)"><span class="material-symbols-outlined"
+              style="color:#f43f5e">flag</span></div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:10px">Financial Goal Tracker</h3>
+          <p style="font-size:14px;color:var(--on-surface-secondary);line-height:1.6">Set savings goals for retirement,
+            house, travel, or education. Track progress with milestones and projected timelines.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(6,182,212,0.1)"><span class="material-symbols-outlined"
+              style="color:#06b6d4">monitoring</span></div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:10px">Advanced Analytics</h3>
+          <p style="font-size:14px;color:var(--on-surface-secondary);line-height:1.6">Beautiful charts showing income
+            vs. expense trends, cash flow, net worth growth, spending heatmaps and more.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how-it-works">
+    <div class="section-inner">
+      <div style="text-align:center;margin-bottom:64px">
+        <div class="section-badge">How It Works</div>
+        <h2 class="section-title">Up and running in<br /><span class="gradient-text">under 2 minutes</span></h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative">
+        <!-- TEMPLATE_LITERAL_REMOVED ${[[1,'Create Account','Sign up free in 30 seconds. No credit card required.','person_add','primary'],[2,'Add Your Data','Import transactions or add manually. Scan receipts instantly.','upload','secondary'],[3,'Set Goals & Budgets','Define your financial goals and monthly spending limits.','flag','warning'],[4,'Get AI Insights','Receive personalized recommendations to optimize your finances.','auto_awesome','info']].map(([n,t,d,icon,c])=>`
+      <div style="text-align:center">
+        <div style="width:64px;height:64px;background:var(--color-<!-- TEMPLATE_LITERAL_REMOVED ${c}-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative">
+          <span class="material-symbols-outlined" style="color:var(--color-<!-- TEMPLATE_LITERAL_REMOVED ${c});font-size:28px"><!-- TEMPLATE_LITERAL_REMOVED ${icon}</span>
+          <div style="position:absolute;top:-4px;right:-4px;width:22px;height:22px;background:var(--color-<!-- TEMPLATE_LITERAL_REMOVED ${c});color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800"><!-- TEMPLATE_LITERAL_REMOVED ${n}</div>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:8px"><!-- TEMPLATE_LITERAL_REMOVED ${t}</h3>
+        <p style="font-size:13px;color:var(--on-surface-secondary);line-height:1.6"><!-- TEMPLATE_LITERAL_REMOVED ${d}</p>
+      </div>` ).join('')} -->
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing" style="background:var(--surface-base)">
+    <div class="section-inner">
+      <div style="text-align:center;margin-bottom:64px">
+        <div class="section-badge">Pricing</div>
+        <h2 class="section-title">Simple, transparent pricing</h2>
+        <p class="section-subtitle" style="margin:0 auto">Start free, upgrade when you're ready. No hidden fees, no
+          surprise charges.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto">
+        <div class="pricing-card">
+          <div style="margin-bottom:24px">
+            <div
+              style="font-size:14px;font-weight:700;color:var(--on-surface-muted);text-transform:uppercase;margin-bottom:8px">
+              Free</div>
+            <div class="pricing-price">₹0<span class="pricing-period">/mo</span></div>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+            <!-- TEMPLATE_LITERAL_REMOVED ${['Up to 100 transactions/mo','Basic expense tracking','3 budget categories','2 financial goals','Email support'].map(f=>`<li style="display:flex;align-items:center;gap:10px;font-size:14px"><span class="material-symbols-outlined" style="font-size:16px;color:var(--color-secondary)">check</span><!-- TEMPLATE_LITERAL_REMOVED ${f}</li>` ).join('')} -->
+          </ul>
+          <a href="/create_account.html" class="btn btn-outline btn-md btn-full">Get Started Free</a>
+        </div>
+        <div class="pricing-card featured">
+          <div style="margin-bottom:24px">
+            <div
+              style="font-size:14px;font-weight:700;color:var(--color-primary);text-transform:uppercase;margin-bottom:8px">
+              Pro</div>
+            <div class="pricing-price" style="color:var(--color-primary)">₹499<span class="pricing-period">/mo</span>
+            </div>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+            <!-- TEMPLATE_LITERAL_REMOVED ${['Unlimited transactions','AI-powered insights','Smart receipt scanner','Unlimited budgets & goals','Investment portfolio tracker','Export PDF/Excel reports','Priority support'].map(f=>`<li style="display:flex;align-items:center;gap:10px;font-size:14px"><span class="material-symbols-outlined" style="font-size:16px;color:var(--color-primary)">check</span><!-- TEMPLATE_LITERAL_REMOVED ${f}</li>` ).join('')} -->
+          </ul>
+          <a href="/create_account.html" class="btn btn-primary btn-md btn-full">Start Pro Free Trial</a>
+        </div>
+        <div class="pricing-card">
+          <div style="margin-bottom:24px">
+            <div
+              style="font-size:14px;font-weight:700;color:var(--on-surface-muted);text-transform:uppercase;margin-bottom:8px">
+              Enterprise</div>
+            <div class="pricing-price">Custom</div>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+            <!-- TEMPLATE_LITERAL_REMOVED ${['Everything in Pro','Multi-user support','Custom integrations','Dedicated account manager','SSO/SAML support','On-premise deployment','SLA guarantee'].map(f=>`<li style="display:flex;align-items:center;gap:10px;font-size:14px"><span class="material-symbols-outlined" style="font-size:16px;color:var(--color-info)">check</span><!-- TEMPLATE_LITERAL_REMOVED ${f}</li>` ).join('')} -->
+          </ul>
+          <a href="/help.html" class="btn btn-outline btn-md btn-full">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" id="testimonials">
+    <div class="section-inner">
+      <div style="text-align:center;margin-bottom:64px">
+        <div class="section-badge">Testimonials</div>
+        <h2 class="section-title">Loved by <span class="gradient-text">10,000+ users</span></h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <!-- TEMPLATE_LITERAL_REMOVED ${[['Priya Sharma','Software Engineer, Bangalore','⭐⭐⭐⭐⭐','FinSight completely changed how I manage money. The AI insights are spot-on — it told me I was overspending on dining before I even noticed!'],['Rahul Mehta','Entrepreneur, Mumbai','⭐⭐⭐⭐⭐','The investment portfolio tracker is exceptional. I can see all my stocks, SIPs and gold in one place with beautiful charts.'],['Ananya Patel','CA, Hyderabad','⭐⭐⭐⭐⭐','As a chartered accountant I appreciate the accuracy. The receipt scanner with OCR is incredibly fast and the reports export is professional.']].map(([name,role,stars,text])=>`
+      <div class="testimonial-card">
+        <div style="font-size:20px;margin-bottom:12px"><!-- TEMPLATE_LITERAL_REMOVED ${stars}</div>
+        <p style="font-size:14px;line-height:1.7;color:var(--on-surface-secondary);margin-bottom:16px">"<!-- TEMPLATE_LITERAL_REMOVED ${text}"</p>
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="https://ui-avatars.com/api/?name=<!-- TEMPLATE_LITERAL_REMOVED ${encodeURIComponent(name)}&background=7c3aed&color=fff&size=80" alt="<!-- TEMPLATE_LITERAL_REMOVED ${name}" style="width:36px;height:36px;border-radius:50%"/>
+          <div><div style="font-size:14px;font-weight:700"><!-- TEMPLATE_LITERAL_REMOVED ${name}</div><div style="font-size:12px;color:var(--on-surface-muted)"><!-- TEMPLATE_LITERAL_REMOVED ${role}</div></div>
+        </div>
+      </div>` ).join('')} -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq" style="background:var(--surface-base)">
+    <div class="section-inner" style="max-width:720px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:48px">
+        <div class="section-badge">FAQ</div>
+        <h2 class="section-title">Frequently asked questions</h2>
+      </div>
+      <div id="faq-list">
+        <!-- TEMPLATE_LITERAL_REMOVED ${[['Is FinSight really free?','Yes! The free plan gives you full access to core features including expense tracking, budgets, and goal setting with up to 100 transactions per month. No credit card required.'],['How secure is my financial data?','Bank-level 256-bit encryption protects all data. We never store banking credentials — only the transaction data you explicitly add. SOC2 Type II compliant.'],['Can I import bank statements?','Yes, you can import CSV/Excel files from any bank. We also support Plaid integration for automatic transaction sync (coming soon).'],['Does FinSight support multiple currencies?','Absolutely. You can set your default currency and add transactions in any currency with automatic conversion using live exchange rates.'],['Can I cancel anytime?','Yes, cancel anytime with no questions asked. Your data is always exportable in CSV or PDF format even after cancellation.'],['Is there a mobile app?','The web app is fully responsive and works great on mobile. Native iOS and Android apps are in active development — expected in Q3 2026.']].map(([q,a])=>`
+      <div class="faq-item" onclick="toggleFAQ(this)">
+        <div class="faq-q"><!-- TEMPLATE_LITERAL_REMOVED ${q}<span class="material-symbols-outlined faq-icon" style="font-size:20px;color:var(--on-surface-muted)">expand_more</span></div>
+        <div class="faq-a"><!-- TEMPLATE_LITERAL_REMOVED ${a}</div>
+      </div>` ).join('')} -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="section" style="background:var(--color-primary-gradient);padding:80px 32px">
+    <div style="text-align:center;max-width:640px;margin:0 auto">
+      <h2 style="font-size:40px;font-weight:900;color:white;margin-bottom:16px;letter-spacing:-0.025em">Start your
+        financial journey today</h2>
+      <p style="font-size:16px;color:rgba(255,255,255,0.8);margin-bottom:36px">Join 10,000+ users who've transformed
+        their financial lives with FinSight.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <a href="/create_account.html" class="btn btn-xl"
+          style="background:white;color:var(--color-primary);font-weight:700">
+          <span class="material-symbols-outlined">rocket_launch</span> Create Free Account
+        </a>
+        <a href="/login.html" class="btn btn-xl btn-outline" style="border-color:rgba(255,255,255,0.4);color:white">Sign
+          In</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="landing-footer">
+    <div class="footer-inner">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px">
+        <div>
+          <a href="/landing.html" class="nav-logo" style="margin-bottom:16px;display:inline-flex">
+            <div class="logo-icon"><span class="material-symbols-outlined"
+                style="font-size:18px;color:white">insights</span></div>
+            FinSight
+          </a>
+          <p style="font-size:14px;color:var(--on-surface-muted);line-height:1.7;max-width:280px;margin-top:12px">
+            AI-powered personal finance platform to track, plan, and grow your wealth.</p>
+        </div>
+        <div>
+          <div
+            style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--on-surface-muted);margin-bottom:16px">
+            Product</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <!-- TEMPLATE_LITERAL_REMOVED ${[['Features','#features'],['Pricing','#pricing'],['Dashboard','/dashboard.html'],['Analytics','/analytics.html']].map(([l,h])=>`<a href="<!-- TEMPLATE_LITERAL_REMOVED ${h}" style="font-size:14px;color:var(--on-surface-secondary);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--on-surface-secondary)'"><!-- TEMPLATE_LITERAL_REMOVED ${l}</a>` ).join('')} -->
+          </div>
+        </div>
+        <div>
+          <div
+            style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--on-surface-muted);margin-bottom:16px">
+            Company</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <!-- TEMPLATE_LITERAL_REMOVED ${[['About','#'],['Blog','#'],['Careers','#'],['Contact','/help.html']].map(([l,h])=>`<a href="<!-- TEMPLATE_LITERAL_REMOVED ${h}" style="font-size:14px;color:var(--on-surface-secondary);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--on-surface-secondary)'"><!-- TEMPLATE_LITERAL_REMOVED ${l}</a>` ).join('')} -->
+          </div>
+        </div>
+        <div>
+          <div
+            style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--on-surface-muted);margin-bottom:16px">
+            Legal</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <!-- TEMPLATE_LITERAL_REMOVED ${[['Privacy Policy','#'],['Terms of Service','#'],['Security','#'],['Cookie Policy','#']].map(([l,h])=>`<a href="<!-- TEMPLATE_LITERAL_REMOVED ${h}" style="font-size:14px;color:var(--on-surface-secondary);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--on-surface-secondary)'"><!-- TEMPLATE_LITERAL_REMOVED ${l}</a>` ).join('')} -->
+          </div>
+        </div>
+      </div>
+      <div
+        style="border-top:1px solid var(--outline);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+        <div style="font-size:13px;color:var(--on-surface-muted)">© 2026 FinSight. All rights reserved.</div>
+        <div style="font-size:13px;color:var(--on-surface-muted)">Made with ❤️ in India</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('landing-nav').classList.toggle('scrolled', window.scrollY > 20);
+    });
+    function toggleFAQ(el) { el.classList.toggle('open'); }
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark', !isDark);
+      const icon = document.getElementById('nav-theme-icon');
+      if (icon) icon.textContent = isDark ? 'dark_mode' : 'light_mode';
+      localStorage.setItem('finsight_theme', isDark ? 'light' : 'dark');
+    }
+    const savedTheme = localStorage.getItem('finsight_theme') || 'dark';
+    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    const ni = document.getElementById('nav-theme-icon');
+    if (ni) ni.textContent = savedTheme === 'dark' ? 'light_mode' : 'dark_mode';
+    // If already logged in, redirect to dashboard
+    if (localStorage.getItem('finsight_token') || localStorage.getItem('access_token')) {
+      // Could redirect: window.location.href = '/dashboard.html';
+    }
+  </script>
+</body>
+
+</html>

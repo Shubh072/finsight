@@ -1,126 +1,426 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>FinSight | Email Verification</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        background: "#0b1326",
-                        surface: "#131b2e",
-                        primary: "#8b5cf6",
-                        secondary: "#10b981",
-                        error: "#f43f5e",
-                        "on-background": "#dae2fd",
-                        "outline-variant": "#494454",
-                        "surface-container": "#171f33"
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b1326;
-        }
-        .glass-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(51, 65, 85, 0.5);
-        }
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            opacity: 0.15;
-        }
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(20px, -20px); }
-            100% { transform: translate(0, 0); }
-        }
-        .animate-float {
-            animation: float 8s ease-in-out infinite;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Verify Email · FinSight</title>
+  <meta name="description" content="Verify your email address to activate your FinSight account." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/css/design-system.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    .verify-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-dim);
+      padding: 24px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .verify-page::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: -20%;
+      width: 80%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.1), transparent 70%);
+      pointer-events: none
+    }
+
+    .verify-card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface-base);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-2xl);
+      padding: 48px 40px;
+      position: relative;
+      z-index: 1;
+      box-shadow: var(--shadow-2xl);
+      text-align: center;
+      animation: fadeIn 500ms ease forwards
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .verify-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px
+    }
+
+    .verify-icon.pending {
+      background: var(--color-warning-bg);
+      color: var(--color-warning)
+    }
+
+    .verify-icon.success {
+      background: var(--color-success-bg);
+      color: var(--color-success)
+    }
+
+    .verify-icon.error {
+      background: var(--color-error-bg);
+      color: var(--color-error)
+    }
+
+    .verify-icon .material-symbols-outlined {
+      font-size: 36px
+    }
+
+    .verify-card h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--on-surface);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em
+    }
+
+    .verify-card p {
+      font-size: 14px;
+      color: var(--on-surface-muted);
+      line-height: 1.6;
+      margin-bottom: 28px
+    }
+
+    .verify-card .email-highlight {
+      color: var(--color-primary);
+      font-weight: 600
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 46px;
+      padding: 0 28px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all .2s;
+      background: var(--color-primary-gradient);
+      color: #fff;
+      text-decoration: none
+    }
+
+    .btn-primary:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px)
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 46px;
+      padding: 0 28px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all .2s;
+      background: transparent;
+      color: var(--on-surface);
+      text-decoration: none
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-container)
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      display: inline-block
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .status-box {
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+      font-size: 13px;
+      line-height: 1.5
+    }
+
+    .status-box.info {
+      background: var(--color-primary-bg);
+      border: 1px solid rgba(124, 58, 237, 0.15);
+      color: var(--color-primary)
+    }
+
+    .status-box.success {
+      background: var(--color-success-bg);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      color: var(--color-success)
+    }
+
+    .status-box.error {
+      background: var(--color-error-bg);
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      color: var(--color-error)
+    }
+
+    .resend-link {
+      font-size: 13px;
+      color: var(--color-primary);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity .2s
+    }
+
+    .resend-link:hover {
+      opacity: .8;
+      text-decoration: underline
+    }
+
+    .resend-link:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      text-decoration: none
+    }
+
+    .countdown {
+      font-size: 12px;
+      color: var(--on-surface-muted);
+      margin-top: 8px
+    }
+
+    @media(max-width:480px) {
+      .verify-card {
+        padding: 32px 24px
+      }
+    }
+  </style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
-    <div class="orb w-[400px] h-[400px] bg-primary top-[-10%] left-[-10%] animate-float"></div>
-    <div class="orb w-[300px] h-[300px] bg-secondary bottom-[-10%] right-[-10%] animate-float" style="animation-delay: -4s;"></div>
 
-    <main class="relative z-10 w-full max-w-[480px]">
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20 mb-4">
-                <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">verified</span>
-            </div>
-            <h1 class="text-3xl font-bold tracking-tight text-on-background">FinSight</h1>
-            <p class="text-on-background/70 mt-2">Account Verification</p>
+<body>
+  <div class="verify-page">
+    <div class="verify-card" id="verify-card">
+      <!-- State: Loading -->
+      <div id="state-loading">
+        <div class="verify-icon pending"><span class="material-symbols-outlined">hourglass_top</span></div>
+        <h1>Verifying your email</h1>
+        <p>Please wait while we verify your email address...</p>
+        <div class="spinner" style="margin:0 auto"></div>
+      </div>
+
+      <!-- State: Success -->
+      <div id="state-success" style="display:none">
+        <div class="verify-icon success"><span class="material-symbols-outlined">verified</span></div>
+        <h1>Email verified!</h1>
+        <p>Your email address has been successfully verified. You can now access all FinSight features.</p>
+        <a href="/login.html?verified=true" class="btn-primary"><span class="material-symbols-outlined"
+            style="font-size:18px">arrow_forward</span>Continue to Sign In</a>
+      </div>
+
+      <!-- State: Already Verified -->
+      <div id="state-already" style="display:none">
+        <div class="verify-icon success"><span class="material-symbols-outlined">check_circle</span></div>
+        <h1>Already verified</h1>
+        <p>This email address has already been verified. No further action is needed.</p>
+        <a href="/login.html" class="btn-primary"><span class="material-symbols-outlined"
+            style="font-size:18px">login</span>Sign In</a>
+      </div>
+
+      <!-- State: Error -->
+      <div id="state-error" style="display:none">
+        <div class="verify-icon error"><span class="material-symbols-outlined">gpp_bad</span></div>
+        <h1>Verification failed</h1>
+        <p id="error-message">The verification link is invalid or has expired. Please request a new verification email.
+        </p>
+        <button class="btn-primary" onclick="resendVerification()" id="resend-btn"><span
+            class="material-symbols-outlined" style="font-size:18px">refresh</span><span id="resend-text">Resend
+            Verification Email</span></button>
+        <div style="margin-top:12px"><a href="/login.html" class="resend-link"><span class="material-symbols-outlined"
+              style="font-size:14px">arrow_back</span>Back to Sign In</a></div>
+      </div>
+
+      <!-- State: Resend Success -->
+      <div id="state-resend" style="display:none">
+        <div class="verify-icon success"><span class="material-symbols-outlined">mail</span></div>
+        <h1>Email sent!</h1>
+        <p>A new verification email has been sent to <span class="email-highlight" id="resend-email">your email</span>.
+          Please check your inbox and spam folder.</p>
+        <div class="status-box info"><span class="material-symbols-outlined"
+            style="font-size:16px;vertical-align:middle;margin-right:6px">info</span>The link will expire in 30 minutes.
         </div>
+        <a href="/login.html" class="btn-primary"><span class="material-symbols-outlined"
+            style="font-size:18px">login</span>Go to Sign In</a>
+      </div>
+    </div>
+  </div>
 
-        <div class="glass-card rounded-2xl p-8 shadow-2xl text-center flex flex-col items-center gap-6">
-            <div id="status-icon-container" class="w-20 h-20 rounded-full flex items-center justify-center bg-surface border border-outline-variant">
-                <span id="status-icon" class="material-symbols-outlined text-5xl">pending</span>
-            </div>
+  <script>
+    (function () {
+      'use strict';
+      const theme = localStorage.getItem('finsight_theme') || 'dark';
+      document.documentElement.classList.toggle('dark', theme === 'dark');
 
-            <div>
-                <h2 id="status-title" class="text-2xl font-bold text-on-background">Verifying Account...</h2>
-                <p id="status-message" class="text-on-background/75 mt-3 leading-relaxed">Please wait while we confirm your email address.</p>
-            </div>
-
-            <div class="w-full border-t border-outline-variant my-2"></div>
-
-            <a id="action-btn" href="/login.html" class="w-full py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/25">
-                Proceed to Login
-                <span class="material-symbols-outlined text-md">arrow_forward</span>
-            </a>
-        </div>
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const success = urlParams.get('success');
-            const message = urlParams.get('message');
-
-            const statusIconContainer = document.getElementById('status-icon-container');
-            const statusIcon = document.getElementById('status-icon');
-            const statusTitle = document.getElementById('status-title');
-            const statusMessage = document.getElementById('status-message');
-            const actionBtn = document.getElementById('action-btn');
-
-            if (success === 'true') {
-                statusIconContainer.className = 'w-20 h-20 rounded-full flex items-center justify-center bg-secondary/10 border border-secondary/30 text-secondary';
-                statusIcon.textContent = 'check_circle';
-                statusTitle.textContent = 'Verification Successful!';
-                statusMessage.textContent = message || 'Your email address has been verified successfully. You can now access your dashboard.';
-                actionBtn.textContent = 'Proceed to Login';
-                actionBtn.className = 'w-full py-3 bg-secondary text-white font-semibold rounded-xl hover:bg-secondary/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-secondary/25';
-            } else if (success === 'false') {
-                statusIconContainer.className = 'w-20 h-20 rounded-full flex items-center justify-center bg-error/10 border border-error/30 text-error';
-                statusIcon.textContent = 'error';
-                statusTitle.textContent = 'Verification Failed';
-                statusMessage.textContent = message || 'The verification link is invalid or has expired. Please register again or request a new link.';
-                actionBtn.textContent = 'Back to Register';
-                actionBtn.setAttribute('href', '/create_account.html');
-                actionBtn.className = 'w-full py-3 bg-error text-white font-semibold rounded-xl hover:bg-error/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-error/25';
-            } else {
-                // If loaded without query parameters
-                statusIconContainer.className = 'w-20 h-20 rounded-full flex items-center justify-center bg-primary/10 border border-primary/30 text-primary';
-                statusIcon.textContent = 'mail';
-                statusTitle.textContent = 'Verification Link Sent';
-                statusMessage.textContent = 'Please check your email inbox and click the verification link to activate your FinSight account.';
-                actionBtn.textContent = 'Proceed to Login';
-            }
+      function showState(id) {
+        ['state-loading', 'state-success', 'state-already', 'state-error', 'state-resend'].forEach(s => {
+          document.getElementById(s).style.display = s === id ? 'block' : 'none';
         });
-    </script>
+      }
+
+      function getQueryParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+      }
+
+      async function verifyEmail() {
+        const token = getQueryParam('token');
+        const email = getQueryParam('email');
+
+        if (!token && !email) {
+          // No token — check if user is already logged in
+          const storedToken = localStorage.getItem('finsight_token') || localStorage.getItem('access_token');
+          if (storedToken) {
+            showState('state-already');
+          } else {
+            document.getElementById('error-message').textContent = 'No verification token found. Please use the link from your email.';
+            showState('state-error');
+          }
+          return;
+        }
+
+        showState('state-loading');
+
+        try {
+          const payload = {};
+          if (token) payload.token = token;
+          if (email) payload.email = email;
+
+          const response = await axios.post('/api/auth/verify-email', payload);
+
+          if (response.data && response.data.success) {
+            // Update stored user if available
+            const user = response.data.user;
+            if (user) {
+              try {
+                const existing = JSON.parse(localStorage.getItem('finsight_user') || '{}');
+                Object.assign(existing, user, { email_verified: true });
+                localStorage.setItem('finsight_user', JSON.stringify(existing));
+              } catch (e) { }
+            }
+            showState('state-success');
+          } else if (response.data && response.data.already_verified) {
+            showState('state-already');
+          } else {
+            document.getElementById('error-message').textContent = response.data?.message || 'Verification failed. Please try again.';
+            showState('state-error');
+          }
+        } catch (err) {
+          if (err.response) {
+            const status = err.response.status;
+            const msg = err.response.data?.message || err.response.data?.error || '';
+
+            if (status === 400) {
+              document.getElementById('error-message').textContent = msg || 'Invalid verification link.';
+            } else if (status === 404) {
+              document.getElementById('error-message').textContent = msg || 'Verification link not found. It may have expired.';
+            } else if (status === 410) {
+              document.getElementById('error-message').textContent = msg || 'This verification link has expired. Please request a new one.';
+            } else if (status === 409) {
+              showState('state-already');
+              return;
+            } else {
+              document.getElementById('error-message').textContent = msg || 'Something went wrong. Please try again later.';
+            }
+          } else if (err.request) {
+            document.getElementById('error-message').textContent = 'Network error. Please check your connection and try again.';
+          } else {
+            document.getElementById('error-message').textContent = 'An unexpected error occurred.';
+          }
+          showState('state-error');
+        }
+      }
+
+      window.resendVerification = async function () {
+        const btn = document.getElementById('resend-btn');
+        const text = document.getElementById('resend-text');
+        btn.disabled = true;
+        text.textContent = 'Sending...';
+
+        const email = getQueryParam('email') || '';
+        const storedUser = (() => { try { return JSON.parse(localStorage.getItem('finsight_user') || '{}'); } catch { return {}; } })();
+        const targetEmail = email || storedUser.email || '';
+
+        try {
+          const response = await axios.post('/api/auth/resend-verification', { email: targetEmail });
+          if (response.data && response.data.success) {
+            const el = document.getElementById('resend-email');
+            if (el) el.textContent = targetEmail || 'your email';
+            showState('state-resend');
+          } else {
+            document.getElementById('error-message').textContent = response.data?.message || 'Failed to resend. Please try again.';
+            showState('state-error');
+          }
+        } catch (err) {
+          const msg = err.response?.data?.message || 'Failed to resend verification email.';
+          document.getElementById('error-message').textContent = msg;
+          showState('state-error');
+        } finally {
+          btn.disabled = false;
+          text.textContent = 'Resend Verification Email';
+        }
+      };
+
+      // Auto-verify on page load
+      verifyEmail();
+    })();
+  </script>
 </body>
+
 </html>

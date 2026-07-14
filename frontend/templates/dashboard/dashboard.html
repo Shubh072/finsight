@@ -1,0 +1,209 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-6 animate-fade-in">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">Welcome back, <span id="userName">User</span></h1>
+            <p class="text-gray-500 mt-1">Here's your financial overview for today</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="btn btn-outline btn-md">This Month</button>
+            <button class="btn btn-primary btn-md" onclick="openModal('addTransactionModal')">Add Transaction</button>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="card">
+            <div class="flex items-start justify-between">
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-500">Total Income</p>
+                    <p class="text-2xl font-bold" id="totalIncome">$12,450</p>
+                    <p class="text-sm text-emerald-500 flex items-center gap-1">↑ 12.5% from last month</p>
+                </div>
+                <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="flex items-start justify-between">
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-500">Total Expenses</p>
+                    <p class="text-2xl font-bold">$8,450</p>
+                    <p class="text-sm text-red-500 flex items-center gap-1">↑ 8.2% from last month</p>
+                </div>
+                <div class="p-3 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-500">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="flex items-start justify-between">
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-500">Total Savings</p>
+                    <p class="text-2xl font-bold">$4,000</p>
+                    <p class="text-sm text-emerald-500 flex items-center gap-1">↑ 15.3% from last month</p>
+                </div>
+                <div class="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-500">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="flex items-start justify-between">
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-500">Net Worth</p>
+                    <p class="text-2xl font-bold">$125,000</p>
+                    <p class="text-sm text-emerald-500 flex items-center gap-1">↑ 5.7% from last month</p>
+                </div>
+                <div class="p-3 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-500">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+        <div class="card">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Monthly Spending</h3>
+                <span class="badge badge-info">+12.5% vs last month</span>
+            </div>
+            <div class="chart-container" id="spendingChart"></div>
+        </div>
+        <div class="card">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Spending by Category</h3>
+            </div>
+            <div class="chart-container" id="categoryChart"></div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions & AI Insights -->
+    <div class="grid lg:grid-cols-2 gap-6">
+        <div class="card">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Recent Transactions</h3>
+                <a href="/expenses" class="btn btn-ghost btn-sm">View All</a>
+            </div>
+            <div class="space-y-1" id="recentTransactions">
+                <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-xl bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
+                            <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                        </div>
+                        <div><p class="text-sm font-medium">Grocery Store</p><p class="text-xs text-gray-500">Groceries · 2h ago</p></div>
+                    </div>
+                    <span class="text-sm font-semibold text-red-500">-$156.00</span>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center">
+                            <svg class="h-4 w-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                        </div>
+                        <div><p class="text-sm font-medium">Salary Deposit</p><p class="text-xs text-gray-500">Income · 1d ago</p></div>
+                    </div>
+                    <span class="text-sm font-semibold text-emerald-500">+$5,000.00</span>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-xl bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
+                            <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                        </div>
+                        <div><p class="text-sm font-medium">Netflix Subscription</p><p class="text-xs text-gray-500">Subscription · 2d ago</p></div>
+                    </div>
+                    <span class="text-sm font-semibold text-red-500">-$15.99</span>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">AI Insights</h3>
+                <svg class="h-4 w-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            </div>
+            <div class="space-y-4">
+                <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/10 space-y-1">
+                    <div class="flex items-center gap-2"><div class="h-2 w-2 rounded-full bg-amber-500"></div><p class="text-sm font-medium">Spending Pattern Detected</p></div>
+                    <p class="text-xs text-gray-500">Your dining expenses increased 23% this month. Consider setting a dining budget.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 space-y-1">
+                    <div class="flex items-center gap-2"><div class="h-2 w-2 rounded-full bg-emerald-500"></div><p class="text-sm font-medium">Savings Opportunity</p></div>
+                    <p class="text-xs text-gray-500">You could save $120/month by reducing subscription services.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/10 space-y-1">
+                    <div class="flex items-center gap-2"><div class="h-2 w-2 rounded-full bg-blue-500"></div><p class="text-sm font-medium">Investment Tip</p></div>
+                    <p class="text-xs text-gray-500">Your portfolio is 65% in stocks. Consider diversifying into bonds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Transaction Modal -->
+<div id="addTransactionModal" class="modal-overlay hidden">
+    <div class="modal-content animate-scale-in">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold">Add Transaction</h2>
+            <button onclick="closeModal('addTransactionModal')" class="p-1 rounded-lg hover:bg-gray-100"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <form class="space-y-4">
+            <div class="input-group"><label class="input-label">Amount</label><input type="number" class="input-field" placeholder="0.00" step="0.01"></div>
+            <div class="input-group"><label class="input-label">Description</label><input type="text" class="input-field" placeholder="Enter description"></div>
+            <div class="input-group"><label class="input-label">Category</label>
+                <select class="input-field">
+                    <option>Food & Dining</option><option>Transportation</option><option>Shopping</option>
+                    <option>Bills & Utilities</option><option>Entertainment</option><option>Healthcare</option>
+                </select>
+            </div>
+            <div class="flex gap-3 justify-end pt-4">
+                <button type="button" onclick="closeModal('addTransactionModal')" class="btn btn-secondary btn-md">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-md">Add Transaction</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Spending Chart
+new Chart(document.getElementById('spendingChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Spending',
+            data: [2400, 1398, 3800, 2908, 4800, 3800],
+            backgroundColor: '#10B981',
+            borderRadius: 6,
+            barThickness: 32
+        }]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, grid: { color: '#f0f0f0' } }, x: { grid: { display: false } } }
+    }
+});
+
+// Category Chart
+new Chart(document.getElementById('categoryChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Food', 'Transport', 'Shopping', 'Bills'],
+        datasets: [{
+            data: [35, 20, 25, 20],
+            backgroundColor: ['#EF4444', '#F97316', '#6366F1', '#22C55E'],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom' } },
+        cutout: '65%'
+    }
+});
+</script>
+{% endblock %}

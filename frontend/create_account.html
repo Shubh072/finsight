@@ -1,439 +1,611 @@
 <!DOCTYPE html>
-
 <html class="dark" lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>FinSight - Create Account</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <!-- Shared Components JSON styling extraction & Theme Configuration -->
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "surface-container-lowest": "#060e20",
-                        "surface-container": "#171f33",
-                        "on-tertiary-container": "#5b0017",
-                        "primary-fixed": "#e9ddff",
-                        "tertiary-container": "#ff516a",
-                        "surface": "#0b1326",
-                        "secondary-fixed-dim": "#4edea3",
-                        "on-surface": "#dae2fd",
-                        "on-error-container": "#ffdad6",
-                        "tertiary-fixed-dim": "#ffb2b7",
-                        "outline-variant": "#494454",
-                        "on-primary-container": "#340080",
-                        "surface-container-high": "#222a3d",
-                        "primary-fixed-dim": "#d0bcff",
-                        "inverse-surface": "#dae2fd",
-                        "secondary": "#4edea3",
-                        "on-primary-fixed-variant": "#5516be",
-                        "surface-dim": "#0b1326",
-                        "inverse-primary": "#6d3bd7",
-                        "on-tertiary-fixed-variant": "#92002a",
-                        "tertiary-fixed": "#ffdadb",
-                        "surface-container-low": "#131b2e",
-                        "error": "#ffb4ab",
-                        "inverse-on-surface": "#283044",
-                        "on-error": "#690005",
-                        "surface-variant": "#2d3449",
-                        "tertiary": "#ffb2b7",
-                        "secondary-container": "#00a572",
-                        "outline": "#958ea0",
-                        "on-tertiary-fixed": "#40000d",
-                        "on-secondary-container": "#00311f",
-                        "background": "#0b1326",
-                        "surface-tint": "#d0bcff",
-                        "surface-bright": "#31394d",
-                        "on-background": "#dae2fd",
-                        "on-primary": "#3c0091",
-                        "secondary-fixed": "#6ffbbe",
-                        "on-secondary": "#003824",
-                        "primary-container": "#a078ff",
-                        "on-surface-variant": "#cbc3d7",
-                        "error-container": "#93000a",
-                        "on-secondary-fixed": "#002113",
-                        "primary": "#d0bcff",
-                        "on-secondary-fixed-variant": "#005236",
-                        "on-primary-fixed": "#23005c"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "xs": "8px",
-                        "xl": "64px",
-                        "margin-mobile": "16px",
-                        "base": "4px",
-                        "lg": "40px",
-                        "gutter": "16px",
-                        "md": "24px",
-                        "margin-desktop": "32px",
-                        "sm": "16px"
-                    },
-                    "fontFamily": {
-                        "headline-lg": ["Inter", "sans-serif"],
-                        "headline-md": ["Inter", "sans-serif"],
-                        "body-lg": ["Inter", "sans-serif"],
-                        "body-md": ["Inter", "sans-serif"],
-                        "label-md": ["Inter", "sans-serif"],
-                        "label-sm": ["Inter", "sans-serif"],
-                        "data-mono": ["Inter", "monospace"]
-                    },
-                    "fontSize": {
-                        "headline-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
-                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" }]
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #0b1326;
-            color: #dae2fd;
-            overflow-x: hidden;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Create Account · FinSight Intelligence</title>
+  <meta name="description"
+    content="Create your free FinSight account. Enterprise-grade financial intelligence platform for tracking expenses, managing budgets, and growing investments." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/css/design-system.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-        .glass-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(51, 65, 85, 0.5);
-        }
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-dim);
+      padding: 32px 20px;
+      position: relative;
+      overflow: hidden
+    }
 
-        .inner-glow {
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-        }
+    .auth-page::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -10%;
+      width: 60%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.12), transparent 70%);
+      pointer-events: none
+    }
 
-        .primary-glow {
-            box-shadow: 0 0 15px rgba(208, 188, 255, 0.2);
-        }
+    .auth-page::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      right: -10%;
+      width: 50%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.08), transparent 70%);
+      pointer-events: none
+    }
 
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
+    .auth-card {
+      width: 100%;
+      max-width: 580px;
+      background: var(--surface-base);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-2xl);
+      padding: 44px;
+      position: relative;
+      z-index: 1;
+      box-shadow: var(--shadow-2xl);
+      animation: slideUp 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards
+    }
 
-        /* Ambient animation */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            opacity: 0.15;
-        }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px)
+      }
 
-        @keyframes float {
-            0% {
-                transform: translate(0, 0);
-            }
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
 
-            50% {
-                transform: translate(30px, -30px);
-            }
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 24px
+    }
 
-            100% {
-                transform: translate(0, 0);
-            }
-        }
+    .auth-logo-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--color-primary-gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-glow)
+    }
 
-        .animate-float {
-            animation: float 10s ease-in-out infinite;
-        }
-    </style>
+    .auth-card h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--on-surface);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px
+    }
+
+    .auth-card .subtitle {
+      font-size: 14px;
+      color: var(--on-surface-muted);
+      margin-bottom: 28px
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px
+    }
+
+    .form-group {
+      margin-bottom: 18px
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--on-surface);
+      margin-bottom: 7px
+    }
+
+    .form-label .required {
+      color: var(--color-error)
+    }
+
+    .input-pw-wrap {
+      position: relative
+    }
+
+    .input-pw-wrap input {
+      padding-right: 44px
+    }
+
+    .pw-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--on-surface-muted);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color .2s
+    }
+
+    .pw-toggle:hover {
+      color: var(--on-surface)
+    }
+
+    .pw-meter {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--surface-container);
+      margin-top: 8px;
+      overflow: hidden
+    }
+
+    .pw-meter-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 2px;
+      transition: all .3s
+    }
+
+    .pw-meter-label {
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 4px;
+      min-height: 16px
+    }
+
+    .alert {
+      display: none;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 16px
+    }
+
+    .alert-error {
+      background: var(--color-error-bg);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: var(--color-error)
+    }
+
+    .alert-success {
+      background: var(--color-success-bg);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: var(--color-success)
+    }
+
+    .alert .material-symbols-outlined {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px
+    }
+
+    .social-btn {
+      width: 100%;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-md);
+      background: var(--surface-base);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--on-surface);
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .social-btn:hover {
+      background: var(--surface-container);
+      border-color: var(--on-surface-muted)
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+      color: var(--on-surface-muted);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--outline)
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 22px;
+      cursor: pointer
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-top: 3px;
+      accent-color: var(--color-primary);
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0
+    }
+
+    .checkbox-group label {
+      font-size: 13px;
+      color: var(--on-surface-secondary);
+      line-height: 1.5;
+      cursor: pointer
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 48px;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all .2s;
+      background: var(--color-primary-gradient);
+      color: #fff
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px)
+    }
+
+    .btn-submit:disabled {
+      opacity: .6;
+      cursor: not-allowed
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      display: none
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .auth-footer {
+      text-align: center;
+      font-size: 14px;
+      color: var(--on-surface-secondary);
+      margin-top: 20px
+    }
+
+    .auth-footer a {
+      color: var(--color-primary);
+      font-weight: 700;
+      text-decoration: none
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline
+    }
+
+    @media(max-width:600px) {
+      .auth-card {
+        padding: 28px 20px
+      }
+
+      .form-row {
+        grid-template-columns: 1fr
+      }
+
+      .social-grid {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
 </head>
 
-<body class="flex items-center justify-center min-h-screen p-md md:p-lg relative overflow-hidden">
-    <!-- Background Elements -->
-    <div class="orb w-[500px] h-[500px] bg-primary top-[-10%] left-[-10%] animate-float"></div>
-    <div class="orb w-[400px] h-[400px] bg-secondary bottom-[-10%] right-[-10%] animate-float"
-        style="animation-delay: -5s;"></div>
-    <!-- Main Content Container -->
-    <main class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 items-center gap-xl">
-        <!-- Branding Side (Visible on Desktop) -->
-        <div class="hidden lg:flex flex-col space-y-md">
-            <div class="flex items-center gap-xs">
-                <span class="material-symbols-outlined text-primary text-[40px]"
-                    style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
-                <h1 class="font-headline-lg text-headline-lg text-primary tracking-tighter">FinSight</h1>
-            </div>
-            <h2 class="font-headline-md text-headline-md text-on-surface">Experience the future of premium wealth
-                management.</h2>
-            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
-                Secure, precise, and cutting-edge. Join over 100,000 elite investors managing their global portfolios
-                with obsidian-level clarity.
-            </p>
-            <!-- Visual Element for Left Side -->
-            <div class="pt-lg">
-                <div class="glass-card rounded-xl p-md flex items-center gap-md border-primary/20 bg-primary/5">
-                    <div class="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-primary"
-                            style="font-variation-settings: 'FILL' 1;">security</span>
-                    </div>
-                    <div>
-                        <p class="font-label-md text-label-md text-on-surface">Enterprise-Grade Encryption</p>
-                        <p class="font-label-sm text-label-sm text-on-surface-variant">Your financial data is protected
-                            by biometric-level security protocols.</p>
-                    </div>
-                </div>
-            </div>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <a href="/" class="auth-logo">
+        <div class="auth-logo-icon"><span class="material-symbols-outlined"
+            style="font-size:18px;color:#fff">insights</span></div>
+        <span style="font-size:20px;font-weight:800;color:var(--on-surface);letter-spacing:-0.02em">FinSight</span>
+      </a>
+      <h1>Create your account</h1>
+      <p class="subtitle">Start managing your finances intelligently. Free forever — no credit card needed.</p>
+
+      <div class="alert alert-error" id="reg-error"><span class="material-symbols-outlined">error</span><span
+          id="reg-error-text">Error</span></div>
+
+      <div class="social-grid">
+        <button class="social-btn" type="button" onclick="handleSocialSignup('google')">
+          <svg width="16" height="16" viewBox="0 0 24 24">
+            <path fill="#4285F4"
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+            <path fill="#34A853"
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+            <path fill="#FBBC05"
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+            <path fill="#EA4335"
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+          </svg>
+          Google
+        </button>
+        <button class="social-btn" type="button" onclick="handleSocialSignup('github')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" />
+          </svg>
+          GitHub
+        </button>
+      </div>
+      <div class="divider"><span class="divider-line"></span>or email<span class="divider-line"></span></div>
+
+      <form id="register-form" novalidate autocomplete="on">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name <span class="required">*</span></label>
+            <input type="text" id="reg-name" class="form-input" placeholder="Raj Sharma" style="height:46px" required
+              autocomplete="name" />
+            <div class="form-error" id="reg-name-err"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-username">Username <span class="required">*</span></label>
+            <input type="text" id="reg-username" class="form-input" placeholder="rajsharma" style="height:46px" required
+              autocomplete="username" />
+            <div class="form-error" id="reg-username-err"></div>
+          </div>
         </div>
-        <!-- Create Account Form Side -->
-        <div class="flex justify-center lg:justify-end">
-            <div class="glass-card inner-glow w-full max-w-md rounded-xl p-md md:p-xl flex flex-col gap-md">
-                <!-- Header -->
-                <div class="text-center lg:text-left">
-                    <h3 class="font-headline-md text-headline-md text-on-surface mb-base">Create Account</h3>
-                    <p class="font-body-md text-body-md text-on-surface-variant">Start your journey to financial
-                        mastery.</p>
-                </div>
-                <!-- Form -->
-                <div id="form-message"
-                    class="hidden p-xs rounded border text-center font-label-sm text-label-sm"></div>
-                <form id="register-form" class="flex flex-col gap-sm">
-                    <!-- Full Name -->
-                    <div class="flex flex-col gap-base">
-                        <label class="font-label-md text-label-md text-on-surface-variant" for="name">Full Name</label>
-                        <div class="relative">
-                            <span
-                                class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">person</span>
-                            <input
-                                class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-[48px] py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline-variant"
-                                id="name" placeholder="John Doe" type="text" required />
-                        </div>
-                    </div>
-                    <!-- Username and Phone -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
-                        <div class="flex flex-col gap-base">
-                            <label class="font-label-md text-label-md text-on-surface-variant"
-                                for="username">Username</label>
-                            <div class="relative">
-                                <span
-                                    class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">badge</span>
-                                <input
-                                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-[48px] py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline-variant"
-                                    id="username" placeholder="johndoe" type="text" required />
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-base">
-                            <label class="font-label-md text-label-md text-on-surface-variant" for="phone">Phone</label>
-                            <div class="relative">
-                                <span
-                                    class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">call</span>
-                                <input
-                                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-[48px] py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline-variant"
-                                    id="phone" placeholder="9876543210" type="tel" inputmode="numeric" pattern="[0-9]{10}" required />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Email -->
-                    <div class="flex flex-col gap-base">
-                        <label class="font-label-md text-label-md text-on-surface-variant" for="email">Email
-                            Address</label>
-                        <div class="relative">
-                            <span
-                                class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">mail</span>
-                            <input
-                                class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-[48px] py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline-variant"
-                                id="email" placeholder="name@finsight.com" type="email" required />
-                        </div>
-                    </div>
-                    <!-- Password Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
-                        <div class="flex flex-col gap-base">
-                            <label class="font-label-md text-label-md text-on-surface-variant"
-                                for="password">Password</label>
-                            <div class="relative">
-                                <span
-                                    class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
-                                <input
-                                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-[48px] py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline-variant"
-                                    id="password" placeholder="••••••••" type="password" required />
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-base">
-                            <label class="font-label-md text-label-md text-on-surface-variant"
-                                for="confirm-password">Confirm</label>
-                            <div class="relative">
-                                <span
-                                    class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">lock_clock</span>
-                                <input
-                                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-[48px] py-sm font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline-variant"
-                                    id="confirm-password" placeholder="••••••••" type="password" required />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Terms -->
-                    <div class="flex items-start gap-sm mt-base">
-                        <input
-                            class="mt-1 h-4 w-4 rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-primary focus:ring-offset-0"
-                            id="terms" type="checkbox" required />
-                        <label class="font-label-sm text-label-sm text-on-surface-variant leading-tight" for="terms">
-                            I agree to the <a class="text-primary hover:underline" href="#">Terms of Service</a> and <a
-                                class="text-primary hover:underline" href="#">Privacy Policy</a>, including the
-                            high-frequency trading disclosures.
-                        </label>
-                    </div>
-                    <!-- Submit Button -->
-                    <button
-                        class="primary-glow mt-sm w-full bg-primary-container text-on-primary-container font-label-md text-label-md py-sm rounded-lg hover:bg-primary-fixed transition-all active:scale-[0.98]"
-                        type="submit">
-                        Create Account
-                    </button>
-                </form>
-                <!-- Divider -->
-                <div class="flex items-center gap-sm my-xs">
-                    <div class="flex-1 h-[1px] bg-outline-variant"></div>
-                    <span class="font-label-sm text-label-sm text-outline">OR REGISTER WITH</span>
-                    <div class="flex-1 h-[1px] bg-outline-variant"></div>
-                </div>
-                <!-- Social Registration -->
-                <div class="grid grid-cols-2 gap-sm">
-                    <button
-                        class="flex items-center justify-center gap-xs border border-outline-variant rounded-lg py-xs font-label-md text-label-md text-on-surface hover:bg-surface-variant transition-colors">
-                        <svg class="w-5 h-5" viewbox="0 0 24 24">
-                            <path
-                                d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.56-1.56 2.73-3.21 2.73-2.13 0-3.86-1.73-3.86-3.86s1.73-3.86 3.86-3.86c.94 0 1.8.34 2.46.9l1.97-1.97C18.74 3.71 16.5 3 14 3 8.48 3 4 7.48 4 13s4.48 10 10 10c5.52 0 10-4.48 10-10 0-.6-.06-1.18-.17-1.74z"
-                                fill="currentColor"></path>
-                        </svg>
-                        Google
-                    </button>
-                    <button
-                        class="flex items-center justify-center gap-xs border border-outline-variant rounded-lg py-xs font-label-md text-label-md text-on-surface hover:bg-surface-variant transition-colors">
-                        <svg class="w-5 h-5" viewbox="0 0 24 24">
-                            <path
-                                d="M17.05 20.28c-.96.95-2.04 1.44-3.23 1.44-1.2 0-2.16-.43-2.9-1.32-.73.88-1.75 1.32-3.04 1.32-1.24 0-2.31-.51-3.23-1.53C3.63 19.1 3 17.65 3 15.65c0-2.14.73-3.9 2.2-5.26 1.47-1.37 3.23-2.05 5.28-2.05 1.13 0 2.15.26 3.05.78.89-.52 1.94-.78 3.14-.78 1.92 0 3.53.64 4.83 1.92s1.95 2.92 1.95 4.92c0 2.05-.62 3.74-1.85 5.06l-.55.04zm-1.83-16.1c0 1.25-.44 2.34-1.33 3.25-.88.92-1.95 1.38-3.19 1.38-.04-1.17.43-2.28 1.4-3.32.98-1.04 2.02-1.56 3.12-1.56v.25z"
-                                fill="currentColor"></path>
-                        </svg>
-                        Apple
-                    </button>
-                </div>
-                <!-- Login Footer -->
-                <p class="text-center font-body-md text-body-md text-on-surface-variant mt-sm">
-                    Already have an account?
-                    <a class="text-primary font-label-md text-label-md hover:underline" href="/login.html">Log in</a>
-                </p>
-            </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email <span class="required">*</span></label>
+            <input type="email" id="reg-email" class="form-input" placeholder="raj@example.com" style="height:46px"
+              required autocomplete="email" />
+            <div class="form-error" id="reg-email-err"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">Phone <span class="required">*</span></label>
+            <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" style="height:46px"
+              required autocomplete="tel" />
+            <div class="form-error" id="reg-phone-err"></div>
+          </div>
         </div>
-    </main>
-    <!-- Visual Polish: Status Overlay -->
-    <div class="fixed bottom-md right-md flex flex-col gap-xs">
-        <div class="glass-card py-xs px-sm rounded-full flex items-center gap-xs animate-pulse">
-            <span class="w-2 h-2 rounded-full bg-secondary"></span>
-            <span class="font-label-sm text-label-sm text-secondary">System Online</span>
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password <span class="required">*</span></label>
+          <div class="input-pw-wrap">
+            <input type="password" id="reg-password" class="form-input"
+              placeholder="Create a strong password (min. 8 characters)" style="height:46px" required
+              autocomplete="new-password" oninput="checkPasswordStrength(this.value)" />
+            <button type="button" class="pw-toggle" onclick="togglePassword('reg-password',this)"
+              aria-label="Toggle password visibility" tabindex="-1"><span class="material-symbols-outlined"
+                style="font-size:18px">visibility</span></button>
+          </div>
+          <div class="pw-meter">
+            <div class="pw-meter-bar" id="pw-bar"></div>
+          </div>
+          <div class="pw-meter-label" id="pw-label" style="color:var(--on-surface-muted)">Choose a strong password</div>
         </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-confirm">Confirm Password <span class="required">*</span></label>
+          <div class="input-pw-wrap">
+            <input type="password" id="reg-confirm" class="form-input" placeholder="Re-enter your password"
+              style="height:46px" required autocomplete="new-password" />
+            <button type="button" class="pw-toggle" onclick="togglePassword('reg-confirm',this)"
+              aria-label="Toggle password visibility" tabindex="-1"><span class="material-symbols-outlined"
+                style="font-size:18px">visibility</span></button>
+          </div>
+          <div class="form-error" id="reg-confirm-err"></div>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="reg-terms" />
+          <label for="reg-terms">I agree to the <a href="/terms"
+              style="color:var(--color-primary);font-weight:600">Terms of Service</a> and <a href="/privacy"
+              style="color:var(--color-primary);font-weight:600">Privacy Policy</a></label>
+        </div>
+        <button type="submit" class="btn-submit" id="reg-btn">
+          <span id="reg-btn-text">Create Account</span>
+          <span class="spinner" id="reg-spinner"></span>
+        </button>
+      </form>
+      <p class="auth-footer">Already have an account? <a href="/login.html">Sign in</a></p>
     </div>
-    <!-- Micro-interaction script -->
-    <script>
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.classList.add('scale-[1.01]');
-            });
-            input.addEventListener('blur', () => {
-                input.parentElement.classList.remove('scale-[1.01]');
-            });
-        });
+  </div>
 
-        // Simple ambient movement follow mouse
-        document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.orb');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
+  <script>
+    (function () {
+      'use strict';
+      const theme = localStorage.getItem('finsight_theme') || 'dark';
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      if (localStorage.getItem('finsight_token')) { window.location.href = '/dashboard.html'; return; }
 
-            orbs[0].style.transform = `translate(${x * 50}px, ${y * 50}px)`;
-            orbs[1].style.transform = `translate(${-x * 30}px, ${-y * 30}px)`;
-        });
+      const form = document.getElementById('register-form');
+      const nameInput = document.getElementById('reg-name');
+      const usernameInput = document.getElementById('reg-username');
+      const emailInput = document.getElementById('reg-email');
+      const phoneInput = document.getElementById('reg-phone');
+      const pwInput = document.getElementById('reg-password');
+      const confirmInput = document.getElementById('reg-confirm');
+      const termsCheck = document.getElementById('reg-terms');
+      const errorAlert = document.getElementById('reg-error');
+      const errorText = document.getElementById('reg-error-text');
 
-        const registerForm = document.getElementById('register-form');
-        const formMessage = document.getElementById('form-message');
-        const submitButton = registerForm.querySelector('button[type="submit"]');
+      function setError(id, msg) { const el = document.getElementById(id + '-err'); if (el) el.textContent = msg; }
+      function clearErrors() { document.querySelectorAll('.form-error').forEach(e => e.textContent = ''); errorAlert.style.display = 'none'; }
+      function showError(msg) { errorText.textContent = msg; errorAlert.style.display = 'flex'; setTimeout(() => errorAlert.style.display = 'none', 6000); }
 
-        const showMessage = (message, type = 'error') => {
-            formMessage.textContent = message;
-            formMessage.classList.remove(
-                'hidden',
-                'bg-error-container/20',
-                'border-error/30',
-                'text-error',
-                'bg-secondary-container/20',
-                'border-secondary/30',
-                'text-secondary'
-            );
+      function setLoading(loading) {
+        const btn = document.getElementById('reg-btn'), txt = document.getElementById('reg-btn-text'), spin = document.getElementById('reg-spinner');
+        btn.disabled = loading; txt.style.display = loading ? 'none' : 'inline'; spin.style.display = loading ? 'inline-block' : 'none';
+      }
 
-            if (type === 'success') {
-                formMessage.classList.add('bg-secondary-container/20', 'border-secondary/30', 'text-secondary');
-            } else {
-                formMessage.classList.add('bg-error-container/20', 'border-error/30', 'text-error');
+      window.togglePassword = function (id, btn) {
+        const inp = document.getElementById(id), icon = btn.querySelector('.material-symbols-outlined');
+        inp.type = inp.type === 'password' ? 'text' : 'password'; icon.textContent = inp.type === 'password' ? 'visibility' : 'visibility_off';
+      };
+
+      window.checkPasswordStrength = function (pw) {
+        const bar = document.getElementById('pw-bar'), label = document.getElementById('pw-label');
+        let score = 0;
+        if (pw.length >= 8) score++;
+        if (/[A-Z]/.test(pw)) score++;
+        if (/[a-z]/.test(pw)) score++;
+        if (/[0-9]/.test(pw)) score++;
+        if (/[^A-Za-z0-9]/.test(pw)) score++;
+        const levels = [
+          { w: '0%', c: '', t: 'Choose a strong password' },
+          { w: '20%', c: '#ef4444', t: 'Very Weak — add uppercase, numbers & symbols' },
+          { w: '40%', c: '#f97316', t: 'Weak — make it longer' },
+          { w: '60%', c: '#f59e0b', t: 'Fair — getting better' },
+          { w: '80%', c: '#10b981', t: 'Strong' },
+          { w: '100%', c: '#059669', t: 'Very Strong' }];
+        const l = levels[score] || levels[0];
+        bar.style.width = l.w; bar.style.background = l.c; label.textContent = l.t; label.style.color = l.c || 'var(--on-surface-muted)';
+      };
+
+      function validateForm() {
+        clearErrors(); let valid = true;
+        const name = nameInput.value.trim(), username = usernameInput.value.trim(), email = emailInput.value.trim(), phone = phoneInput.value.trim(), pw = pwInput.value, confirm = confirmInput.value;
+        if (!name) { setError('reg-name', 'Full name is required'); valid = false; }
+        if (!username) { setError('reg-username', 'Username is required'); valid = false; }
+        else if (username.length < 3) { setError('reg-username', 'Username must be at least 3 characters'); valid = false; }
+        else if (!/^[a-zA-Z0-9_]+$/.test(username)) { setError('reg-username', 'Only letters, numbers & underscores'); valid = false; }
+        if (!email) { setError('reg-email', 'Email is required'); valid = false; }
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('reg-email', 'Invalid email format'); valid = false; }
+        if (!phone) { setError('reg-phone', 'Phone is required'); valid = false; }
+        else if (!/^[\+\d\s\-\(\)]{7,20}$/.test(phone)) { setError('reg-phone', 'Enter a valid phone number'); valid = false; }
+        if (!pw) { setError('reg-password', 'Password is required'); valid = false; }
+        else if (pw.length < 8) { setError('reg-password', 'Minimum 8 characters'); valid = false; }
+        if (!confirm) { setError('reg-confirm', 'Please confirm your password'); valid = false; }
+        else if (pw !== confirm) { setError('reg-confirm', 'Passwords do not match'); valid = false; }
+        if (!termsCheck.checked) { showError('Please accept the Terms of Service to continue'); valid = false; }
+        return valid;
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
+        setLoading(true);
+
+        try {
+          const res = await axios.post('/api/auth/register', {
+            full_name: nameInput.value.trim(),
+            username: usernameInput.value.trim(),
+            email: emailInput.value.trim(),
+            phone: phoneInput.value.trim(),
+            password: pwInput.value,
+            confirm_password: confirmInput.value,
+          });
+          if (res.data && res.data.success) {
+            const data = res.data;
+            if (data.access_token) {
+              localStorage.setItem('finsight_token', data.access_token);
+              localStorage.setItem('access_token', data.access_token);
             }
-        };
+            if (data.refresh_token) localStorage.setItem('finsight_refresh_token', data.refresh_token);
+            if (data.user) { localStorage.setItem('finsight_user', JSON.stringify(data.user)); localStorage.setItem('user', JSON.stringify(data.user)); }
+            window.location.href = '/dashboard.html';
+          } else {
+            showError(data.message || 'Registration failed. Please try again.');
+          }
+        } catch (err) {
+          if (err.response) {
+            const msg = err.response.data?.message || err.response.data?.error || '';
+            if (err.response.status === 409) showError(msg || 'An account with this email already exists.');
+            else if (err.response.status === 422) showError(msg || 'Please check your information and try again.');
+            else if (err.response.status >= 500) showError('Server error. Please try again later.');
+            else showError(msg || 'Registration failed.');
+          } else if (err.request) {
+            showError('Network error. Please check your internet connection.');
+          } else {
+            showError('An unexpected error occurred.');
+          }
+        } finally { setLoading(false); }
+      });
 
-        registerForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            formMessage.classList.add('hidden');
+      // Real-time validation
+      usernameInput.addEventListener('blur', () => {
+        const v = usernameInput.value.trim();
+        if (v && !/^[a-zA-Z0-9_]+$/.test(v)) setError('reg-username', 'Only letters, numbers & underscores');
+        else setError('reg-username', '');
+      });
+      emailInput.addEventListener('blur', () => {
+        const v = emailInput.value.trim();
+        if (v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) setError('reg-email', 'Invalid email format');
+        else setError('reg-email', '');
+      });
+      confirmInput.addEventListener('input', () => {
+        if (confirmInput.value && pwInput.value !== confirmInput.value) setError('reg-confirm', 'Passwords do not match');
+        else setError('reg-confirm', '');
+      });
 
-            const payload = {
-                full_name: document.getElementById('name').value.trim(),
-                username: document.getElementById('username').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                password: document.getElementById('password').value.trim(),
-                confirm_password: document.getElementById('confirm-password').value.trim()
-            };
+      window.handleSocialSignup = function (provider) {
+        if (provider === 'google') showError('Google Sign-Up coming soon. Please use email registration.');
+        if (provider === 'github') showError('GitHub Sign-Up coming soon. Please use email registration.');
+      };
 
-            submitButton.disabled = true;
-            submitButton.textContent = 'Creating Account...';
-
-            try {
-                const response = await fetch('/api/auth/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await response.json();
-
-                if (response.ok && data.success) {
-                    showMessage(data.message || 'Registration successful!', 'success');
-                    if (data.access_token) {
-                        localStorage.setItem('access_token', data.access_token);
-                        if (data.user) {
-                            localStorage.setItem('user', JSON.stringify(data.user));
-                        }
-                    }
-                    registerForm.reset();
-                    setTimeout(() => {
-                        window.location.href = '/dashboard.html';
-                    }, 1600);
-                } else {
-                    showMessage(data.message || 'Registration failed. Please try again.');
-                }
-            } catch (error) {
-                console.error(error);
-                showMessage('A network error occurred. Please try again later.');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Create Account';
-            }
-        });
-    </script>
+      setTimeout(() => nameInput.focus(), 100);
+    })();
+  </script>
 </body>
 
 </html>

@@ -9,28 +9,22 @@ INSTANCE_DIR = BASE_DIR / "instance"
 INSTANCE_DIR.mkdir(exist_ok=True)
 DEFAULT_DB_PATH = INSTANCE_DIR / "finsight.db"
 
-# ==========================
 # Supabase Configuration
 # ==========================
-<<<<<<< HEAD
 SUPABASE_URL = os.getenv("VITE_SUPABASE_URL", "")
 SUPABASE_ANON_KEY = os.getenv("VITE_SUPABASE_ANON_KEY", "")
-=======
+
+# Database Configuration
+# ==========================
 # Use SQLite for easier development (no separate database server required)
 SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL") or f"sqlite:///{DEFAULT_DB_PATH}"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
->>>>>>> 3b492c6 (Apply local auth and UI updates)
 
 # ==========================
 # Security
 # ==========================
-<<<<<<< HEAD
 SECRET_KEY = os.getenv("SECRET_KEY", "finsight-dev-secret-key-change-in-production")
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "finsight-jwt-secret-key-change-in-production")
-=======
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-jwt-secret-key-change-in-production")
->>>>>>> 3b492c6 (Apply local auth and UI updates)
 
 # ==========================
 # Email Configuration

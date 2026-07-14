@@ -1,594 +1,186 @@
 <!DOCTYPE html>
-
 <html class="dark" lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Financial Goals | FinSight</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "primary": "#8b5cf6", // Vibrant Violet
-                        "on-primary": "#ffffff",
-                        "secondary": "#10b981", // Neon Emerald
-                        "on-secondary": "#062118",
-                        "tertiary": "#34d399",
-                        "on-tertiary": "#062118",
-                        "background": "#0b1326",
-                        "on-background": "#f8f9ff",
-                        "surface": "#131b2e",
-                        "on-surface": "#f8f9ff",
-                        "surface-variant": "#31394d",
-                        "on-surface-variant": "#9ba3af",
-                        "surface-container-lowest": "#060e20",
-                        "surface-container-low": "#0b1326",
-                        "surface-container": "#1c253d",
-                        "surface-container-high": "#28324f",
-                        "surface-container-highest": "#31394d",
-                        "outline": "#4b5563",
-                        "outline-variant": "#374151",
-                        "error": "#ef4444"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "1rem",
-                        "2xl": "1.5rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "xs": "4px",
-                        "sm": "8px",
-                        "md": "16px",
-                        "xl": "32px",
-                        "container-max": "1280px",
-                        "base": "4px",
-                        "2xl": "48px",
-                        "lg": "24px",
-                        "gutter": "24px",
-                        "3xl": "64px"
-                    },
-                    "fontFamily": {
-                        "headline-lg": ["Inter"],
-                        "headline-md": ["Inter"],
-                        "title-lg": ["Inter"],
-                        "label-sm": ["Inter"],
-                        "body-lg": ["Inter"],
-                        "body-md": ["Inter"],
-                        "body-sm": ["Inter"],
-                        "data-mono": ["Inter"]
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goals · FinSight</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/css/design-system.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/auth-guard.js"></script>
+  <style>
+    .goal-card {
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 16px
+    }
 
-        .glass-card {
-            background: rgba(31, 41, 55, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px
+    }
 
-        .progress-gradient-primary {
-            background: linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%);
-        }
+    .goal-amount {
+      font-size: 22px;
+      font-weight: 800
+    }
 
-        .progress-gradient-emerald {
-            background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
-        }
+    .goal-progress {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--surface-container);
+      overflow: hidden;
+      margin-bottom: 8px
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #060e20;
-        }
+    .goal-progress-bar {
+      height: 100%;
+      border-radius: 4px;
+      background: var(--color-primary-gradient);
+      transition: width .5s ease
+    }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+    .goal-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--on-surface-muted)
+    }
 
-        ::-webkit-scrollbar-track {
-            background: #0b1326;
-        }
+    .goal-deadline {
+      font-size: 12px;
+      color: var(--on-surface-muted);
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px
+    }
 
-        ::-webkit-scrollbar-thumb {
-            background: #31394d;
-            border-radius: 10px;
-        }
-    </style>
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface-base);
+      border-top: 1px solid var(--outline);
+      z-index: 250;
+      padding: 6px 0 max(6px, env(safe-area-inset-bottom))
+    }
+
+    .mob-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 6px 4px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--on-surface-muted);
+      transition: all .2s;
+      flex: 1;
+      cursor: pointer;
+      text-decoration: none
+    }
+
+    .mob-nav-item.active,
+    .mob-nav-item:hover {
+      color: var(--color-primary)
+    }
+
+    .mob-nav-item .material-symbols-outlined {
+      font-size: 22px
+    }
+
+    @media(max-width:767px) {
+      .mobile-nav {
+        display: flex
+      }
+
+      .app-content {
+        padding-bottom: 80px !important
+      }
+    }
+  </style>
 </head>
 
-<body class="text-on-surface bg-background">
-    <!-- Side Navigation Shell -->
-    <aside
-        class="fixed left-0 top-0 h-full w-[280px] bg-surface-container-lowest border-r border-outline-variant shadow-2xl flex flex-col py-lg z-50">
-        <div class="px-xl mb-3xl">
-            <h1 class="text-headline-md font-bold text-primary flex items-center gap-2">
-                <span class="material-symbols-outlined text-3xl">analytics</span>
-                FinSight
-            </h1>
-            <p class="text-label-sm text-on-surface-variant uppercase tracking-widest mt-xs opacity-60">Midnight
-                Obsidian Edition</p>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">[sidebar]</aside>
+    <div class="app-main">
+      <header class="app-header">[header]</header>
+      <main class="app-content">
+        <div class="page-header">
+          <div>
+            <h1>Financial Goals</h1>
+            <p style="font-size:14px;color:var(--on-surface-muted);margin-top:4px">Set and track your financial
+              milestones</p>
+          </div><button class="btn btn-primary btn-md" onclick="showAddGoal()"><span
+              class="material-symbols-outlined">add</span>New Goal</button>
         </div>
-        <nav class="flex-1 space-y-xs px-md">
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span class="font-label-sm text-label-sm">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined">payments</span>
-                <span class="font-label-sm text-label-sm">Expenses</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined">account_balance_wallet</span>
-                <span class="font-label-sm text-label-sm">Budgets</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined">trending_up</span>
-                <span class="font-label-sm text-label-sm">Investments</span>
-            </a>
-            <!-- Active State: Goals -->
-            <a class="relative flex items-center gap-md px-md py-sm bg-primary/10 text-primary before:absolute before:left-0 before:w-1 before:h-2/3 before:bg-primary before:rounded-r-full rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">ads_click</span>
-                <span class="font-label-sm text-label-sm">Goals</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined">insert_chart</span>
-                <span class="font-label-sm text-label-sm">Analytics</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined">description</span>
-                <span class="font-label-sm text-label-sm">Reports</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined">notifications</span>
-                <span class="font-label-sm text-label-sm">Notifications</span>
-            </a>
-            <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all rounded-xl"
-                href="#">
-                <span class="material-symbols-outlined">settings</span>
-                <span class="font-label-sm text-label-sm">Settings</span>
-            </a>
-        </nav>
-        <div class="mt-auto px-md space-y-md">
-            <div
-                class="p-md bg-gradient-to-br from-primary/20 to-surface-container border border-primary/20 rounded-2xl">
-                <p class="text-body-sm text-primary font-bold mb-sm">Pro Membership</p>
-                <p class="text-[11px] text-on-surface-variant mb-md leading-relaxed">Unlock Midnight AI predictions for
-                    your portfolio.</p>
-                <button
-                    class="w-full bg-primary text-on-primary py-sm rounded-xl font-label-sm text-label-sm hover:brightness-110 transition-all shadow-lg shadow-primary/20">Upgrade
-                    Now</button>
-            </div>
-            <div class="space-y-xs">
-                <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container transition-colors rounded-xl"
-                    href="#">
-                    <span class="material-symbols-outlined">help</span>
-                    <span class="font-label-sm text-label-sm">Help Center</span>
-                </a>
-                <a class="flex items-center gap-md px-md py-sm text-error hover:bg-error/10 transition-colors rounded-xl"
-                    href="#">
-                    <span class="material-symbols-outlined">logout</span>
-                    <span class="font-label-sm text-label-sm">Log Out</span>
-                </a>
-            </div>
+        <div id="goal-list">
+          <div class="card" style="padding:40px;text-align:center;color:var(--on-surface-muted)"><span
+              class="material-symbols-outlined"
+              style="font-size:40px;display:block;margin-bottom:12px">flag</span>Loading goals...</div>
         </div>
-    </aside>
-    <!-- Main Content Shell -->
-    <main class="ml-[280px] min-h-screen relative">
-        <!-- Top Navigation -->
-        <header
-            class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-xl z-40">
-            <div class="flex items-center flex-1 max-w-md">
-                <div class="relative w-full">
-                    <span
-                        class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-                    <input
-                        class="w-full pl-xl pr-md py-2 bg-surface-container-high border-none rounded-full text-body-sm focus:ring-2 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/50"
-                        placeholder="Search Obsidian data..." type="text" />
-                </div>
-            </div>
-            <div class="flex items-center gap-lg">
-                <div class="flex items-center gap-md border-r border-outline-variant pr-lg">
-                    <button class="p-sm hover:bg-surface-container-highest rounded-full transition-colors relative">
-                        <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
-                        <span
-                            class="absolute top-sm right-sm w-2 h-2 bg-primary rounded-full border-2 border-surface-container-lowest"></span>
-                    </button>
-                    <button class="p-sm hover:bg-surface-container-highest rounded-full transition-colors">
-                        <span class="material-symbols-outlined text-on-surface-variant">chat_bubble</span>
-                    </button>
-                </div>
-                <div class="flex items-center gap-md">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-label-sm font-semibold text-on-surface">Alexander Pierce</p>
-                        <p class="text-[10px] text-primary uppercase tracking-wider font-bold">Obsidian Elite</p>
-                    </div>
-                    <img class="w-10 h-10 rounded-full border-2 border-primary object-cover"
-                        data-alt="Professional headshot"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDA3d0wggIrhpydx221uk52vGGZ7sNZY0gUGppqI7rmYho4GF8DMuu7Koc1RgvvuxGzYxcJUrb_LQM-xVg9NJHKDiu3AGzOuLiRqVLGg7jka4mvGQrkHyLsngxW5XjKT4EX6vibUHBkm8zulocegAJJ9O_kLaer1KYtrNKhZT6_6sy1vElPGdaLgh38zlv_-8kOOiiV-haBL4LhRq8lZZLvfu3k0Sr14jqbWSDzWMX_UGjU554ou4Zd" />
-                </div>
-            </div>
-        </header>
-        <!-- Canvas -->
-        <div class="pt-24 px-xl pb-xl max-w-container-max mx-auto">
-            <!-- Header Section -->
-            <section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-xl">
-                <div>
-                    <h2 class="font-headline-lg text-headline-lg text-on-surface">Financial Objectives</h2>
-                    <p class="text-body-md text-on-surface-variant mt-xs">Deep tracking of your wealth milestones and
-                        AI-powered trajectories.</p>
-                </div>
-                <button
-                    class="flex items-center gap-sm bg-primary text-on-primary px-xl py-md rounded-2xl font-label-md text-label-md shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                    <span class="material-symbols-outlined">add_circle</span>
-                    Create New Goal
-                </button>
-            </section>
-            <!-- Main Layout Grid -->
-            <div class="grid grid-cols-12 gap-lg">
-                <!-- AI Insights -->
-                <article class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
-                    <div
-                        class="glass-card rounded-2xl p-xl shadow-2xl border-l-4 border-l-primary relative overflow-hidden group">
-                        <div
-                            class="absolute -right-12 -top-12 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700">
-                        </div>
-                        <div class="flex items-center gap-md mb-lg">
-                            <div class="p-sm bg-primary/20 text-primary rounded-xl">
-                                <span class="material-symbols-outlined"
-                                    style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
-                            </div>
-                            <h3 class="font-title-lg text-title-lg text-primary">Obsidian Insight</h3>
-                        </div>
-                        <p class="text-body-md text-on-surface font-semibold mb-sm">Optimizing "New Home" Timeline</p>
-                        <p class="text-body-sm text-on-surface-variant leading-relaxed mb-lg">
-                            By reallocating <span class="text-primary font-bold">$125</span> from low-yield accounts,
-                            you can secure your residence <span class="text-secondary font-bold">4 months earlier</span>
-                            with our emerald strategy.
-                        </p>
-                        <div class="space-y-sm">
-                            <button
-                                class="w-full py-md bg-primary text-on-primary rounded-xl font-label-md text-label-md hover:brightness-110 transition-all shadow-lg shadow-primary/20">Apply
-                                Trajectory</button>
-                            <button
-                                class="w-full py-md border border-outline text-on-surface-variant rounded-xl font-label-md text-label-md hover:bg-surface-container-highest transition-all">Dismiss</button>
-                        </div>
-                    </div>
-                    <!-- Milestone Summary -->
-                    <div class="bg-surface-container rounded-2xl p-xl border border-outline-variant/30">
-                        <h3 class="font-label-sm text-label-sm text-primary uppercase tracking-widest mb-lg font-bold">
-                            Next Obsidian Milestones</h3>
-                        <div class="space-y-md">
-                            <div class="flex gap-md">
-                                <div class="flex flex-col items-center">
-                                    <div
-                                        class="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_rgba(139,92,246,0.5)] mt-sm">
-                                    </div>
-                                    <div class="w-[1px] h-full bg-outline-variant"></div>
-                                </div>
-                                <div class="pb-md">
-                                    <p class="text-label-sm font-bold text-on-surface">Next Week</p>
-                                    <p class="text-body-sm text-on-surface-variant">Automated $500 transfer to Portfolio
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex gap-md">
-                                <div class="flex flex-col items-center">
-                                    <div
-                                        class="w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(16,185,129,0.5)] mt-sm">
-                                    </div>
-                                    <div class="w-[1px] h-full bg-outline-variant"></div>
-                                </div>
-                                <div class="pb-md">
-                                    <p class="text-label-sm font-bold text-secondary">Sept 15</p>
-                                    <p class="text-body-sm text-on-surface-variant">"European Summer" reaches 50%
-                                        emerald tier</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-md">
-                                <div class="flex flex-col items-center">
-                                    <div class="w-2.5 h-2.5 rounded-full bg-outline-variant mt-sm"></div>
-                                </div>
-                                <div>
-                                    <p class="text-label-sm font-bold text-on-surface-variant">Oct 20</p>
-                                    <p class="text-body-sm text-on-surface-variant/60">New Home purchase potential
-                                        window</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <!-- Goal Cards Grid -->
-                <div class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-lg">
-                    <!-- Card 1: Emergency Fund -->
-                    <div
-                        class="glass-card rounded-2xl p-xl border border-white/5 hover:border-primary/30 transition-all group flex flex-col h-full shadow-lg">
-                        <div class="flex justify-between items-start mb-xl">
-                            <div class="p-md bg-surface-container-highest text-secondary rounded-2xl shadow-inner">
-                                <span class="material-symbols-outlined text-3xl">medical_services</span>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-on-surface-variant uppercase tracking-tighter font-bold">Goal
-                                    Level</p>
-                                <span
-                                    class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full border border-secondary/20">STABLE</span>
-                            </div>
-                        </div>
-                        <h4 class="font-title-lg text-title-lg mb-sm">Emergency Fund</h4>
-                        <p class="text-body-sm text-on-surface-variant mb-xl">Liquid safety net for unexpected medical
-                            or maintenance costs.</p>
-                        <div class="mt-auto space-y-md">
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    <p class="text-[10px] text-on-surface-variant font-bold uppercase">Current Assets
-                                    </p>
-                                    <p class="text-headline-md font-bold text-on-surface">$12,450</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-[10px] text-on-surface-variant font-bold uppercase">Target</p>
-                                    <p class="text-title-lg font-semibold text-on-surface-variant/80">$20,000</p>
-                                </div>
-                            </div>
-                            <div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden">
-                                <div
-                                    class="h-full progress-gradient-emerald w-[62%] rounded-full shadow-[0_0_12px_rgba(16,185,129,0.3)]">
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-label-sm font-bold">
-                                <span class="text-secondary">62% Obsidian Tier</span>
-                                <span class="text-on-surface-variant italic font-normal">Jan 2025</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 2: Travel -->
-                    <div
-                        class="glass-card rounded-2xl p-xl border border-white/5 hover:border-primary/30 transition-all group flex flex-col h-full shadow-lg">
-                        <div class="flex justify-between items-start mb-xl">
-                            <div class="p-md bg-surface-container-highest text-primary rounded-2xl shadow-inner">
-                                <span class="material-symbols-outlined text-3xl">flight_takeoff</span>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-on-surface-variant uppercase tracking-tighter font-bold">
-                                    Lifestyle</p>
-                                <span
-                                    class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full border border-primary/20">GROWING</span>
-                            </div>
-                        </div>
-                        <h4 class="font-title-lg text-title-lg mb-sm">European Summer</h4>
-                        <p class="text-body-sm text-on-surface-variant mb-xl">Saving for a 3-week tour across Italy,
-                            Greece, and Portugal.</p>
-                        <div class="mt-auto space-y-md">
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    <p class="text-[10px] text-on-surface-variant font-bold uppercase">Current Savings
-                                    </p>
-                                    <p class="text-headline-md font-bold text-on-surface">$4,100</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-[10px] text-on-surface-variant font-bold uppercase">Target</p>
-                                    <p class="text-title-lg font-semibold text-on-surface-variant/80">$8,500</p>
-                                </div>
-                            </div>
-                            <div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden">
-                                <div
-                                    class="h-full progress-gradient-primary w-[48%] rounded-full shadow-[0_0_12px_rgba(139,92,246,0.3)]">
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-label-sm font-bold">
-                                <span class="text-primary">48% Complete</span>
-                                <span class="text-on-surface-variant italic font-normal">May 2025</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 3: Retirement -->
-                    <div
-                        class="glass-card rounded-2xl p-xl border border-white/5 hover:border-primary/30 transition-all group flex flex-col h-full overflow-hidden relative shadow-lg">
-                        <div
-                            class="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-110 transition-all duration-500 text-on-surface">
-                            <span class="material-symbols-outlined text-[140px]">beach_access</span>
-                        </div>
-                        <div class="flex justify-between items-start mb-xl">
-                            <div class="p-md bg-surface-container-highest text-primary rounded-2xl">
-                                <span class="material-symbols-outlined text-3xl">savings</span>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-on-surface-variant uppercase tracking-tighter font-bold">
-                                    Strategy</p>
-                                <span
-                                    class="px-3 py-1 bg-error/10 text-error text-[10px] font-bold rounded-full border border-error/20">RECALIBRATE</span>
-                            </div>
-                        </div>
-                        <h4 class="font-title-lg text-title-lg mb-sm">Early Retirement</h4>
-                        <p class="text-body-sm text-on-surface-variant mb-xl">Aggressive wealth accumulation for
-                            financial freedom by age 55.</p>
-                        <div class="mt-auto space-y-md relative z-10">
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    <p class="text-[10px] text-on-surface-variant font-bold uppercase">Net Worth
-                                        Contribution</p>
-                                    <p class="text-headline-md font-bold text-on-surface">$245,000</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-[10px] text-on-surface-variant font-bold uppercase">Target</p>
-                                    <p class="text-title-lg font-semibold text-on-surface-variant/80">$1.2M</p>
-                                </div>
-                            </div>
-                            <div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden">
-                                <div
-                                    class="h-full bg-error/80 w-[20%] rounded-full shadow-[0_0_12px_rgba(239,68,68,0.3)]">
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-label-sm font-bold">
-                                <span class="text-error">20% Momentum</span>
-                                <span class="text-on-surface-variant italic font-normal">June 2042</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 4: New Home -->
-                    <div
-                        class="glass-card rounded-2xl p-xl border-2 border-primary/40 hover:border-primary transition-all group flex flex-col h-full shadow-2xl relative bg-gradient-to-br from-primary/5 to-transparent">
-                        <div class="flex justify-between items-start mb-xl">
-                            <div class="p-md bg-primary text-on-primary rounded-2xl shadow-xl shadow-primary/20">
-                                <span class="material-symbols-outlined text-3xl">home</span>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-primary uppercase tracking-tighter font-bold">Priority Target
-                                </p>
-                                <span
-                                    class="px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold rounded-full shadow-lg shadow-secondary/20">OPTIMIZED</span>
-                            </div>
-                        </div>
-                        <h4 class="font-title-lg text-title-lg mb-sm text-on-surface">Dream Home Fund</h4>
-                        <p class="text-body-sm text-on-surface-variant mb-xl">Downpayment and closing costs for a modern
-                            3-bedroom residence.</p>
-                        <div class="mt-auto space-y-md">
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    <p class="text-[10px] text-primary font-bold uppercase">Current Capital</p>
-                                    <p class="text-headline-md font-bold text-on-surface">$68,900</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-[10px] text-on-surface-variant font-bold uppercase">Target</p>
-                                    <p class="text-title-lg font-semibold text-on-surface-variant/80">$85,000</p>
-                                </div>
-                            </div>
-                            <div
-                                class="w-full h-4 bg-surface-container-highest rounded-full overflow-hidden relative border border-primary/20">
-                                <div class="absolute inset-0 bg-primary/5 animate-pulse"></div>
-                                <div
-                                    class="h-full progress-gradient-primary w-[81%] rounded-full shadow-[0_0_15px_rgba(139,92,246,0.4)] relative z-10 border-r border-white/20">
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-label-sm font-bold">
-                                <span class="text-primary">81% Complete</span>
-                                <span class="text-secondary flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm">trending_up</span>
-                                    Ahead of Schedule
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Detailed Progress Tracker -->
-            <section class="mt-2xl">
-                <div class="flex items-center justify-between mb-xl">
-                    <h3 class="font-headline-md text-headline-md text-on-surface">Interactive Growth Roadmap</h3>
-                    <div class="flex gap-sm">
-                        <button
-                            class="p-sm bg-surface-container-high rounded-xl text-on-surface-variant hover:text-primary transition-all shadow-md">
-                            <span class="material-symbols-outlined">timeline</span>
-                        </button>
-                        <button
-                            class="p-sm bg-surface-container-high rounded-xl text-on-surface-variant hover:text-primary transition-all shadow-md">
-                            <span class="material-symbols-outlined">view_kanban</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="glass-card rounded-3xl p-2xl border border-white/5 shadow-2xl overflow-x-auto">
-                    <div class="min-w-[800px]">
-                        <div class="relative h-64 mb-lg">
-                            <!-- Visual Progress Chart -->
-                            <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 800 200">
-                                <defs>
-                                    <lineargradient id="obsidian-grad" x1="0%" x2="100%" y1="0%" y2="0%">
-                                        <stop offset="0%" style="stop-color:rgba(139, 92, 246, 0.3); stop-opacity:1">
-                                        </stop>
-                                        <stop offset="100%" style="stop-color:rgba(139, 92, 246, 0); stop-opacity:0">
-                                        </stop>
-                                    </lineargradient>
-                                </defs>
-                                <path d="M0,180 Q100,160 200,120 T400,110 T600,60 T800,20" fill="transparent"
-                                    filter="drop-shadow(0 0 8px rgba(139, 92, 246, 0.5))" stroke="#8b5cf6"
-                                    stroke-linecap="round" stroke-width="4"></path>
-                                <path d="M0,180 Q100,160 200,120 T400,110 T600,60 T800,20 L800,200 L0,200 Z"
-                                    fill="url(#obsidian-grad)"></path>
-                                <!-- Milestones -->
-                                <circle cx="200" cy="120" fill="#0b1326" r="6" stroke="#8b5cf6" stroke-width="3">
-                                </circle>
-                                <circle cx="400" cy="110" fill="#0b1326" r="6" stroke="#8b5cf6" stroke-width="3">
-                                </circle>
-                                <circle cx="600" cy="60" fill="#10b981" filter="drop-shadow(0 0 5px #10b981)" r="6"
-                                    stroke="#10b981" stroke-width="3"></circle>
-                            </svg>
-                            <!-- Tooltip -->
-                            <div
-                                class="absolute left-[180px] top-[140px] bg-surface-container-highest p-sm rounded-xl shadow-2xl border border-primary/30">
-                                <p class="text-[10px] font-bold text-primary">Reached 25%</p>
-                                <p class="text-[9px] text-on-surface-variant font-medium">Feb 2024</p>
-                            </div>
-                        </div>
-                        <div
-                            class="flex justify-between px-md text-label-sm font-bold text-on-surface-variant/70 uppercase tracking-widest text-[10px]">
-                            <span>Initiated</span>
-                            <span>Seed Phase</span>
-                            <span>Midway Peak</span>
-                            <span class="text-primary">Current Phase</span>
-                            <span class="text-secondary">Emerald Target</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        <!-- Sticky Footer Summary for Mobile -->
-        <div
-            class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-lowest/95 backdrop-blur-xl border-t border-outline-variant flex justify-around items-center py-3 z-50">
-            <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span class="text-[10px] font-bold">Home</span>
-            </a>
-            <a class="flex flex-col items-center gap-1 text-primary" href="#">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">ads_click</span>
-                <span class="text-[10px] font-bold">Goals</span>
-            </a>
-            <button
-                class="bg-primary text-on-primary p-4 rounded-2xl -mt-8 shadow-2xl shadow-primary/40 border border-white/20">
-                <span class="material-symbols-outlined font-bold">add</span>
-            </button>
-            <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-                <span class="material-symbols-outlined">trending_up</span>
-                <span class="text-[10px] font-bold">Invest</span>
-            </a>
-            <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-                <span class="material-symbols-outlined">account_circle</span>
-                <span class="text-[10px] font-bold">Profile</span>
-            </a>
-        </div>
-    </main>
-    <script>
-        // Micro-interactions for Obsidian design system
-        document.querySelectorAll('.glass-card, .bg-surface-container').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-6px) scale(1.005)';
-                card.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-                card.style.boxShadow = 'none';
-            });
-        });
-    </script>
-    <script src="/auth-guard.js"></script>
+      </main>
+    </div>
+    <nav class="mobile-nav"><a href="/dashboard.html" class="mob-nav-item"><span
+          class="material-symbols-outlined">dashboard</span>Home</a><a href="/expense.html" class="mob-nav-item"><span
+          class="material-symbols-outlined">payments</span>Expenses</a><a href="/budget.html" class="mob-nav-item"><span
+          class="material-symbols-outlined">account_balance</span>Budget</a><a href="/investment.html"
+        class="mob-nav-item"><span class="material-symbols-outlined">trending_up</span>Invest</a><a href="/setting.html"
+        class="mob-nav-item"><span class="material-symbols-outlined">settings</span>Settings</a></nav>
+  </div>
+  <div id="goal-modal"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;align-items:center;justify-content:center;padding:20px"
+    onclick="if(event.target===this)closeGoalModal()">
+    <div
+      style="width:100%;max-width:440px;background:var(--surface-base);border-radius:var(--radius-2xl);padding:28px;box-shadow:var(--shadow-2xl)">
+      <h3 style="font-size:18px;font-weight:800;margin-bottom:16px">Create Financial Goal</h3>
+      <form id="goal-form">
+        <div class="form-group"><label class="form-label">Goal Name</label><input type="text" id="goal-name"
+            class="form-input" placeholder="Emergency Fund" required style="height:44px" /></div>
+        <div class="form-group"><label class="form-label">Target Amount (₹)</label><input type="number" id="goal-amount"
+            class="form-input" placeholder="100000" min="1" required style="height:44px" /></div>
+        <div class="form-group"><label class="form-label">Current Savings (₹)</label><input type="number"
+            id="goal-current" class="form-input" placeholder="0" min="0" style="height:44px" /></div>
+        <div class="form-group"><label class="form-label">Target Date</label><input type="date" id="goal-date"
+            class="form-input" required style="height:44px" /></div>
+        <div style="display:flex;gap:10px;margin-top:8px"><button type="button" class="btn btn-outline btn-md"
+            style="flex:1" onclick="closeGoalModal()">Cancel</button><button type="submit"
+            class="btn btn-primary btn-md" style="flex:1" id="goal-save-btn">Save Goal</button></div>
+      </form>
+    </div>
+  </div>
+  <script>
+    (function () {
+      'use strict'; const API = '/api';
+      function getToken() { return localStorage.getItem('finsight_token') || localStorage.getItem('access_token') }
+      async function api(url, opts = {}) { const t = getToken(); opts.headers = { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json', ...opts.headers }; const res = await fetch(API + url, opts); if (!res.ok) throw new Error(await res.text()); return res.json() }
+      function fmt(n, c = 'INR') { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: c, minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(n || 0) }
+      function loadGoals() { api('/goals').then(data => { const items = data.goals || data.data || []; renderGoals(items) }).catch(() => { document.getElementById('goal-list').innerHTML = '<div class="card" style="padding:40px;text-align:center;color:var(--on-surface-muted)">Failed to load goals.</div>' }) }
+      function renderGoals(items) {
+        const el = document.getElementById('goal-list'); if (!el) return; if (!items.length) { el.innerHTML = '<div class="card" style="padding:60px 40px;text-align:center"><span class="material-symbols-outlined" style="font-size:48px;display:block;margin-bottom:16px;color:var(--on-surface-muted)">flag</span><h3 style="font-size:18px;margin-bottom:8px">No goals yet</h3><p style="color:var(--on-surface-muted);margin-bottom:20px;font-size:14px">Set your first financial goal to start tracking progress.</p><button class="btn btn-primary" onclick="showAddGoal()"><span class="material-symbols-outlined">add</span>New Goal</button></div>'; return }
+        el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">' + items.map(g => { const pct = g.current_amount && g.target_amount ? Math.min((g.current_amount / g.target_amount) * 100, 100) : 0; const deadline = g.target_date ? new Date(g.target_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : ''; return '<div class="card goal-card"><div class="goal-header"><div style="font-weight:700;font-size:15px">' + g.name + '</div><div class="goal-amount" style="color:var(--color-primary)">' + fmt(g.target_amount) + '</div></div><div class="goal-progress"><div class="goal-progress-bar" style="width:' + pct + '%"></div></div><div class="goal-meta"><span>' + fmt(g.current_amount || 0) + ' saved</span><span>' + pct.toFixed(0) + '% complete</span></div><div class="goal-deadline"><span class="material-symbols-outlined" style="font-size:14px">calendar_today</span>Target: ' + deadline + '</div><div style="margin-top:10px;display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="contributeGoal(\'' + g.id + '\')"><span class="material-symbols-outlined" style="font-size:14px">add</span>Add Funds</button><button class="btn btn-ghost btn-sm" onclick="deleteGoal(\'' + g.id + '\')"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button></div></div>' }).join('') + '</div>'
+      }
+      window.deleteGoal = async function (id) { if (!confirm('Delete this goal?')) return; try { await fetch(API + '/goals/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + getToken() } }); loadGoals() } catch (e) { alert('Failed to delete') } }
+      window.contributeGoal = async function (id) { const val = prompt('Add amount (₹):'); if (!val || isNaN(parseFloat(val)) || parseFloat(val) <= 0) return; try { await api('/goals/' + id + '/contribute', { method: 'POST', body: JSON.stringify({ amount: parseFloat(val) }) }); loadGoals() } catch (e) { alert('Failed to add contribution') } }
+      window.showAddGoal = function () { const d = new Date(); d.setFullYear(d.getFullYear() + 1); document.getElementById('goal-date').value = d.toISOString().split('T')[0]; document.getElementById('goal-modal').style.display = 'flex' };
+      window.closeGoalModal = function () { document.getElementById('goal-modal').style.display = 'none' };
+      document.getElementById('goal-form')?.addEventListener('submit', async function (e) { e.preventDefault(); const btn = document.getElementById('goal-save-btn'); btn.disabled = true; btn.textContent = 'Saving...'; try { await api('/goals', { method: 'POST', body: JSON.stringify({ name: document.getElementById('goal-name').value, target_amount: parseFloat(document.getElementById('goal-amount').value), current_amount: parseFloat(document.getElementById('goal-current').value) || 0, target_date: document.getElementById('goal-date').value }) }); closeGoalModal(); loadGoals() } catch (e) { alert('Failed to create goal') } finally { btn.disabled = false; btn.textContent = 'Save Goal' } });
+      document.addEventListener('DOMContentLoaded', loadGoals);
+    })();
+  </script>
 </body>
 
 </html>

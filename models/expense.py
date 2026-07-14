@@ -105,8 +105,8 @@ class ExpenseDraft(db.Model):
 class Expense(db.Model):
     __tablename__ = "expenses"
 
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False, index=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False, index=True)
 
     # Core fields
     title = db.Column(db.String(200), nullable=False)
