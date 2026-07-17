@@ -3,7 +3,9 @@ Test analytics routes for FinSight.
 """
 import pytest
 from datetime import date, timedelta
-from app import app, db
+from app import create_app
+app = create_app()
+from database.db import db
 from models.user import User
 from models.expense import Expense
 from models.income import Income
@@ -25,15 +27,19 @@ def client():
 @pytest.fixture
 def test_user():
     """Create a test user."""
-    user = User(
-        full_name="Test User",
-        username="testuser",
-        email="test@example.com",
-        password_hash=bcrypt.generate_password_hash("password123").decode('utf-8'),
-    )
-    db.session.add(user)
-    db.session.commit()
-    return user
+    with app.app_context():
+        user = User.query.filter_by(email="test@example.com").first()
+        if user:
+            return user
+        user = User(
+            full_name="Test User",
+            username="testuser",
+            email="test@example.com",
+            password_hash=bcrypt.generate_password_hash("password123").decode('utf-8'),
+        )
+        db.session.add(user)
+        db.session.commit()
+        return user
 
 
 @pytest.fixture

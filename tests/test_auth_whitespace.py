@@ -1,6 +1,7 @@
 import unittest
 
-from app import app
+from app import create_app
+app = create_app()
 from database.db import db
 from services.auth_service import register_user, login_user, reset_password
 from models.user import User

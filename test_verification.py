@@ -1,7 +1,8 @@
 import logging
 logging.disable(logging.CRITICAL)
 
-from app import app
+from app import create_app
+app = create_app()
 from database.db import db
 from sqlalchemy import inspect
 

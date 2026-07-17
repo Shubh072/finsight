@@ -11,10 +11,13 @@ class Budget(db.Model):
     
     # Core fields
     category = db.Column(db.String(80), nullable=False, index=True)
-    amount = db.Column(db.Numeric(18, 2), nullable=False)  # Budget limit
+    amount = db.Column(db.Numeric(18, 2), nullable=True)  # Budget limit (some schemas use amount)
+    limit_amount = db.Column(db.Numeric(18, 2), nullable=True)  # Budget limit (some schemas use limit_amount)
     period = db.Column(db.String(20), default="monthly", nullable=False)  # monthly, yearly, weekly
     month = db.Column(db.Integer, nullable=True)  # Month (1-12) for monthly budgets
     year = db.Column(db.Integer, nullable=True)   # Year
+    start_date = db.Column(db.Date, nullable=True)
+    end_date = db.Column(db.Date, nullable=True)
     
     # Optional
     description = db.Column(db.Text, nullable=True)
@@ -29,16 +32,19 @@ class Budget(db.Model):
     deleted_at = db.Column(db.DateTime, nullable=True)
     
     def __repr__(self):
-        return f'<Budget {self.id}: {self.category} - {self.amount}>'
+        return f'<Budget {self.id}: {self.category} - {self.amount or self.limit_amount}>'
     
     def to_dict(self):
         return {
             'id': self.id,
             'category': self.category,
-            'amount': str(self.amount),
+            'amount': str(self.amount) if self.amount is not None else None,
+            'limit_amount': str(self.limit_amount) if self.limit_amount is not None else None,
             'period': self.period,
             'month': self.month,
             'year': self.year,
+            'start_date': self.start_date.isoformat() if self.start_date else None,
+            'end_date': self.end_date.isoformat() if self.end_date else None,
             'description': self.description,
             'color': self.color,
             'icon': self.icon,

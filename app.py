@@ -67,9 +67,23 @@ def create_app():
     # --- Register Blueprints ---
     from routes.auth_routers import auth_bp
     from routes.expenses_routers import expenses_bp
+    from routes.analytics_routers import analytics_bp
+    from routes.budgets_routers import budgets_bp
+    from routes.goals_routers import goals_bp
+    from routes.incomes_routers import incomes_bp
+    from routes.investments_routers import investments_bp
+    from routes.alerts_routers import alerts_bp
+    from routes.investment_analytics_routers import investment_analytics_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(expenses_bp, url_prefix='/api/expenses')
+    app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
+    app.register_blueprint(budgets_bp, url_prefix='/api/budgets')
+    app.register_blueprint(goals_bp, url_prefix='/api/goals')
+    app.register_blueprint(incomes_bp, url_prefix='/api/incomes')
+    app.register_blueprint(investments_bp, url_prefix='/api/investments')
+    app.register_blueprint(alerts_bp, url_prefix='/api/alerts')
+    app.register_blueprint(investment_analytics_bp, url_prefix='/api/investments')
 
     # --- Health Check ---
     @app.route('/api/health')
