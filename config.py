@@ -55,5 +55,5 @@ UPLOAD_FOLDER = "uploads"
 # ==========================
 # SQLAlchemy (kept for compatibility, but we use Supabase REST API)
 # ==========================
-SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///finsight_local.db")
+SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL") or f"sqlite:///{DEFAULT_DB_PATH}"
 SQLALCHEMY_TRACK_MODIFICATIONS = False

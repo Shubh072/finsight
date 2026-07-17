@@ -33,21 +33,7 @@ class Account(db.Model):
     deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)
 
 
-class Budget(db.Model):
-    __tablename__ = "budgets"
-
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False, index=True)
-    category = db.Column(db.String(80), nullable=False, index=True)
-    limit_amount = db.Column(db.Numeric(18, 2), nullable=False)
-    period = db.Column(db.String(20), default="monthly", nullable=False)
-    start_date = db.Column(db.Date, nullable=True)
-    end_date = db.Column(db.Date, nullable=True)
-
-    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    updated_at = db.Column(db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
-    is_deleted = db.Column(db.Boolean, default=False, nullable=False)
-    deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)
+from models.budget import Budget
 
 
 class ExpenseSplit(db.Model):
