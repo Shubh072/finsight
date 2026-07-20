@@ -51,6 +51,17 @@ const FinSight = (() => {
   };
 
   const utils = {
+    getToken() {
+      return localStorage.getItem('finsight_token') || localStorage.getItem('access_token');
+    },
+    getUser() {
+      try {
+        const raw = localStorage.getItem('finsight_user') || localStorage.getItem('user');
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    },
     formatCurrency(amount) {
       const num = parseFloat(amount) || 0;
       return new Intl.NumberFormat(CONFIG.locale, { style: 'currency', currency: CONFIG.currency, minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(num);
@@ -122,6 +133,19 @@ const FinSight = (() => {
     error(title, message, duration) { return this.show(title, message, 'error', duration || 6000); },
     warning(title, message, duration) { return this.show(title, message, 'warning', duration); },
     info(title, message, duration) { return this.show(title, message, 'info', duration); },
+    apiError(err) {
+      let message = 'An error occurred';
+      if (err.response?.data?.message) {
+        message = err.response.data.message;
+      } else if (err.response?.data?.error) {
+        message = err.response.data.error;
+      } else if (err.message) {
+        message = err.message;
+      } else if (typeof err === 'string') {
+        message = err;
+      }
+      return this.show('Error', message, 'error');
+    },
   };
 
   const modal = {

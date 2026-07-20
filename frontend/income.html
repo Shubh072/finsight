@@ -86,11 +86,11 @@
 
   <script src="/js/finsight-core.js"></script>
   <script>
-    function formatCurrency(v) { return Finsight.utils.formatCurrency(v); }
-    function formatDate(d) { return Finsight.utils.formatDate(d); }
+    function formatCurrency(v) { return FinSight.utils.formatCurrency(v); }
+    function formatDate(d) { return FinSight.utils.formatDate(d); }
 
     async function loadIncome() {
-      const token = Finsight.utils.getToken();
+      const token = FinSight.utils.getToken();
       if (!token) return;
       try {
         document.getElementById('income-skeleton').style.display = 'block';
@@ -120,7 +120,7 @@
 
         if (incomes.length === 0) {
           document.getElementById('income-empty').style.display = 'block';
-          Finsight.emptyState.show('income-empty', { icon: 'account_balance', title: 'No income recorded', message: 'Start tracking your income sources.', action: () => openIncomeDrawer(), actionText: 'Add Income' });
+          FinSight.showEmpty('income-empty', { icon: 'account_balance', title: 'No income recorded', message: 'Start tracking your income sources.', action: '<button class="btn btn-primary btn-md" onclick="openIncomeDrawer()">Add Income</button>' });
           return;
         }
 
@@ -141,7 +141,7 @@
         document.getElementById('income-skeleton').style.display = 'none';
         const ec = document.getElementById('income-error');
         ec.style.display = 'block';
-        Finsight.errorState.show(ec, { message: 'Failed to load income.', onRetry: loadIncome });
+        FinSight.showError(ec.id, { message: 'Failed to load income.', onRetry: loadIncome });
       }
     }
 
@@ -152,8 +152,8 @@
         <div class="grid grid-cols-2 gap-3"><div class="input-group"><label class="input-label">Category</label><select class="select-field" id="inc-category"><option>Salary</option><option>Freelance</option><option>Investment</option><option>Business</option><option>Rental</option><option>Gift</option><option>Other</option></select></div><div class="input-group"><label class="input-label">Date</label><input type="date" class="input-field" id="inc-date" value="${new Date().toISOString().split('T')[0]}" /></div></div>
         <div class="input-group"><label class="input-label">Description</label><input type="text" class="input-field" id="inc-desc" placeholder="Optional description" /></div>
       </div>`;
-      const footer = `<button class="btn btn-ghost btn-md" onclick="Finsight.drawer.close()">Cancel</button><button class="btn btn-primary btn-md" onclick="saveIncome()">Add Income</button>`;
-      Finsight.drawer.show({ title: 'Add Income', content, footer });
+      const footer = `<button class="btn btn-ghost btn-md" onclick="FinSight.drawer.close()">Cancel</button><button class="btn btn-primary btn-md" onclick="saveIncome()">Add Income</button>`;
+      FinSight.drawer.open(content, { title: 'Add Income', footer });
     }
 
     async function saveIncome() {
@@ -162,17 +162,17 @@
       const category = document.getElementById('inc-category')?.value;
       const date = document.getElementById('inc-date')?.value || new Date().toISOString().split('T')[0];
       const description = document.getElementById('inc-desc')?.value || '';
-      if (!amount || !source) { Finsight.toast.error('Validation', 'Please fill required fields.'); return; }
-      const token = Finsight.utils.getToken();
+      if (!amount || !source) { FinSight.toast.error('Validation', 'Please fill required fields.'); return; }
+      const token = FinSight.utils.getToken();
       try {
         await axios.post('/api/incomes/', { amount: parseFloat(amount), source, title: source, category, income_date: date, description }, { headers: { Authorization: `Bearer ${token}` } });
-        Finsight.toast.success('Added', 'Income recorded successfully.'); Finsight.drawer.close(); loadIncome();
-      } catch (err) { Finsight.toast.apiError(err); }
+        FinSight.toast.success('Added', 'Income recorded successfully.'); FinSight.drawer.close(); loadIncome();
+      } catch (err) { FinSight.toast.apiError(err); }
     }
 
     async function deleteIncome(id) {
-      Finsight.modal.confirm({ title: 'Delete Income', message: 'Remove this income record?', type: 'delete', confirmText: 'Delete', danger: true,
-        onConfirm: async () => { const token = Finsight.utils.getToken(); try { await axios.delete(`/api/incomes/${id}`, { headers: { Authorization: `Bearer ${token}` } }); Finsight.toast.success('Deleted', 'Income removed.'); loadIncome(); } catch (err) { Finsight.toast.apiError(err); } }
+      FinSight.modal.confirm({ title: 'Delete Income', message: 'Remove this income record?', type: 'delete', confirmText: 'Delete', danger: true,
+        onConfirm: async () => { const token = FinSight.utils.getToken(); try { await axios.delete(`/api/incomes/${id}`, { headers: { Authorization: `Bearer ${token}` } }); FinSight.toast.success('Deleted', 'Income removed.'); loadIncome(); } catch (err) { FinSight.toast.apiError(err); } }
       });
     }
 

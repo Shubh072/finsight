@@ -108,7 +108,7 @@
     <main class="flex-1 p-xl max-w-4xl mx-auto w-full">
       <div class="glass-card rounded-2xl p-xl soft-shadow">
         <h1 class="text-2xl font-bold text-on-surface">Add Expense</h1>
-        <form id="add-expense-form" method="post" enctype="multipart/form-data" onsubmit="return false;">
+        <form id="add-expense-form" data-expense-form method="post" enctype="multipart/form-data">
 
         <p class="text-on-surface-variant mt-2">Save a new transaction with receipt upload + duplicate warning.</p>
 
@@ -218,14 +218,13 @@
 
         <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div class="text-sm text-on-surface-variant" id="submit-status"></div>
-          <button type="submit" class="px-6 py-3 bg-primary text-on-primary font-bold rounded-xl hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20">
+          <button type="submit" id="submit-expense-btn" class="px-6 py-3 bg-primary text-on-primary font-bold rounded-xl hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20">
             <span class="material-symbols-outlined align-middle">add_circle</span>
             <span class="ml-2">Save Expense</span>
           </button>
         </div>
       </div>
 
-      <form class="hidden"></form>
       <script>
         // Simple smart category suggestion (frontend): only for title keywords; server also supports.
         (function () {
@@ -260,7 +259,59 @@
 
   <script src="/auth-guard.js"></script>
   <script src="/add_expense.js"></script>
-
+  <script>
+    // Simple form submission handler - intercepts button click and submits via fetch
+    window.addEventListener('load', function() {
+      const form = document.getElementById('add-expense-form');
+      const submitBtn = document.getElementById('submit-expense-btn');
+      
+      if (form && submitBtn) {
+        submitBtn.setAttribute('type', 'button');
+        
+        submitBtn.addEventListener('click', function() {
+          const formData = new FormData(form);
+          const data = {};
+          formData.forEach((value, key) => {
+            if (value !== '') {
+              data[key] = value;
+            }
+          });
+          
+          if (!data.title || !data.amount) {
+            alert('Please fill in the required fields: Title and Amount');
+            return;
+          }
+          
+          const token = localStorage.getItem('access_token') || localStorage.getItem('finsight_token');
+          if (!token) {
+            alert('Please log in to continue');
+            window.location.href = '/login.html';
+            return;
+          }
+          
+          fetch('/api/expenses/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(data)
+          })
+          .then(res => res.json())
+          .then(result => {
+            if (result.success || result.data) {
+              window.location.href = '/expense.html';
+            } else {
+              alert('Error: ' + (result.message || 'Unknown error'));
+            }
+          })
+          .catch(err => {
+            alert('Error: ' + err.message);
+          });
+        });
+      }
+    });
+  </script>
 </body>
 
 
